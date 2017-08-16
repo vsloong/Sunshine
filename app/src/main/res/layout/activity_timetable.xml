@@ -22,12 +22,53 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary" />
+            android:background="@color/colorPrimary"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/text_white" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/text_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/month"
+                android:textColor="@color/text_gray_light"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/text_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/text_month"
+                android:text="@string/week"
+                android:textColor="@color/text_gray_light"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_today"
+                android:layout_width="42dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/text_week"
+                android:background="@drawable/selector_btn"
+                android:text="@string/today"
+                android:textColor="@color/text_white"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/layout_tab"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="@dimen/tab_layout_height"
             android:layout_marginTop="8dp"
             app:tabIndicatorHeight="0dp">
 
@@ -35,14 +76,13 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/view_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_app_bar">
-
-        <include layout="@layout/item_class" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/layout_app_bar" />
 </android.support.constraint.ConstraintLayout>

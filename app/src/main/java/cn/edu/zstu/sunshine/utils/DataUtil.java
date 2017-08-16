@@ -22,6 +22,15 @@ public class DataUtil {
     }
 
     /**
+     * 得到当前周数
+     *
+     * @return int
+     */
+    public static int getWeek() {
+        return 0;
+    }
+
+    /**
      * 得到今天是本周第几天（注：周一是第一天）
      *
      * @return int

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="周一"
+        android:text="@string/tab_week"
         android:textColor="@drawable/selector_tab_week"
         android:textSize="12sp" />
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="25"
+        android:text="@string/tab_day"
         android:textColor="@drawable/selector_tab_day"
         android:textSize="28sp" />
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true">
+    <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorAccent" />
+            <solid android:color="@color/text_jacinth" />
             <padding android:left="4dp" android:right="4dp" />
             <corners android:radius="@dimen/corner_radius" />
         </shape>
@@ -10,7 +10,8 @@
 
     <item android:state_selected="false">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/transparent" />
+            <solid android:color="@color/colorAccent" />
+            <corners android:radius="@dimen/corner_radius" />
         </shape>
     </item>
 </selector>

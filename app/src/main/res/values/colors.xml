@@ -7,6 +7,7 @@
     <color name="bg">#25262c</color>
     <color name="text_white">#fafafa</color>
     <color name="text_green">#95e362</color>
+    <color name="text_yellow">#fcb813</color>
 
     <!--橘红色-->
     <color name="text_jacinth">#e85c21</color>

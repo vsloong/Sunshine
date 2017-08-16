@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">阳光浙理</string>
+
+    <string name="tab_week">周一</string>
+    <string name="tab_day">25</string>
+
+    <string name="month">%1$d月</string>
+    <string name="week">（第%1$d周）</string>
+    <string name="today">今天</string>
+
+    <string name="course_name">数字图像分析与艺术化处理</string>
+    <string name="course_teacher">%1$s老师</string>
+    <string name="course_address">%1$s</string>
+    <string name="course_time">10:00&#8211;12:00</string>
 </resources>

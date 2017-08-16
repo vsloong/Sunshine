@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tab_layout_height">58dp</dimen>
+
+    <!--圆角矩形的圆角-->
+    <dimen name="corner_radius">4dp</dimen>
+</resources>
