@@ -2,9 +2,15 @@
 <resources>
     <color name="colorPrimary">#2b2c32</color>
     <color name="colorPrimaryDark">#2b2c32</color>
-    <color name="colorAccent">#fcb913</color>
+    <color name="colorAccent">#fcb813</color>
 
     <color name="bg">#25262c</color>
-    <color name="text_1">#b9babe</color>
-    <color name="text_2">#6d6f73</color>
+    <color name="text_white">#fafafa</color>
+    <color name="text_green">#95e362</color>
+
+    <!--橘红色-->
+    <color name="text_jacinth">#e85c21</color>
+
+    <color name="text_gray_light">#b9babe</color>
+    <color name="text_gray_dark">#6d6f73</color>
 </resources>

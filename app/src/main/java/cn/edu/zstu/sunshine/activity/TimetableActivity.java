@@ -1,18 +1,19 @@
-package cn.edu.zstu.sunshine;
+package cn.edu.zstu.sunshine.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.utils.DataUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class TimetableActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_timetable);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.layout_tab);
 
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
             week.setText(DataUtil.week[i]);
             day.setText(String.valueOf(dates[i]));
-
 
             if ((today - 1) == i) {
                 tab.select();
