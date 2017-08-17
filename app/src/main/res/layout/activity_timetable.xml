@@ -1,88 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg"
     tools:context="cn.edu.zstu.sunshine.activity.TimetableActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/layout_app_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:elevation="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <!--app:elevation="0dp" 去掉Toolbar的阴影-->
+        <import type="cn.edu.zstu.sunshine.utils.DataUtil" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <variable
+            name="activity"
+            type="cn.edu.zstu.sunshine.activity.TimetableActivity" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/layout_app_bar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:title="@string/app_name"
-            app:titleTextColor="@color/text_white" />
+            app:elevation="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            <!--app:elevation="0dp" 去掉Toolbar的阴影-->
 
-            <TextView
-                android:id="@+id/text_month"
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/month"
-                android:textColor="@color/text_gray_light"
-                android:textSize="18sp" />
+                android:background="@color/colorPrimary"
+                app:title="@string/app_name"
+                app:titleTextColor="@color/text_white" />
 
-            <TextView
-                android:id="@+id/text_week"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/text_month"
-                android:text="@string/week"
-                android:textColor="@color/text_gray_light"
-                android:textSize="18sp" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-            <Button
-                android:id="@+id/btn_today"
-                android:layout_width="42dp"
-                android:layout_height="22dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/text_week"
-                android:background="@drawable/selector_btn"
-                android:text="@string/today"
-                android:textColor="@color/text_white"
-                android:textSize="14sp" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/text_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@{DataUtil.getMonthString()}"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="18sp"
+                    tools:text="8月" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/layout_tab"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_layout_height"
-            android:layout_marginTop="8dp"
-            app:tabIndicatorHeight="0dp">
+                <TextView
+                    android:id="@+id/text_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/text_month"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="18sp"
+                    tools:text="（第二周）" />
 
-        </android.support.design.widget.TabLayout>
-    </android.support.design.widget.AppBarLayout>
+                <Button
+                    android:id="@+id/btn_today"
+                    android:layout_width="42dp"
+                    android:layout_height="22dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/text_week"
+                    android:background="@drawable/selector_btn"
+                    android:text="@string/today"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/layout_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_layout_height"
+                android:layout_marginTop="8dp"
+                app:tabIndicatorHeight="0dp">
+
+            </android.support.design.widget.TabLayout>
+        </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_app_bar" />
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_app_bar" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,6 +1,14 @@
 package cn.edu.zstu.sunshine.utils;
 
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+
 import java.util.Calendar;
+
+import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.BaseApplication;
 
 /**
  * 日期、时间的工具类
@@ -17,8 +25,13 @@ public class DataUtil {
      *
      * @return int
      */
-    public static int getMonth() {
+    private static int getMonth() {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;
+    }
+
+    public static SpannableString getMonthString() {
+        String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), DataUtil.getMonth());
+        return getColorText(month, R.color.text_yellow, 0, month.length() - 1);
     }
 
     /**
@@ -55,5 +68,11 @@ public class DataUtil {
             date[i] = calendar.get(Calendar.DATE);
         }
         return date;
+    }
+
+    private static SpannableString getColorText(String string, int color, int start, int end) {
+        SpannableString sp = new SpannableString(string);
+        sp.setSpan(new ForegroundColorSpan(ContextCompat.getColor(BaseApplication.getAppContext(), color)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
     }
 }

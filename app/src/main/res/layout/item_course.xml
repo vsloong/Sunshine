@@ -1,97 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    app:cardBackgroundColor="@color/colorPrimary"
-    app:cardCornerRadius="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
+    <data>
+        <!-- 变量course， 描述了布局中会用到的属性 -->
+        <variable
+            name="course"
+            type="cn.edu.zstu.sunshine.entity.Course" />
+    </data>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="8dp">
 
-        <ImageView
-            android:id="@+id/img_clock"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:src="@mipmap/ic_clock"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="07:00-09:00"
-            android:textColor="@color/text_gray_light"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_clock"
-            app:layout_constraintLeft_toRightOf="@+id/img_clock"
-            app:layout_constraintTop_toTopOf="@+id/img_clock" />
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/text_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已下课"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/img_clock"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_clock" />
+            <ImageView
+                android:id="@+id/img_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/ic_clock"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_name_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="数字图像分析与艺术化处理"
-            android:textColor="@color/text_white"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="@+id/text_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_time" />
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@{course.time}"
+                android:textColor="@color/text_gray_light"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_clock"
+                app:layout_constraintLeft_toRightOf="@+id/img_clock"
+                app:layout_constraintTop_toTopOf="@+id/img_clock"
+                tools:text="07:00-09:00" />
 
-        <TextView
-            android:id="@+id/text_name_teacher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/course_teacher"
-            android:textColor="@color/text_gray_light"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
-            app:layout_constraintTop_toBottomOf="@+id/text_name_course" />
+            <TextView
+                android:id="@+id/text_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_clock"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/img_clock"
+                tools:text="已下课" />
 
-        <ImageView
-            android:id="@+id/img_classroom"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="4dp"
-            android:src="@mipmap/ic_classroom"
-            app:layout_constraintLeft_toLeftOf="@+id/text_name_teacher"
-            app:layout_constraintTop_toBottomOf="@+id/text_name_teacher" />
+            <TextView
+                android:id="@+id/text_name_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{course.courseName}"
+                android:textColor="@color/text_white"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="@+id/text_time"
+                app:layout_constraintTop_toBottomOf="@+id/text_time"
+                tools:text="数字图像分析与艺术化处理" />
 
-        <TextView
-            android:id="@+id/text_class_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="12dp"
-            android:text="@string/course_time"
-            android:textColor="@color/text_green"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_classroom"
-            app:layout_constraintLeft_toRightOf="@+id/img_classroom"
-            app:layout_constraintTop_toTopOf="@+id/img_classroom" />
+            <TextView
+                android:id="@+id/text_name_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{course.teacherName}"
+                android:textColor="@color/text_gray_light"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
+                app:layout_constraintTop_toBottomOf="@+id/text_name_course"
+                tools:text="武帅龙 老师" />
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+            <ImageView
+                android:id="@+id/img_classroom"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="4dp"
+                android:src="@mipmap/ic_classroom"
+                app:layout_constraintLeft_toLeftOf="@+id/text_name_teacher"
+                app:layout_constraintTop_toBottomOf="@+id/text_name_teacher" />
+
+            <TextView
+                android:id="@+id/text_class_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="12dp"
+                android:text="@{course.time}"
+                android:textColor="@color/text_green"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_classroom"
+                app:layout_constraintLeft_toRightOf="@+id/img_classroom"
+                app:layout_constraintTop_toTopOf="@+id/img_classroom"
+                tools:text="@string/course_time" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</layout>

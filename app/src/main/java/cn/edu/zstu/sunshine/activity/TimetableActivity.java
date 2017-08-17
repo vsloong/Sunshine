@@ -1,5 +1,6 @@
 package cn.edu.zstu.sunshine.activity;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.utils.DataUtil;
 
@@ -33,7 +35,10 @@ public class TimetableActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timetable);
+        //setContentView(R.layout.activity_timetable);
+
+        ActivityTimetableBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_timetable);
+        //binding.setVariable();
 
         initTabLayout();
         initViews();
@@ -61,8 +66,8 @@ public class TimetableActivity extends BaseActivity {
         TextView text_month = (TextView) findViewById(R.id.text_month);
         TextView text_week = (TextView) findViewById(R.id.text_week);
 
-        String month = String.format(getResources().getString(R.string.month), DataUtil.getMonth());
-        text_month.setText(getColorText(month, R.color.text_yellow, 0, month.length() - 1));
+//        String month = String.format(getResources().getString(R.string.month), DataUtil.getMonth());
+//        text_month.setText(getColorText(month, R.color.text_yellow, 0, month.length() - 1));
         String week = String.format(getResources().getString(R.string.week), DataUtil.getWeek());
         text_week.setText(getColorText(week, R.color.text_yellow, 2, week.length() - 2));
 
@@ -96,8 +101,14 @@ public class TimetableActivity extends BaseActivity {
             public int getItemCount() {
                 int itemCount = super.getItemCount();
                 Log.i("课程", "课程数" + itemCount);
+                if (itemCount == 0) {
+                    //显示空页面
+                } else {
+                    //隐藏空页面
+                }
                 return itemCount;
             }
+
 
         });
 
