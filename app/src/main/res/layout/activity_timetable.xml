@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@{DataUtil.getMonthString()}"
+                    android:text="@{DataUtil.monthString}"
                     android:textColor="@color/text_gray_light"
                     android:textSize="18sp"
                     tools:text="8月" />
@@ -62,6 +62,7 @@
                     android:layout_toEndOf="@+id/text_month"
                     android:textColor="@color/text_gray_light"
                     android:textSize="18sp"
+                    android:text="@{DataUtil.weekString}"
                     tools:text="（第二周）" />
 
                 <Button
@@ -78,7 +79,7 @@
             </RelativeLayout>
 
             <android.support.design.widget.TabLayout
-                android:id="@+id/layout_tab"
+                android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_layout_height"
                 android:layout_marginTop="8dp"
@@ -89,7 +90,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/view_recycler"
+            android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"

@@ -29,6 +29,11 @@ public class DataUtil {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;
     }
 
+    /**
+     * 得到彩色的月份信息
+     *
+     * @return SpannableString
+     */
     public static SpannableString getMonthString() {
         String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), DataUtil.getMonth());
         return getColorText(month, R.color.text_yellow, 0, month.length() - 1);
@@ -41,6 +46,11 @@ public class DataUtil {
      */
     public static int getWeek() {
         return 0;
+    }
+
+    public static SpannableString getWeekString() {
+        String week = "第6周";
+        return getColorText(week, R.color.text_yellow, 0, week.length() - 1);
     }
 
     /**
