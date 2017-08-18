@@ -1,5 +1,8 @@
 package cn.edu.zstu.sunshine.entity;
 
+import android.util.Log;
+import android.view.View;
+
 /**
  * 课程的实体类
  * Created by CooLoongWu on 2017-8-16 14:21.
@@ -49,5 +52,10 @@ public class Course {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    //必须要加上View参数，否则报错
+    public void modify(View view) {
+        Log.e("按钮", "修改按钮");
     }
 }

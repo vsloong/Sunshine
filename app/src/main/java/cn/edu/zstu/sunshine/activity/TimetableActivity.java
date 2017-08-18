@@ -72,7 +72,8 @@ public class TimetableActivity extends BaseActivity {
             }
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(new BaseAdapter<>(BR.course, R.layout.item_course, data));
+
+        binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
     }
 
 

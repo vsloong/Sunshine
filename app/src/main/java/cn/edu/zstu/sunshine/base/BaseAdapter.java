@@ -20,7 +20,7 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.BaseViewHol
     private int br;
     private int layout;
 
-    public BaseAdapter(int br, int layout, List<T> data) {
+    public BaseAdapter(int layout, int br, List<T> data) {
         this.br = br;
         this.data = data;
         this.layout = layout;

@@ -6,11 +6,13 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="cn.edu.zstu.sunshine.utils.DataUtil" />
 
         <variable
-            name="activity"
-            type="cn.edu.zstu.sunshine.activity.TimetableActivity" />
+            name="adapter"
+            type="cn.edu.zstu.sunshine.base.BaseAdapter" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -60,9 +62,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/text_month"
+                    android:text="@{DataUtil.weekString}"
                     android:textColor="@color/text_gray_light"
                     android:textSize="18sp"
-                    android:text="@{DataUtil.weekString}"
                     tools:text="（第二周）" />
 
                 <Button
@@ -89,14 +91,34 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_app_bar" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_app_bar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--android:visibility="@{activity.data.size()>0?View.GONE : View.VISIBLE}"-->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/launcher" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp" />
+
+        </FrameLayout>
+
     </android.support.constraint.ConstraintLayout>
 </layout>
