@@ -7,12 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.databinding.library.baseAdapters.BR;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
-import cn.edu.zstu.sunshine.adapter.CourseAdapter;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.utils.DataUtil;
@@ -70,6 +72,8 @@ public class TimetableActivity extends BaseActivity {
             }
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(new CourseAdapter(data));
+        binding.recyclerView.setAdapter(new BaseAdapter<>(BR.course, R.layout.item_course, data));
     }
+
+
 }
