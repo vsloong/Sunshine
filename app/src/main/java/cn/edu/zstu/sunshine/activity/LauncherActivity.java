@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.timetable.TimetableActivity;
 
 public class LauncherActivity extends BaseActivity {
 

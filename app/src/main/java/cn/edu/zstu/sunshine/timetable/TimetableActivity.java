@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.activity;
+package cn.edu.zstu.sunshine.timetable;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,11 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
@@ -29,12 +29,14 @@ public class TimetableActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timetable);
-
+        binding.setViewModel(new TimetableViewModel(this));
         initTabLayout();
         initViews();
     }
 
     private void initTabLayout() {
+        int dayOfWeek = DataUtil.getDayOfWeek() - 1;
+        int datesOfWeek[] = DataUtil.getDatesOfWeek();
         for (int i = 0; i < 7; i++) {
             TabLayout.Tab tab = binding.tabLayout.newTab().setCustomView(R.layout.item_tab);
             binding.tabLayout.addTab(tab);
@@ -43,9 +45,9 @@ public class TimetableActivity extends BaseActivity {
                 TextView text_day = tab.getCustomView().findViewById(R.id.text_day);
 
                 text_week.setText(DataUtil.week[i]);
-                text_day.setText(String.valueOf(DataUtil.getDates()[i]));
+                text_day.setText(String.valueOf(datesOfWeek[i]));
 
-                if ((DataUtil.getDayOfWeek() - 1) == i) {
+                if (dayOfWeek == i) {
                     tab.select();
                 }
             }

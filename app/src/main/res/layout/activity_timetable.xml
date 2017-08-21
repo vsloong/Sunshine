@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cn.edu.zstu.sunshine.activity.TimetableActivity">
+    tools:context="cn.edu.zstu.sunshine.timetable.TimetableActivity">
 
     <data>
 
@@ -11,8 +11,9 @@
         <import type="cn.edu.zstu.sunshine.utils.DataUtil" />
 
         <variable
-            name="adapter"
-            type="cn.edu.zstu.sunshine.base.BaseAdapter" />
+            name="viewModel"
+            type="cn.edu.zstu.sunshine.timetable.TimetableViewModel" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -101,9 +102,10 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <!--android:visibility="@{activity.data.size()>0?View.GONE : View.VISIBLE}"-->
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.showEmptyView ? View.VISIBLE : View.GONE}">
                 <ImageView
+                    android:contentDescription="@string/course_time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -114,6 +116,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
+                app:items="@{viewModel.courses}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp" />
