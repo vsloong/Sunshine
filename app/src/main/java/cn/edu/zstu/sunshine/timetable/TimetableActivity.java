@@ -4,32 +4,23 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 import android.widget.TextView;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
-import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.utils.DataUtil;
 
 public class TimetableActivity extends BaseActivity {
 
     private ActivityTimetableBinding binding;
 
-    private List<Course> data = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timetable);
-        binding.setViewModel(new TimetableViewModel(this));
+        binding.setViewModel(new TimetableViewModel(this, binding));
+
         initTabLayout();
         initViews();
     }
@@ -57,26 +48,7 @@ public class TimetableActivity extends BaseActivity {
     }
 
     private void initViews() {
-        binding.btnToday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TabLayout.Tab tab = binding.tabLayout.getTabAt(DataUtil.getDayOfWeek() - 1);
-                if (tab != null) {
-                    tab.select();
-                }
 
-                data.add(new Course("计算机原理与应用", "武帅龙", "2S-503", "07:00-09:00"));
-                data.add(new Course("生物科学制药", "哇哈哈", "2N-324", "10:00-12:00"));
-                data.add(new Course("生物科学制药", "哇哈哈", "2S-324", "10:00-12:00"));
-                data.add(new Course("生物科学制药", "哇哈哈", "2N-324", "10:00-12:00"));
 
-                binding.recyclerView.getAdapter().notifyDataSetChanged();
-            }
-        });
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
     }
-
-
 }

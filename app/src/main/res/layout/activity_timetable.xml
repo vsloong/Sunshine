@@ -76,6 +76,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/text_week"
                     android:background="@drawable/selector_btn"
+                    android:onClick="@{viewModel.onBtnTodayClickListener}"
                     android:text="@string/today"
                     android:textColor="@color/text_white"
                     android:textSize="14sp" />
@@ -104,19 +105,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="@{viewModel.showEmptyView ? View.VISIBLE : View.GONE}">
+
                 <ImageView
-                    android:contentDescription="@string/course_time"
-                    android:layout_width="match_parent"
+                    android:layout_margin="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentStart="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/launcher" />
+                    android:contentDescription="@string/course_time"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/empty" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
-                app:items="@{viewModel.courses}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp" />
