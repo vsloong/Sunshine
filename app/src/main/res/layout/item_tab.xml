@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="36dp"
-    android:layout_height="wrap_content"
-    android:gravity="bottom"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_week"
+    <data>
+
+        <variable
+            name="itemWeek"
+            type="String" />
+
+        <variable
+            name="itemDate"
+            type="String" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/tab_week"
-        android:textColor="@drawable/selector_tab_week"
-        android:textSize="12sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_day"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/tab_day"
-        android:textColor="@drawable/selector_tab_day"
-        android:textSize="28sp" />
+        <TextView
+            android:id="@+id/text_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemWeek}"
+            android:textColor="@drawable/selector_tab_week"
+            android:textSize="12sp"
+            tools:text="@string/tab_week" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/selector_tab_indicator" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemDate}"
+            android:textColor="@drawable/selector_tab_day"
+            android:textSize="28sp"
+            tools:text="@string/tab_day" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:background="@drawable/selector_tab_indicator" />
+    </LinearLayout>
+</layout>

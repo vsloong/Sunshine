@@ -1,9 +1,7 @@
 package cn.edu.zstu.sunshine.timetable;
 
 import android.content.Context;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableList;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -29,11 +27,9 @@ public class TimetableViewModel {
     //属性必须为public
     public ObservableBoolean showEmptyView = new ObservableBoolean(true);
 
-    public ObservableList<Course> courses = new ObservableArrayList<>();
-
     private Context context;
     private ActivityTimetableBinding binding;
-    List<Course> data = new ArrayList<>();
+    private List<Course> data = new ArrayList<>();
 
     TimetableViewModel(Context context, ActivityTimetableBinding binding) {
         this.context = context;
@@ -43,6 +39,7 @@ public class TimetableViewModel {
     }
 
     private void initData() {
+        data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
 
@@ -61,7 +58,7 @@ public class TimetableViewModel {
         }
 
         Logger.e("点击了按钮");
-        data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
+
         data.add(new Course("生物科学制药", "伍德", "2N-324", "10:00-12:00"));
         data.add(new Course("操作系统原理", "詹妮", "2N-324", "15:00-17:00"));
         binding.recyclerView.getAdapter().notifyDataSetChanged();
