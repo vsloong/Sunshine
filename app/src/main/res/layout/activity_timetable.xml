@@ -107,14 +107,11 @@
                 android:visibility="@{viewModel.showEmptyView ? View.VISIBLE : View.GONE}">
 
                 <ImageView
-                    android:layout_margin="50dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@string/course_time"
-                    android:scaleType="fitCenter"
-                    android:src="@mipmap/empty" />
+                    android:src="@mipmap/ic_placeholder" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView

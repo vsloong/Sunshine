@@ -39,7 +39,7 @@ public class TimetableViewModel {
     }
 
     private void initData() {
-        data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
+        //data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
 

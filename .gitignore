@@ -10,3 +10,5 @@ androidTest
 test
 /captures
 .externalNativeBuild
+libs/
+src/main/java/cn/edu/zstu/sunshine/greendao/

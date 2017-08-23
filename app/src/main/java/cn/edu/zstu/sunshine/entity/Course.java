@@ -1,14 +1,22 @@
 package cn.edu.zstu.sunshine.entity;
 
-import android.util.Log;
 import android.view.View;
+
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * 课程的实体类
  * Created by CooLoongWu on 2017-8-16 14:21.
  */
-
+@Entity
 public class Course {
+
+    @Id
+    private Long id;
 
     private String courseName;
     private String teacherName;
@@ -20,6 +28,20 @@ public class Course {
         this.teacherName = teacherName;
         this.address = address;
         this.time = time;
+    }
+
+    @Generated(hash = 1367591428)
+    public Course(Long id, String courseName, String teacherName, String address,
+                  String time) {
+        this.id = id;
+        this.courseName = courseName;
+        this.teacherName = teacherName;
+        this.address = address;
+        this.time = time;
+    }
+
+    @Generated(hash = 1355838961)
+    public Course() {
     }
 
     public String getCourseName() {
@@ -56,6 +78,14 @@ public class Course {
 
     //必须要加上View参数，否则报错
     public void modify(View view) {
-        Log.e("按钮", "修改按钮");
+        Logger.e("点击了修改按钮");
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
