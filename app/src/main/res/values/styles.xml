@@ -17,4 +17,11 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="DialogTheme" parent="AlertDialog.AppCompat">
+        <!--去掉AlertDialog的背景-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--浮现在activity之上，如果不设置该属性，那么对话框的宽度就会变宽-->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

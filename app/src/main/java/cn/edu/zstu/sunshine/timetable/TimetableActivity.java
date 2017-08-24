@@ -11,6 +11,7 @@ import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.databinding.ItemTabBinding;
 import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DialogUtil;
 
 public class TimetableActivity extends BaseActivity {
 
@@ -51,7 +52,6 @@ public class TimetableActivity extends BaseActivity {
     }
 
     private void initViews() {
-
-
+        new DialogUtil(this, R.layout.dialog_base).show();
     }
 }
