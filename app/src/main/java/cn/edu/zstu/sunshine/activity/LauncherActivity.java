@@ -5,7 +5,7 @@ import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.timetable.TimetableActivity;
+import cn.edu.zstu.sunshine.student.AddStudentActivity;
 
 public class LauncherActivity extends BaseActivity {
 
@@ -17,7 +17,7 @@ public class LauncherActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(TimetableActivity.class, true);
+                startActivity(AddStudentActivity.class, true);
             }
         }, 1000);
     }

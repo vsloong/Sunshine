@@ -5,6 +5,11 @@
     <color name="colorAccent">#fcb813</color>
 
     <color name="white">#ffffff</color>
+    <color name="white_translucent">#80FFFFFF</color>
+    <color name="gray_dark">#243037</color>
+    <color name="blue">#2C7DE3</color>
+    <color name="blue_light">#59AAFF</color>
+    <color name="blue_dark">#1C6AC9</color>
 
     <color name="bg">#25262c</color>
     <color name="text_white">#fafafa</color>

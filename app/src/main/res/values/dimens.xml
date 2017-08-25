@@ -4,4 +4,5 @@
 
     <!--圆角矩形的圆角-->
     <dimen name="corner_radius">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

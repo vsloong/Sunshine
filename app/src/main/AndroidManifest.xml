@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".timetable.TimetableActivity" />
+        <activity
+            android:name=".student.AddStudentActivity"
+            android:label="@string/title_activity_add_student"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

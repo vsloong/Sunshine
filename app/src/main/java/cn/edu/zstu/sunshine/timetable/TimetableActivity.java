@@ -6,12 +6,16 @@ import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import com.orhanobut.logger.Logger;
+
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.databinding.ItemTabBinding;
+import cn.edu.zstu.sunshine.entity.User;
+import cn.edu.zstu.sunshine.greendao.UserDao;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DataUtil;
-import cn.edu.zstu.sunshine.utils.DialogUtil;
 
 public class TimetableActivity extends BaseActivity {
 
@@ -52,6 +56,17 @@ public class TimetableActivity extends BaseActivity {
     }
 
     private void initViews() {
-        new DialogUtil(this, R.layout.dialog_base).show();
+        //new DialogUtil(this, R.layout.dialog_base).show();
+
+        UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
+        User user = userDao.queryBuilder().where(UserDao.Properties.StudentId.eq("2012329700031")).build().unique();
+        if (user == null) {
+            Logger.e("没有该用户");
+//            userDao.insert(new User("2012329700030", "是我啊"));
+        } else {
+            Logger.e("已经有该用户了");
+        }
+
+        Logger.e("用户数量" + userDao.queryBuilder().count());
     }
 }

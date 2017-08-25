@@ -13,7 +13,6 @@ import cn.edu.zstu.sunshine.greendao.DaoSession;
 public class DaoUtil {
 
     private static DaoUtil daoUtil;
-    private static DaoMaster daoMaster;
     private static DaoSession daoSession;
     private static final String DB_NAME = AppConfig.getDBName();
 
@@ -26,7 +25,7 @@ public class DaoUtil {
 
     private DaoUtil() {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(BaseApplication.getAppContext(), DB_NAME);
-        daoMaster = new DaoMaster(helper.getWritableDb());
+        DaoMaster daoMaster = new DaoMaster(helper.getWritableDb());
         daoSession = daoMaster.newSession();
     }
 
