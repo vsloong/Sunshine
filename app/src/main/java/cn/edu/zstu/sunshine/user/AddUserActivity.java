@@ -55,8 +55,7 @@ public class AddUserActivity extends BaseActivity implements View.OnClickListene
             case R.id.btn_done:
                 if (isInputDone()) {
                     if (viewModel.isAddUserDone()) {
-                        startActivity(TimetableActivity.class);
-                        finish();
+                        startActivity(TimetableActivity.class, true);
                     }
                 }
                 break;

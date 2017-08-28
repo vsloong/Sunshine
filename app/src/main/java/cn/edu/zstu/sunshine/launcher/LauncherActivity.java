@@ -1,11 +1,14 @@
-package cn.edu.zstu.sunshine.activity;
+package cn.edu.zstu.sunshine.launcher;
 
 import android.os.Bundle;
 import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.greendao.UserDao;
+import cn.edu.zstu.sunshine.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.user.AddUserActivity;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class LauncherActivity extends BaseActivity {
 
@@ -14,10 +17,19 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
+        UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
+        if (userDao.queryBuilder().build().list().isEmpty()) {
+            goNext(AddUserActivity.class);
+        } else {
+            goNext(TimetableActivity.class);
+        }
+    }
+
+    private void goNext(final Class cla) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(AddUserActivity.class, true);
+                startActivity(cla, true);
             }
         }, 1000);
     }

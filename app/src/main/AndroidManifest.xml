@@ -8,11 +8,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:screenOrientation="portrait">
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name=".launcher.LauncherActivity"
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +23,8 @@
         <activity android:name=".timetable.TimetableActivity" />
         <activity
             android:name=".user.AddUserActivity"
-            android:label="@string/title_activity_add_student"
-            android:theme="@style/AppTheme"></activity>
+            android:label="@string/title_activity_add_student" />
+        <activity android:name=".campuscard.CampusCardActivity"></activity>
     </application>
 
 </manifest>

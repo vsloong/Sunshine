@@ -3,6 +3,7 @@ package cn.edu.zstu.sunshine.user;
 import android.content.Context;
 
 import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityAddStudentBinding;
 import cn.edu.zstu.sunshine.entity.User;
 import cn.edu.zstu.sunshine.greendao.UserDao;
@@ -32,6 +33,12 @@ public class AddUserViewModel {
         String name = binding.editCardHolder.getText().toString().trim();
 
         UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
+
+        //如果用户列表为空，那么说明这是用户第一次添加用户，把该用户的ID设为默认ID
+        if (userDao.queryBuilder().build().list().isEmpty()) {
+            AppConfig.setDefaultStudentId(id);
+        }
+
         User user = userDao.queryBuilder().where(UserDao.Properties.StudentId.eq(id)).build().unique();
         if (user == null) {
             userDao.insert(new User(id, name));

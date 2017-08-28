@@ -12,7 +12,7 @@
     <string name="course_teacher">%1$s老师</string>
     <string name="course_address">%1$s</string>
     <string name="course_time">10:00&#8211;12:00</string>
-    <string name="title_activity_add_student">AddStudentActivity</string>
+    <string name="title_activity_add_student">添加用户</string>
 
     <string name="hint_card_number">学号</string>
     <string name="hint_expired_date">年/月</string>
@@ -20,7 +20,11 @@
     <string name="hint_enrollment_time">入学年份</string>
     <string name="enrollment_time">%1$s/09</string>
 
-    <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦</string>
-    <string name="toast_input_not_done">请先完善学号和姓名信息哦</string>
-    <string name="toast_user_exist">该用户已存在</string>
+    <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦~</string>
+    <string name="toast_input_not_done">请先完善学号和姓名信息哦~</string>
+    <string name="toast_user_exist">该用户已经存在了哦~</string>
+
+    <string name="notice">\t\t使用该软件前请先填写您的学号和姓名信息，学号必须是您的真实学号，姓名可以填写您喜欢的昵称或者真实姓名。
+    \n\t\t后续使用中还需要您填写相应功能的查询密码，来完成各项数据查询功能。您的密码将会存储在您手机本地的数据库中，本软件绝不会盗用您的密码。
+    \n\t\t另外本软件已在GitHub上开源，地址为https://github.com/CooLoongWu/Sunshine，感兴趣的学弟学妹可以尽情Clone。</string>
 </resources>

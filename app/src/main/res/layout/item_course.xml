@@ -31,9 +31,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:src="@mipmap/ic_clock"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_clock_24dp" />
 
             <TextView
                 android:id="@+id/text_time"
@@ -81,14 +81,14 @@
                 android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
                 app:layout_constraintTop_toBottomOf="@+id/text_name_course"
-                tools:text="武帅龙 老师" />
+                tools:text="CooLoongWu 老师" />
 
             <ImageView
                 android:id="@+id/img_classroom"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginTop="4dp"
-                android:src="@mipmap/ic_classroom"
+                app:srcCompat="@drawable/ic_classroom_24dp"
                 app:layout_constraintLeft_toLeftOf="@+id/text_name_teacher"
                 app:layout_constraintTop_toBottomOf="@+id/text_name_teacher" />
 
@@ -110,11 +110,11 @@
                 android:id="@+id/btn_modify"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@mipmap/ic_modify"
+                android:background="@drawable/ic_modify_24dp"
+                android:onClick="@{course.modify}"
                 app:layout_constraintBottom_toBottomOf="@+id/img_classroom"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/img_classroom"
-                android:onClick="@{course.modify}" />
+                app:layout_constraintTop_toTopOf="@+id/img_classroom" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
