@@ -14,15 +14,13 @@
     <string name="course_time">10:00&#8211;12:00</string>
     <string name="title_activity_add_student">AddStudentActivity</string>
 
-    <string name="label_card_number">XXXX XXXX XXXXX</string>
-    <string name="label_expired_date">YYYY/MM</string>
-    <string name="label_card_holder">CARD HOLDER</string>
-    <string name="label_cvv_code">CVV CODE</string>
-    <string name="hint_card_number">16-DIGIT CARD NUMBER</string>
+    <string name="hint_card_number">学号</string>
+    <string name="hint_expired_date">年/月</string>
+    <string name="hint_card_holder">姓名</string>
+    <string name="hint_enrollment_time">入学年份</string>
+    <string name="enrollment_time">%1$s/09</string>
 
-    <string name="hint_expired_date">EXPIRED DATE</string>
-    <string name="hint_card_holder">CARD HOLDER</string>
-    <string name="hint_cvv_code">CVV CODE</string>
-
-    <string name="label_secure_submission">Secure Submission</string>
+    <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦</string>
+    <string name="toast_input_not_done">请先完善学号和姓名信息哦</string>
+    <string name="toast_user_exist">该用户已存在</string>
 </resources>

@@ -5,7 +5,7 @@ import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.student.AddStudentActivity;
+import cn.edu.zstu.sunshine.user.AddUserActivity;
 
 public class LauncherActivity extends BaseActivity {
 
@@ -17,7 +17,7 @@ public class LauncherActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(AddStudentActivity.class, true);
+                startActivity(AddUserActivity.class, true);
             }
         }, 1000);
     }

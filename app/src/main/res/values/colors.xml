@@ -10,15 +10,13 @@
     <color name="blue">#2C7DE3</color>
     <color name="blue_light">#59AAFF</color>
     <color name="blue_dark">#1C6AC9</color>
+    <color name="gray">#25262c</color>
 
-    <color name="bg">#25262c</color>
     <color name="text_white">#fafafa</color>
     <color name="text_green">#95e362</color>
     <color name="text_yellow">#fcb813</color>
-
     <!--橘红色-->
     <color name="text_jacinth">#e85c21</color>
-
     <color name="text_gray_light">#b9babe</color>
     <color name="text_gray_dark">#6d6f73</color>
 </resources>
