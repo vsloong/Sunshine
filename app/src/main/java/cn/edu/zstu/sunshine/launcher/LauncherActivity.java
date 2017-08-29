@@ -5,8 +5,8 @@ import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.greendao.UserDao;
-import cn.edu.zstu.sunshine.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.user.AddUserActivity;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 
@@ -21,7 +21,7 @@ public class LauncherActivity extends BaseActivity {
         if (userDao.queryBuilder().build().list().isEmpty()) {
             goNext(AddUserActivity.class);
         } else {
-            goNext(TimetableActivity.class);
+            goNext(CampusCardActivity.class);
         }
     }
 

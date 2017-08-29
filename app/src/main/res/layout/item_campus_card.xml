@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- 变量course， 描述了布局中会用到的属性 -->
         <variable
-            name="record"
+            name="campusCard"
             type="cn.edu.zstu.sunshine.entity.CampusCard" />
     </data>
 
@@ -51,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="8dp"
-            android:text="@{record.time}"
+            android:text="@{campusCard.time}"
             android:textColor="@color/text_gray_light"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/text_location"
@@ -66,7 +65,7 @@
             android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="@{record.location}"
+            android:text="@{campusCard.location}"
             android:textColor="@color/text_yellow"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/img_ic"
@@ -80,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="4dp"
-            android:text="@{record.consumption}"
+            android:text="@{String.valueOf(campusCard.consumption)}"
             android:textColor="@color/text_jacinth"
             android:textSize="24sp"
             android:typeface="monospace"

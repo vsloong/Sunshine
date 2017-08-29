@@ -40,10 +40,10 @@ public class TimetableViewModel {
 
     private void initData() {
         //data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
+        binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
 
-        showEmptyView.set(binding.recyclerView.getAdapter().getItemCount() <= 0);
+        showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
     }
 
     /**
@@ -61,7 +61,7 @@ public class TimetableViewModel {
 
         data.add(new Course("生物科学制药", "伍德", "2N-324", "10:00-12:00"));
         data.add(new Course("操作系统原理", "詹妮", "2N-324", "15:00-17:00"));
-        binding.recyclerView.getAdapter().notifyDataSetChanged();
-        showEmptyView.set(binding.recyclerView.getAdapter().getItemCount() <= 0);
+        binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+        showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
     }
 }

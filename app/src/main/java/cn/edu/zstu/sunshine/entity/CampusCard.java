@@ -17,12 +17,22 @@ public class CampusCard {
     private String time;        //消费时间
     private String location;    //大致消费地址，包括餐厅、图书馆、宿舍水电、充值POS机
     private String address;     //具体消费位置
-    private String consumption; //消费金额
+    private double consumption; //消费金额
     private String purpose;     //消费用途
 
-    @Generated(hash = 2060271943)
+    public CampusCard(String time, String location, String address,
+                      double consumption, String purpose) {
+        this.id = null;
+        this.time = time;
+        this.location = location;
+        this.address = address;
+        this.consumption = consumption;
+        this.purpose = purpose;
+    }
+
+    @Generated(hash = 1521144516)
     public CampusCard(Long id, String time, String location, String address,
-                      String consumption, String purpose) {
+                      double consumption, String purpose) {
         this.id = id;
         this.time = time;
         this.location = location;
@@ -67,11 +77,11 @@ public class CampusCard {
         this.address = address;
     }
 
-    public String getConsumption() {
+    public double getConsumption() {
         return this.consumption;
     }
 
-    public void setConsumption(String consumption) {
+    public void setConsumption(double consumption) {
         this.consumption = consumption;
     }
 
