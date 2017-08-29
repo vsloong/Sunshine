@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".launcher.LauncherActivity"
+            android:name=".tools.launcher.LauncherActivity"
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".timetable.TimetableActivity" />
         <activity
-            android:name=".user.AddUserActivity"
+            android:name=".tools.user.AddUserActivity"
             android:label="@string/title_activity_add_student" />
-        <activity android:name=".campuscard.CampusCardActivity"></activity>
+        <activity android:name=".tools.timetable.TimetableActivity" />
+        <activity android:name=".tools.campuscard.CampusCardActivity" />
     </application>
 
 </manifest>

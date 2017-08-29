@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.campuscard;
+package cn.edu.zstu.sunshine.tools.campuscard;
 
 import android.content.Context;
 import android.databinding.ObservableBoolean;

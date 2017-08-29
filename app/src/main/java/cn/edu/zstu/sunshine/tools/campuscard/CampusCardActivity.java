@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.campuscard;
+package cn.edu.zstu.sunshine.tools.campuscard;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.timetable;
+package cn.edu.zstu.sunshine.tools.timetable;
 
 import android.content.Context;
 import android.databinding.ObservableBoolean;

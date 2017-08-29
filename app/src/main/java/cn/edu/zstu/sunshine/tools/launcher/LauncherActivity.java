@@ -1,13 +1,13 @@
-package cn.edu.zstu.sunshine.launcher;
+package cn.edu.zstu.sunshine.tools.launcher;
 
 import android.os.Bundle;
 import android.os.Handler;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.greendao.UserDao;
-import cn.edu.zstu.sunshine.user.AddUserActivity;
+import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
+import cn.edu.zstu.sunshine.tools.user.AddUserActivity;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class LauncherActivity extends BaseActivity {

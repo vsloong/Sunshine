@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cn.edu.zstu.sunshine.timetable.TimetableActivity">
+    tools:context="cn.edu.zstu.sunshine.tools.timetable.TimetableActivity">
 
     <data>
 
@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="cn.edu.zstu.sunshine.timetable.TimetableViewModel" />
+            type="cn.edu.zstu.sunshine.tools.timetable.TimetableViewModel" />
 
     </data>
 

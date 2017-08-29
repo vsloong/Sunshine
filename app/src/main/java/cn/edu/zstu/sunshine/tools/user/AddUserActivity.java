@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.user;
+package cn.edu.zstu.sunshine.tools.user;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.View;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityAddStudentBinding;
-import cn.edu.zstu.sunshine.timetable.TimetableActivity;
+import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 
 public class AddUserActivity extends BaseActivity implements View.OnClickListener, TextWatcher {

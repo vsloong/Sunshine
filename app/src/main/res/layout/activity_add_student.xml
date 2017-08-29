@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="cn.edu.zstu.sunshine.user.AddUserViewModel" />
+            type="cn.edu.zstu.sunshine.tools.user.AddUserViewModel" />
     </data>
 
     <LinearLayout
