@@ -8,7 +8,6 @@
     <color name="white">#ffffff</color>
     <color name="white_translucent">#80FFFFFF</color>
     <color name="gray_dark">#243037</color>
-    <color name="blue">#2C7DE3</color>
     <color name="blue_light">#59AAFF</color>
     <color name="blue_dark">#1C6AC9</color>
     <color name="gray">@color/color_bg</color>
@@ -16,6 +15,7 @@
 
     <color name="text_white">#fafafa</color>
     <color name="text_green">@color/green</color>
+    <color name="text_blue">@color/blue_light</color>
     <color name="text_yellow">@color/colorAccent</color>
     <!--橘红色-->
     <color name="text_jacinth">#e85c21</color>
