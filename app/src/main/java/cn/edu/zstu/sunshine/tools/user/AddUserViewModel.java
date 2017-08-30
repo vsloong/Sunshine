@@ -1,6 +1,7 @@
 package cn.edu.zstu.sunshine.tools.user;
 
 import android.content.Context;
+import android.view.View;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.AppConfig;
@@ -48,5 +49,9 @@ public class AddUserViewModel {
             return false;
         }
 
+    }
+
+    public void onBtnBackClick(View view) {
+        ((AddUserActivity) context).finish();
     }
 }

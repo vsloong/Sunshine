@@ -32,14 +32,30 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <!--app:elevation="0dp" 去掉Toolbar的阴影-->
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/text_white" />
+                android:layout_height="?attr/actionBarSize">
+
+                <Button
+                    android:id="@+id/btn_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/ic_back_24dp"
+                    android:onClick="@{viewModel.onBtnBackClick}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/btn_back"
+                    android:text="@string/title_activity_timetable"
+                    android:textColor="@color/text_yellow"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

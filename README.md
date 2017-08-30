@@ -27,6 +27,10 @@ VectorDrawable 的特点就是它不会因为图像的缩放而失真，这样�
 * DataBinding基本使用
 * DataBinding中include布局使用
 
+## 依赖的第三方库
+* 日志打印[orhanobut/logger](https://github.com/orhanobut/logger)
+* ORM数据库[greenrobot/greenDAO](https://github.com/greenrobot/greenDAO)
+
 [1]: http://blog.csdn.net/u010976213/article/details/77712180
 [2]: http://blog.csdn.net/u010976213/article/details/77715311
 

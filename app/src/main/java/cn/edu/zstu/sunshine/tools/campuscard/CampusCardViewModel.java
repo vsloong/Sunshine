@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +49,9 @@ public class CampusCardViewModel {
         binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_campus_card, BR.campusCard, data));
 
         showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
+    }
+
+    public void onBtnBackClick(View view) {
+        ((CampusCardActivity) context).finish();
     }
 }

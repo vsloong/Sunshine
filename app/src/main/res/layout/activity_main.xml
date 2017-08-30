@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="cn.edu.zstu.sunshine.tools.main.MainActivityViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_bg"
+        tools:context="cn.edu.zstu.sunshine.tools.main.MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="哈哈哈哈哈"
+                android:textColor="@color/text_white" />
+
+            <Button
+                android:id="@+id/btn_timetable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="课表"
+                android:onClick="@{viewModel.onTimeTableClick}" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="饭卡"
+                android:onClick="@{viewModel.onCampusCardClick}" />
+        </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
+

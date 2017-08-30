@@ -64,4 +64,8 @@ public class TimetableViewModel {
         binding.include.recyclerView.getAdapter().notifyDataSetChanged();
         showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
     }
+
+    public void onBtnBackClick(View view) {
+        ((TimetableActivity) context).finish();
+    }
 }
