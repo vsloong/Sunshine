@@ -38,6 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="发现新版本"
                 android:textSize="18sp"
                 tools:text="标题" />
 
@@ -52,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="升级" />
+                android:text="升级"
+                android:visibility="gone" />
         </LinearLayout>
 
         <Button

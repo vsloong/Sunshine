@@ -15,8 +15,8 @@
 暂时还没有写完，我会一篇一篇的写，写完的会添上博客连接。
 ### 自定义控件
 这些东西其实不能叫自定义，充其量是个半自定义，但是其中的坑真真是要记录出来的。  
-* TabLayout的ItemView自定义
-* AlertDialog自定义
+* [TabLayout的TabItem自定义][1]
+* [AlertDialog自定义][2]
 
 ### VectorDrawable
 VectorDrawable 的特点就是它不会因为图像的缩放而失真，这样在开发过程中就不需要为不同分辨率的设备定义不同大小的图片资源了，还能有效减小apk体积。
@@ -27,7 +27,8 @@ VectorDrawable 的特点就是它不会因为图像的缩放而失真，这样�
 * DataBinding基本使用
 * DataBinding中include布局使用
 
-
+[1]: http://blog.csdn.net/u010976213/article/details/77712180
+[2]: http://blog.csdn.net/u010976213/article/details/77715311
 
 
 

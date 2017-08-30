@@ -88,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_layout_height"
                 android:layout_marginTop="8dp"
+                app:elevation="0dp"
                 app:tabIndicatorHeight="0dp">
 
             </android.support.design.widget.TabLayout>
