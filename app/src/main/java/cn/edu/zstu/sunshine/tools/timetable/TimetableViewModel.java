@@ -6,8 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +54,6 @@ public class TimetableViewModel {
         if (tab != null) {
             tab.select();
         }
-
-        Logger.e("点击了按钮");
 
         data.add(new Course("生物科学制药", "伍德", "2N-324", "10:00-12:00"));
         data.add(new Course("操作系统原理", "詹妮", "2N-324", "15:00-17:00"));
