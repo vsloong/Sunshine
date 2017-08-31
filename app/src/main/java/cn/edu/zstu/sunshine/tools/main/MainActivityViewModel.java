@@ -8,6 +8,7 @@ import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
+import cn.edu.zstu.sunshine.tools.user.UserActivity;
 
 /**
  * Created by CooLoongWu on 2017-8-30 16:35.
@@ -21,14 +22,23 @@ public class MainActivityViewModel {
         this.context = context;
         this.binding = binding;
 
-        binding.textTest.setText("默认的用户ID：" + AppConfig.getDefaultStudentId());
+
+        binding.title.setText(AppConfig.getDefaultStudentId());
     }
 
     public void onTimeTableClick(View view) {
-        context.startActivity(new Intent(context, TimetableActivity.class));
+        startNewActivity(TimetableActivity.class);
     }
 
     public void onCampusCardClick(View view) {
-        context.startActivity(new Intent(context, CampusCardActivity.class));
+        startNewActivity(CampusCardActivity.class);
+    }
+
+    public void onUserClick(View view) {
+        startNewActivity(UserActivity.class);
+    }
+
+    private void startNewActivity(Class cla) {
+        context.startActivity(new Intent(context, cla));
     }
 }

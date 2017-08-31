@@ -12,9 +12,10 @@
     <string name="course_teacher">%1$s老师</string>
     <string name="course_address">%1$s</string>
     <string name="course_time">10:00&#8211;12:00</string>
-    <string name="title_activity_add_student">添加用户</string>
+    <string name="title_activity_add_user">添加用户</string>
     <string name="title_activity_campus_card">校园卡</string>
     <string name="title_activity_timetable">课表</string>
+    <string name="title_activity_user">我的</string>
 
     <string name="hint_card_number">学号</string>
     <string name="hint_expired_date">年/月</string>

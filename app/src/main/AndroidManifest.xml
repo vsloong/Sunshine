@@ -22,10 +22,11 @@
         </activity>
         <activity
             android:name=".tools.user.AddUserActivity"
-            android:label="@string/title_activity_add_student" />
+            android:label="@string/title_activity_add_user" />
         <activity android:name=".tools.timetable.TimetableActivity" />
         <activity android:name=".tools.campuscard.CampusCardActivity" />
-        <activity android:name=".tools.main.MainActivity"></activity>
+        <activity android:name=".tools.main.MainActivity" />
+        <activity android:name=".tools.user.UserActivity"></activity>
     </application>
 
 </manifest>
