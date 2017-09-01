@@ -1,9 +1,5 @@
 package cn.edu.zstu.sunshine.entity;
 
-import android.view.View;
-
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -74,11 +70,6 @@ public class Course {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    //必须要加上View参数，否则报错
-    public void modify(View view) {
-        Logger.e("点击了修改按钮");
     }
 
     public Long getId() {

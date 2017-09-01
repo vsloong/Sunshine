@@ -19,6 +19,7 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.BaseViewHol
     private List<T> data = new ArrayList<>();
     private int br;
     private int layout;
+    private OnItemHandler onItemHandler;
 
     public BaseAdapter(int layout, int br, List<T> data) {
         this.br = br;
@@ -36,11 +37,21 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.BaseViewHol
     public void onBindViewHolder(BaseAdapter.BaseViewHolder holder, int position) {
         holder.getViewDataBinding().setVariable(br, data.get(position));
         holder.getViewDataBinding().executePendingBindings();
+        onItemHandler.onItemHandler(holder.getViewDataBinding(), position);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public BaseAdapter setOnItemHandler(OnItemHandler onItemHandler) {
+        this.onItemHandler = onItemHandler;
+        return this;
+    }
+
+    public interface OnItemHandler {
+        void onItemHandler(ViewDataBinding viewDataBinding, int position);
     }
 
     class BaseViewHolder extends RecyclerView.ViewHolder {

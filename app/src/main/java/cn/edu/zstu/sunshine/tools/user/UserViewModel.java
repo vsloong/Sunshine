@@ -2,12 +2,10 @@ package cn.edu.zstu.sunshine.tools.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
@@ -31,7 +29,7 @@ public class UserViewModel {
     private Context context;
     private ActivityUserBinding binding;
 
-    private List<User> users = new ArrayList<>();
+    private ObservableArrayList<User> users = new ObservableArrayList<>();
     private UserDao userDao;
 
     UserViewModel(Context context, ActivityUserBinding binding) {
@@ -41,21 +39,30 @@ public class UserViewModel {
 
         userDao = DaoUtil.getInstance().getSession().getUserDao();
 
-        users = userDao.queryBuilder().build().list();
+        users.addAll(userDao.queryBuilder().build().list());
 
         for (User user : users) {
             if (user.getUserId().equals(AppConfig.getDefaultStudentId())) {
                 userId.set(user.getUserId());
                 userNickname.set(user.getUserNickname());
             }
-
-            Logger.e("用户:" + user.getUserId() + "；姓名：" + user.getUserNickname());
+            //Logger.e("用户:" + user.getUserId() + "；姓名：" + user.getUserNickname());
         }
+    }
 
+    public void addUser(User user) {
+        users.add(user);
+        binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    void deleteUser(int position) {
+        userDao.delete(users.get(position));
+        users.remove(position);
+        binding.include.recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     List<User> getUsers() {
-        return userDao.queryBuilder().build().list();
+        return users;
     }
 
     public void onBtnBackClick(View view) {
