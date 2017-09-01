@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="cn.edu.zstu.sunshine.entity.User" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="16dp">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/shape_ring"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_user_delete_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+            android:onClick="@{user.onBtnDeleteClick}" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/view"
+            app:layout_constraintRight_toLeftOf="@+id/btn_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5">
+
+
+            <TextView
+                android:id="@+id/text_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.userNickname}"
+                android:textColor="@color/text_yellow"
+                android:textSize="18sp"
+                tools:text="打的" />
+
+            <TextView
+                android:id="@+id/text_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{user.userId}"
+                android:textColor="@color/white_translucent"
+                android:textSize="12sp"
+                tools:text="2012329700030" />
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+
+</layout>

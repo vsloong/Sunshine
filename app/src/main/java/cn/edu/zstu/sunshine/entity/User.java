@@ -1,8 +1,15 @@
 package cn.edu.zstu.sunshine.entity;
 
+import android.view.View;
+
+import com.orhanobut.logger.Logger;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+
+import cn.edu.zstu.sunshine.greendao.UserDao;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 /**
  * 用户账号的实体类
@@ -15,8 +22,10 @@ public class User {
     @Id
     private Long id;
 
-    private String studentId;       //学号
-    private String studentName;     //姓名
+    private String userId;          //学生的学号或者是教师的学号
+    private String userName;        //姓名
+    private String userNickname;    //昵称
+    private String userType;        //用户类型，学生、老师
 
     private String officePassword;      //教务密码，用于课表、考试、成绩查询
     private String campusCardPassword;  //校园一卡通密码，用于饭卡消费查询
@@ -24,19 +33,21 @@ public class User {
     private String networkPassword;     //网费密码，用于网费信息查询
     private String sportsPassword;      //体育密码，用于“阳光长跑”锻炼打卡信息查询
 
-    public User(String studentId, String studentName) {
+    public User(String userId, String userNickname) {
         this.id = null;
-        this.studentId = studentId;
-        this.studentName = studentName;
+        this.userId = userId;
+        this.userNickname = userNickname;
     }
 
-    @Generated(hash = 1930408373)
-    public User(Long id, String studentId, String studentName,
-                String officePassword, String campusCardPassword,
+    @Generated(hash = 522828270)
+    public User(Long id, String userId, String userName, String userNickname,
+                String userType, String officePassword, String campusCardPassword,
                 String libraryPassword, String networkPassword, String sportsPassword) {
         this.id = id;
-        this.studentId = studentId;
-        this.studentName = studentName;
+        this.userId = userId;
+        this.userName = userName;
+        this.userNickname = userNickname;
+        this.userType = userType;
         this.officePassword = officePassword;
         this.campusCardPassword = campusCardPassword;
         this.libraryPassword = libraryPassword;
@@ -56,20 +67,36 @@ public class User {
         this.id = id;
     }
 
-    public String getStudentId() {
-        return this.studentId;
+    public String getUserId() {
+        return this.userId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getStudentName() {
-        return this.studentName;
+    public String getUserName() {
+        return this.userName;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserNickname() {
+        return this.userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public String getUserType() {
+        return this.userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getOfficePassword() {
@@ -110,5 +137,11 @@ public class User {
 
     public void setSportsPassword(String sportsPassword) {
         this.sportsPassword = sportsPassword;
+    }
+
+    public void onBtnDeleteClick(View view) {
+        Logger.e("删除按钮点击了");
+        UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
+        userDao.delete(this);
     }
 }

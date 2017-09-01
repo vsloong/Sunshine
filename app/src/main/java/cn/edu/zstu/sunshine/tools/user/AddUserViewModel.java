@@ -53,7 +53,7 @@ public class AddUserViewModel {
             AppConfig.setDefaultStudentId(id);
         }
 
-        User user = userDao.queryBuilder().where(UserDao.Properties.StudentId.eq(id)).build().unique();
+        User user = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(id)).build().unique();
         if (user == null) {
             userDao.insert(new User(id, name));
             if (isThisClose) {

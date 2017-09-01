@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
@@ -25,29 +26,36 @@ import cn.edu.zstu.sunshine.utils.ToastUtil;
 public class UserViewModel {
 
     public ObservableField<String> userId = new ObservableField<>();
-    public ObservableField<String> userName = new ObservableField<>();
+    public ObservableField<String> userNickname = new ObservableField<>();
 
     private Context context;
     private ActivityUserBinding binding;
+
+    private List<User> users = new ArrayList<>();
+    private UserDao userDao;
 
     UserViewModel(Context context, ActivityUserBinding binding) {
         this.context = context;
         this.binding = binding;
 
 
-        UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
+        userDao = DaoUtil.getInstance().getSession().getUserDao();
 
-        List<User> users = userDao.queryBuilder().build().list();
+        users = userDao.queryBuilder().build().list();
 
         for (User user : users) {
-            if (user.getStudentId().equals(AppConfig.getDefaultStudentId())) {
-                userId.set(user.getStudentId());
-                userName.set(user.getStudentName());
+            if (user.getUserId().equals(AppConfig.getDefaultStudentId())) {
+                userId.set(user.getUserId());
+                userNickname.set(user.getUserNickname());
             }
 
-            Logger.e("用户:" + user.getStudentId() + "；姓名：" + user.getStudentName());
+            Logger.e("用户:" + user.getUserId() + "；姓名：" + user.getUserNickname());
         }
 
+    }
+
+    List<User> getUsers() {
+        return userDao.queryBuilder().build().list();
     }
 
     public void onBtnBackClick(View view) {

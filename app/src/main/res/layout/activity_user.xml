@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.userName}"
+                    android:text="@{viewModel.userNickname}"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     tools:text="CooLoongWu" />
@@ -126,6 +126,12 @@
             android:text="@string/label_user_all"
             android:textColor="@color/text_green"
             android:textSize="14sp" />
+
+        <include
+            android:id="@+id/include"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/include_recycler" />
 
     </LinearLayout>
 
