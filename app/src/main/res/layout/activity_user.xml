@@ -42,9 +42,17 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/label_user_default"
+            android:textColor="@color/text_green"
+            android:textSize="14sp" />
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/circleImageView"
@@ -95,7 +103,8 @@
                 android:background="@drawable/ic_user_add_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+                app:layout_constraintTop_toTopOf="@+id/circleImageView"
+                android:onClick="@{viewModel.onBtnAddUserClick}" />
 
             <Button
                 android:id="@+id/btn_user_edit"
@@ -109,6 +118,15 @@
 
 
         </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/label_user_all"
+            android:textColor="@color/text_green"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
 
