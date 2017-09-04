@@ -37,7 +37,9 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.BaseViewHol
     public void onBindViewHolder(BaseAdapter.BaseViewHolder holder, int position) {
         holder.getViewDataBinding().setVariable(br, data.get(position));
         holder.getViewDataBinding().executePendingBindings();
-        onItemHandler.onItemHandler(holder.getViewDataBinding(), position);
+        if (onItemHandler != null) {
+            onItemHandler.onItemHandler(holder.getViewDataBinding(), position);
+        }
     }
 
     @Override
