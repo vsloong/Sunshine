@@ -42,7 +42,7 @@ public class UserViewModel {
         users.addAll(userDao.queryBuilder().build().list());
 
         for (User user : users) {
-            if (user.getUserId().equals(AppConfig.getDefaultStudentId())) {
+            if (user.getUserId().equals(AppConfig.getDefaultUserId())) {
                 userId.set(user.getUserId());
                 userNickname.set(user.getUserNickname());
             }

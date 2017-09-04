@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
@@ -21,9 +20,6 @@ public class MainActivityViewModel {
     MainActivityViewModel(Context context, ActivityMainBinding binding) {
         this.context = context;
         this.binding = binding;
-
-
-        binding.title.setText(AppConfig.getDefaultStudentId());
     }
 
     public void onTimeTableClick(View view) {

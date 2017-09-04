@@ -50,7 +50,7 @@ public class AddUserViewModel {
 
         //如果用户列表为空，那么说明这是用户第一次添加用户，把该用户的ID设为默认ID
         if (userDao.queryBuilder().build().list().isEmpty()) {
-            AppConfig.setDefaultStudentId(id);
+            AppConfig.setDefaultUserId(id);
         }
 
         User user = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(id)).build().unique();

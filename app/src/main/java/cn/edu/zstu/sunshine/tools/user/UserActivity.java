@@ -50,7 +50,7 @@ public class UserActivity extends BaseActivity {
                         new BaseAdapter.OnItemHandler() {
                             @Override
                             public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
-                                if (viewModel.getUsers().get(position).getUserId().equals(AppConfig.getDefaultStudentId())) {
+                                if (viewModel.getUsers().get(position).getUserId().equals(AppConfig.getDefaultUserId())) {
                                     viewDataBinding.getRoot().findViewById(R.id.view).setBackground(ContextCompat.getDrawable(UserActivity.this, R.drawable.shape_ring_color));
                                 }
 
