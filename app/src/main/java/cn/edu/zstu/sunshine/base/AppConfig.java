@@ -15,6 +15,8 @@ public class AppConfig {
     private static final String USER_ID = "USER_ID";//SharedPreferences中默认学号的键
     private static final String MODE_NIGHT = "MODE_NIGHT";//SharedPreferences中日间夜间模式键
 
+    public static final String KEY_MEIQIA = "d7a224565c67228db92576ec3897d980";
+
     public static String getDBName() {
         return DB_NAME;
     }
