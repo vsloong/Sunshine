@@ -335,7 +335,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/shape_round_rect"
                         android:orientation="vertical"
-                        android:onClick="@{viewModel.onCustomerServiceClick}"
+
                         android:padding="8sp">
 
                         <ImageView
@@ -353,6 +353,11 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{viewModel.onCustomerServiceClick}"
+                        app:srcCompat="@drawable/ic_service_24dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -360,6 +365,14 @@
 
         </RelativeLayout>
 
+        <cn.edu.zstu.sunshine.views.RunView
+            android:id="@+id/ring_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

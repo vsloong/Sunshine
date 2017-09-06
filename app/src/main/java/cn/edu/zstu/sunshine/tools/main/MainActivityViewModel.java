@@ -44,6 +44,8 @@ public class MainActivityViewModel {
     }
 
     public void onCustomerServiceClick(View view) {
+
+        //点击客服的时候才初始化客服功能，这里也是为了不占用app的启动速度
         MQConfig.init(context, AppConfig.KEY_MEIQIA, new OnInitCallback() {
             @Override
             public void onSuccess(String clientId) {
