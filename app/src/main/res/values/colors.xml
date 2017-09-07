@@ -6,6 +6,7 @@
     <color name="color_bg">#25262c</color>
 
     <color name="white">#ffffff</color>
+    <color name="whites">#10ffffff</color>
     <color name="white_translucent">#80FFFFFF</color>
     <color name="gray_dark">#243037</color>
     <color name="blue_light">#59AAFF</color>

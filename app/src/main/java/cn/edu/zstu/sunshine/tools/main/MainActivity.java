@@ -19,5 +19,7 @@ public class MainActivity extends BaseActivity {
         MainActivityViewModel viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
 
+
+//        binding.ringView.setAnimation(0.1f, 0.8f, 2000);
     }
 }
