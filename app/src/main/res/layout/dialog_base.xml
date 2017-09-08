@@ -9,36 +9,25 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
+        android:background="@drawable/shape_round_rect"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/img_bg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
-            android:src="@mipmap/bg_update"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
             android:padding="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_bg">
+            app:layout_constraintRight_toRightOf="parent">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="发现新版本"
+                android:textColor="@color/text_white"
                 android:textSize="18sp"
                 tools:text="标题" />
 
@@ -46,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 tools:text="内容" />
 
@@ -61,12 +51,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="16dp"
             android:background="@mipmap/btn_close"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_content" />
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

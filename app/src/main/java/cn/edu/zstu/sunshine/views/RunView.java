@@ -38,7 +38,7 @@ public class RunView extends View {
 
     private int ringBackgroundColor = Color.parseColor("#10FFFFFF");     //圆环背景颜色
     private int ringProgressColor = Color.argb(66, 146, 204, 255);  //圆环进度颜色
-    private int[] colors = new int[]{Color.parseColor("#90FFFFFF"), Color.parseColor("#1C6AC9"), Color.parseColor("#1C6AC9"), Color.parseColor("#1C6AC9")};
+    private int[] colors = new int[]{Color.parseColor("#501C6AC9"), Color.parseColor("#1C6AC9")};
 
     private Matrix rotateMatrix;
     private SweepGradient sweepGradient;
