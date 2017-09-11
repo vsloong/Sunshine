@@ -30,22 +30,37 @@ public class MainActivity extends BaseActivity {
 
 //        new DialogUtil(this, R.layout.dialog_base).show();
 
-        try {
-            new OkHttpUtil().getTest("https://www.baidu.com", new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Logger.e("失败");
-                }
+//        try {
+//            new OkHttpUtil().getTest("https://www.baidu.com", new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                    Logger.e("失败");
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    Logger.e(response.toString());
+//                    Logger.e(response.body().toString());
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Logger.e(response.toString());
-                    Logger.e(response.body().toString());
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        OkHttpUtil.getInstance()
+                .post("http://www.easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/test")
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Logger.e("查询失败");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Logger.json(response.body().string());
+                    }
+                });
     }
 
 }
