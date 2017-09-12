@@ -16,6 +16,15 @@
         android:layout_height="match_parent"
         android:background="@color/color_bg">
 
+        <ImageView
+            android:id="@+id/img_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/festival_mid_autumn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <cn.edu.zstu.sunshine.views.RunView
             android:id="@+id/ring_view"
@@ -23,13 +32,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/img_banner" />
 
         <Button
             android:id="@+id/btn_user"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_margin="16dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/ic_main_user_24dp"
             android:onClick="@{viewModel.onUserClick}"
             app:layout_constraintRight_toRightOf="parent"

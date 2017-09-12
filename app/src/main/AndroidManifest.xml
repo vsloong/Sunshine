@@ -26,7 +26,7 @@
         <activity android:name=".tools.timetable.TimetableActivity" />
         <activity android:name=".tools.campuscard.CampusCardActivity" />
         <activity android:name=".tools.main.MainActivity" />
-        <activity android:name=".tools.user.UserActivity"></activity>
+        <activity android:name=".tools.user.UserActivity" />
     </application>
 
 </manifest>
