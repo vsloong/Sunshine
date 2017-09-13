@@ -16,137 +16,153 @@
         android:layout_height="match_parent"
         android:background="@color/color_bg">
 
-        <ImageView
-            android:id="@+id/img_banner"
+        <FrameLayout
+            android:id="@+id/layout_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/festival_mid_autumn"
+            android:minHeight="200dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@mipmap/festival_test" />
+        </FrameLayout>
 
 
-        <cn.edu.zstu.sunshine.views.RunView
-            android:id="@+id/ring_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_banner" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_banner" />
+
+        <!--<cn.edu.zstu.sunshine.views.RunView-->
+        <!--android:id="@+id/ring_view"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/img_banner" />-->
 
         <Button
             android:id="@+id/btn_user"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="38dp"
-            android:layout_marginRight="16dp"
             android:background="@drawable/ic_main_user_24dp"
             android:onClick="@{viewModel.onUserClick}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/ic_main_service_24dp"
             android:onClick="@{viewModel.onCustomerServiceClick}"
-            app:layout_constraintLeft_toLeftOf="@+id/btn_user"
-            app:layout_constraintRight_toRightOf="@+id/btn_user"
-            app:layout_constraintTop_toBottomOf="@+id/btn_user" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_user"
+            app:layout_constraintRight_toLeftOf="@+id/btn_user"
+            app:layout_constraintTop_toTopOf="@+id/btn_user" />
 
-        <LinearLayout
-            android:id="@+id/layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ring_view">
+        <!--<LinearLayout-->
+        <!--android:id="@+id/layout"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/ring_view">-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_timetable_24dp"
-                    android:onClick="@{viewModel.onTimeTableClick}" />
-            </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_timetable_24dp"-->
+        <!--android:onClick="@{viewModel.onTimeTableClick}" />-->
+        <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_campus_24dp"
-                    android:onClick="@{viewModel.onCampusCardClick}" />
-            </LinearLayout>
-        </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_campus_24dp"-->
+        <!--android:onClick="@{viewModel.onCampusCardClick}" />-->
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/layout">-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_library_24dp" />
-            </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_library_24dp" />-->
+        <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_exam_24dp" />
-            </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_exam_24dp" />-->
+        <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_result_24dp" />
-            </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_result_24dp" />-->
+        <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/ic_main_network_24dp" />
-            </LinearLayout>
-        </LinearLayout>
+        <!--<Button-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@drawable/ic_main_network_24dp" />-->
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
     </android.support.constraint.ConstraintLayout>
 </layout>
 
