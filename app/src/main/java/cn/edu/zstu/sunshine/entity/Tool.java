@@ -3,8 +3,6 @@ package cn.edu.zstu.sunshine.entity;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
 /**
  * 主页面工具类的实体
  * Created by CooLoongWu on 2017-9-13 11:14.
@@ -37,8 +35,10 @@ public class Tool {
 
     @BindingAdapter({"iconRes"})
     public static void loadImage(ImageView iconView, int iconRes) {
-        Picasso.with(iconView.getContext())
-                .load(iconRes)
-                .into(iconView);
+//        Picasso.with(iconView.getContext())
+//                .load(iconRes)
+//                .into(iconView);
+        //用Picasso真是大材小用了
+        iconView.setImageResource(iconRes);
     }
 }

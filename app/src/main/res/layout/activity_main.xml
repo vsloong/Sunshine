@@ -29,7 +29,7 @@
                 android:id="@+id/img_banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/festival_school" />
+                android:src="@mipmap/festival_national" />
         </FrameLayout>
 
 

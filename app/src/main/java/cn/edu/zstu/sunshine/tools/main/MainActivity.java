@@ -1,15 +1,18 @@
 package cn.edu.zstu.sunshine.tools.main;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.meiqia.core.MQMessageManager;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -23,7 +26,9 @@ import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
+import cn.edu.zstu.sunshine.tools.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
+import cn.edu.zstu.sunshine.utils.DialogUtil;
 import cn.edu.zstu.sunshine.utils.OkHttpUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
@@ -33,6 +38,7 @@ import okhttp3.Response;
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
+    private MQMessageReceiver messageReceiver = new MQMessageReceiver();
 
     private static final String toolsName[] = {
             "课表", "饭卡", "考试", "成绩", "网费", "锻炼", "图书馆"};
@@ -63,6 +69,12 @@ public class MainActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         MainActivityViewModel viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MQMessageManager.ACTION_NEW_MESSAGE_RECEIVED);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,
+                intentFilter);
 
         //设置透明状态栏
         if (Build.VERSION.SDK_INT >= 21) {
@@ -96,7 +108,8 @@ public class MainActivity extends BaseActivity {
                     }
                 }));
 
-//        new DialogUtil(this, R.layout.dialog_base).show();
+        new DialogUtil(this, R.layout.dialog_base).show();
+
 
 //        try {
 //            new OkHttpUtil().getTest("https://www.baidu.com", new Callback() {
@@ -131,7 +144,6 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-
     /**
      * 监听返回按键【当点击返回键时执行Home键效果】
      */
@@ -145,5 +157,11 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
     }
 }

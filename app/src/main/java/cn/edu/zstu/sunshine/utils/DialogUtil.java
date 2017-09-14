@@ -2,6 +2,7 @@ package cn.edu.zstu.sunshine.utils;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import cn.edu.zstu.sunshine.R;
 
@@ -22,10 +23,11 @@ public class DialogUtil {
 
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogTheme);
-        builder.setView(layoutId);
+
+        View view = View.inflate(context, layoutId, null);
+        builder.setView(view);
         AlertDialog dialog = builder.create();
-//        View view = LayoutInflater.from(context).inflate(R.layout.dialog_base, null);
-//        dialog.setView(view);
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
 }

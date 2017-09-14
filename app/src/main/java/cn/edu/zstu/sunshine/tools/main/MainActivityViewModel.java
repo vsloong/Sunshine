@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import com.meiqia.core.MQManager;
+import com.meiqia.core.bean.MQMessage;
+import com.meiqia.core.callback.OnGetMessageListCallback;
 import com.meiqia.core.callback.OnInitCallback;
 import com.meiqia.meiqiasdk.util.MQConfig;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
@@ -29,6 +33,21 @@ public class MainActivityViewModel {
     MainActivityViewModel(Context context, ActivityMainBinding binding) {
         this.context = context;
         this.binding = binding;
+
+        //进入主页面在注册美洽客服服务，这里也是为了不占用app的启动速度
+        MQConfig.init(context, AppConfig.KEY_MEIQIA, new OnInitCallback() {
+            @Override
+            public void onSuccess(String clientId) {
+                Logger.e("美洽客服初始化成功");
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                Logger.e("美洽客服初始化失败，code：" + code + "；错误信息：" + message);
+            }
+        });
+
+
     }
 
     public void onTimeTableClick(View view) {
@@ -45,13 +64,8 @@ public class MainActivityViewModel {
 
     public void onCustomerServiceClick(View view) {
 
-        //点击客服的时候才初始化客服功能，这里也是为了不占用app的启动速度
-        MQConfig.init(context, AppConfig.KEY_MEIQIA, new OnInitCallback() {
-            @Override
-            public void onSuccess(String clientId) {
-
-                MQConfig.ui.titleGravity = MQConfig.ui.MQTitleGravity.LEFT;//标题位置
-                MQConfig.isVoiceSwitchOpen = false;//关闭语音功能，因为录音时有不显示录音按钮的Bug
+        MQConfig.ui.titleGravity = MQConfig.ui.MQTitleGravity.LEFT;//标题位置
+        MQConfig.isVoiceSwitchOpen = false;//关闭语音功能，因为录音时有不显示录音按钮的Bug
 
 //                //自定义UI，不建议这种方式
 //                MQConfig.ui.backArrowIconResId = R.drawable.ic_back_24dp;//返回按钮
@@ -64,22 +78,15 @@ public class MainActivityViewModel {
 //                MQConfig.ui.robotMenuTipTextColorResId = android.R.color.transparent;
 
 
-                Logger.e("美洽客服初始化成功");
-                HashMap<String, String> clientInfo = new HashMap<>();
-                clientInfo.put("学号", AppConfig.getDefaultUserId());
-                //1、启动完全对话模式
-                Intent intent = new MQIntentBuilder(context).setClientInfo(clientInfo).build();
+        Logger.e("美洽客服初始化成功");
+        HashMap<String, String> clientInfo = new HashMap<>();
+        clientInfo.put("学号", AppConfig.getDefaultUserId());
+        //1、启动完全对话模式
+        Intent intent = new MQIntentBuilder(context).setClientInfo(clientInfo).build();
 
-                //2、启动单一表单模式
+        //2、启动单一表单模式
 //                Intent intent = new Intent(context, MQMessageFormActivity.class);
-                context.startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(int code, String message) {
-                Logger.e("美洽客服初始化失败，code：" + code + "；错误信息：" + message);
-            }
-        });
+        context.startActivity(intent);
 
 
     }

@@ -9,15 +9,16 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/shape_round_rect"
+
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/shape_round_rect"
             android:orientation="vertical"
             android:padding="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -27,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="发现新版本"
-                android:textColor="@color/text_white"
+                android:textColor="@color/text_gray_dark"
                 android:textSize="18sp"
                 tools:text="标题" />
 
@@ -35,24 +36,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/white"
+                android:text="佛啊撒打发红色的发送了的法术佛哇哦阿斯顿发韩到阿斯蒂芬撒打发斯蒂芬哈送礼等法司法所"
+                android:textColor="@color/text_gray_light"
                 android:textSize="16sp"
                 tools:text="内容" />
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/selector_btn_dialog"
                 android:text="升级"
-                android:visibility="gone" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <Button
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="16dp"
-            android:background="@mipmap/btn_close"
+            android:background="@drawable/ic_close_dialog_24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_content" />
     </android.support.constraint.ConstraintLayout>
 </RelativeLayout>
