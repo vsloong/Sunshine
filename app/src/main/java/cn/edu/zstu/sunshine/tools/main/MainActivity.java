@@ -12,8 +12,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.meiqia.core.MQManager;
 import com.meiqia.core.MQMessageManager;
+import com.meiqia.core.bean.MQMessage;
+import com.meiqia.core.callback.OnGetMessageListCallback;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +31,10 @@ import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.Tool;
+import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
-import cn.edu.zstu.sunshine.utils.DialogUtil;
 import cn.edu.zstu.sunshine.utils.OkHttpUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
@@ -38,10 +44,18 @@ import okhttp3.Response;
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
+    public MainActivityViewModel viewModel;
     private MQMessageReceiver messageReceiver = new MQMessageReceiver();
 
     private static final String toolsName[] = {
-            "课表", "饭卡", "考试", "成绩", "网费", "锻炼", "图书馆"};
+            "课表",
+            "饭卡",
+            "考试",
+            "成绩",
+            "网费",
+            "锻炼",
+            "图书馆"
+    };
     private static final int toolsIcon[] = {
             R.mipmap.ic_main_timetable,
             R.mipmap.ic_main_card,
@@ -65,16 +79,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        MainActivityViewModel viewModel = new MainActivityViewModel(this, binding);
-        binding.setViewModel(viewModel);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MQMessageManager.ACTION_NEW_MESSAGE_RECEIVED);
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,
-                intentFilter);
 
         //设置透明状态栏
         if (Build.VERSION.SDK_INT >= 21) {
@@ -85,11 +89,18 @@ public class MainActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        viewModel = new MainActivityViewModel(this, binding);
+        binding.setViewModel(viewModel);
+
+        EventBus.getDefault().register(this);
+        registerMQMessageReceiver();
+
+        //加载首页工具资源
         List<Tool> tools = new ArrayList<>();
         for (int i = 0; i < toolsName.length; i++) {
             tools.add(new Tool(toolsName[i], toolsIcon[i]));
         }
-        //加载首页工具资源
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_main_tool, BR.tool, tools)
                 .setOnItemHandler(new BaseAdapter.OnItemHandler() {
@@ -108,26 +119,10 @@ public class MainActivity extends BaseActivity {
                     }
                 }));
 
-        new DialogUtil(this, R.layout.dialog_base).show();
+        //new DialogUtil(this, R.layout.dialog_base).show();
+    }
 
-
-//        try {
-//            new OkHttpUtil().getTest("https://www.baidu.com", new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Logger.e("失败");
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    Logger.e(response.toString());
-//                    Logger.e(response.body().toString());
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
+    private void test() {
         OkHttpUtil.getInstance()
                 .post("http://www.easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/test")
                 .build()
@@ -142,6 +137,34 @@ public class MainActivity extends BaseActivity {
                         Logger.json(response.body().string());
                     }
                 });
+    }
+
+    @Subscribe
+    public void onMQMessageEvent(UnRead unRead) {
+        viewModel.haveUnRead.set(true);
+    }
+
+    /**
+     * 监听客服消息
+     */
+    private void registerMQMessageReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MQMessageManager.ACTION_NEW_MESSAGE_RECEIVED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver,
+                intentFilter);
+
+        //判断是否有未读消息
+        MQManager.getInstance(this).getUnreadMessages(new OnGetMessageListCallback() {
+            @Override
+            public void onFailure(int i, String s) {
+            }
+
+            @Override
+            public void onSuccess(List<MQMessage> list) {
+                Logger.e("未读消息数：" + list.size());
+                viewModel.haveUnRead.set(!list.isEmpty());
+            }
+        });
     }
 
     /**
@@ -163,5 +186,6 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
+        EventBus.getDefault().unregister(this);
     }
 }

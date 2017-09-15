@@ -2,18 +2,15 @@ package cn.edu.zstu.sunshine.tools.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.ObservableBoolean;
 import android.view.View;
 
-import com.meiqia.core.MQManager;
-import com.meiqia.core.bean.MQMessage;
-import com.meiqia.core.callback.OnGetMessageListCallback;
 import com.meiqia.core.callback.OnInitCallback;
 import com.meiqia.meiqiasdk.util.MQConfig;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
-import java.util.List;
 
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
@@ -29,6 +26,8 @@ import cn.edu.zstu.sunshine.tools.user.UserActivity;
 public class MainActivityViewModel {
     private Context context;
     private ActivityMainBinding binding;
+
+    public ObservableBoolean haveUnRead = new ObservableBoolean();
 
     MainActivityViewModel(Context context, ActivityMainBinding binding) {
         this.context = context;
@@ -46,8 +45,6 @@ public class MainActivityViewModel {
                 Logger.e("美洽客服初始化失败，code：" + code + "；错误信息：" + message);
             }
         });
-
-
     }
 
     public void onTimeTableClick(View view) {
@@ -77,8 +74,6 @@ public class MainActivityViewModel {
 //                MQConfig.ui.robotMenuItemTextColorResId = android.R.color.transparent;
 //                MQConfig.ui.robotMenuTipTextColorResId = android.R.color.transparent;
 
-
-        Logger.e("美洽客服初始化成功");
         HashMap<String, String> clientInfo = new HashMap<>();
         clientInfo.put("学号", AppConfig.getDefaultUserId());
         //1、启动完全对话模式
@@ -88,7 +83,8 @@ public class MainActivityViewModel {
 //                Intent intent = new Intent(context, MQMessageFormActivity.class);
         context.startActivity(intent);
 
-
+        //将未读消息数清空
+        haveUnRead.set(false);
     }
 
     private void startNewActivity(Class cla) {

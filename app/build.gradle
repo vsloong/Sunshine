@@ -58,6 +58,8 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     //==数据库ORM框架
     compile 'org.greenrobot:greendao:3.2.2'
+    //==事件总线框架
+    compile 'org.greenrobot:eventbus:3.0.0'
     //==美洽必须的依赖库
     compile 'com.android.support:support-v4:26.0.0-alpha1'
     compile 'com.meiqia:meiqiasdk:3.4.3@aar'
