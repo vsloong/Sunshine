@@ -25,23 +25,30 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <TextView
+                android:id="@+id/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="发现新版本"
                 android:textColor="@color/text_gray_dark"
                 android:textSize="18sp"
-                tools:text="标题" />
+                android:visibility="gone"
+                tools:text="标题"
+                tools:visibility="visible" />
 
             <TextView
+                android:id="@+id/text_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="佛啊撒打发红色的发送了的法术佛哇哦阿斯顿发韩到阿斯蒂芬撒打发斯蒂芬哈送礼等法司法所"
                 android:textColor="@color/text_gray_light"
                 android:textSize="16sp"
-                tools:text="内容" />
+                android:visibility="gone"
+                tools:text="内容"
+                tools:visibility="visible" />
 
             <Button
+                android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
@@ -52,6 +59,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_cancel"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="16dp"

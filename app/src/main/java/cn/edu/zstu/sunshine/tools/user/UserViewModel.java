@@ -14,6 +14,7 @@ import cn.edu.zstu.sunshine.databinding.ActivityUserBinding;
 import cn.edu.zstu.sunshine.entity.User;
 import cn.edu.zstu.sunshine.greendao.UserDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
+import cn.edu.zstu.sunshine.utils.DialogUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 
 /**
@@ -31,23 +32,14 @@ public class UserViewModel {
 
     private ObservableArrayList<User> users = new ObservableArrayList<>();
     private UserDao userDao;
+    private int position = 0;
 
     UserViewModel(Context context, ActivityUserBinding binding) {
         this.context = context;
         this.binding = binding;
 
-
         userDao = DaoUtil.getInstance().getSession().getUserDao();
-
         users.addAll(userDao.queryBuilder().build().list());
-
-        for (User user : users) {
-            if (user.getUserId().equals(AppConfig.getDefaultUserId())) {
-                userId.set(user.getUserId());
-                userNickname.set(user.getUserNickname());
-            }
-            //Logger.e("用户:" + user.getUserId() + "；姓名：" + user.getUserNickname());
-        }
     }
 
     public void addUser(User user) {
@@ -55,13 +47,49 @@ public class UserViewModel {
         binding.include.recyclerView.getAdapter().notifyDataSetChanged();
     }
 
-    void deleteUser(int position) {
+    private void deleteUser() {
         userDao.delete(users.get(position));
         users.remove(position);
         binding.include.recyclerView.getAdapter().notifyDataSetChanged();
     }
 
+    void deleteUser(int position) {
+        this.position = position;
+
+        if (users.get(position).getUserId().equals(AppConfig.getDefaultUserId())) {
+            ToastUtil.showShortToast(R.string.toast_user_delete_err01);
+        } else {
+            showDeleteConfirmDialog();
+        }
+
+    }
+
+    private void switchUser() {
+        AppConfig.setDefaultUserId(users.get(position).getUserId());
+        getUsers();
+        binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+
+        ToastUtil.showShortToast(R.string.toast_user_switch);
+    }
+
+    void switchUser(int position) {
+        this.position = position;
+        if (users.get(position).getUserId().equals(AppConfig.getDefaultUserId())) {
+            ToastUtil.showShortToast(R.string.toast_user_switch_err01);
+        } else {
+            showSwitchConfirmDialog();
+        }
+    }
+
     List<User> getUsers() {
+        users.clear();
+        users.addAll(userDao.queryBuilder().build().list());
+        for (User user : users) {
+            if (user.getUserId().equals(AppConfig.getDefaultUserId())) {
+                userId.set(user.getUserId());
+                userNickname.set(user.getUserNickname());
+            }
+        }
         return users;
     }
 
@@ -78,12 +106,42 @@ public class UserViewModel {
         } else {
             startNewActivity(AddUserActivity.class);
         }
-
     }
 
     private void startNewActivity(Class cla) {
         Intent intent = new Intent(context, cla);
         intent.putExtra(AddUserViewModel.INTENT_ADD_USER_TYPE, true);
         context.startActivity(intent);
+    }
+
+    private void showDeleteConfirmDialog() {
+        new DialogUtil(context)
+                .setView(R.layout.dialog_base)
+                .setTitle("确定删除该用户吗？")
+                .setContent("删除后该用户的资料也会全部删除，请三思~")
+                .setButtonText("删掉吧")
+                .onConfirmClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deleteUser();
+                    }
+                })
+                .build()
+                .show();
+    }
+
+    private void showSwitchConfirmDialog() {
+        new DialogUtil(context)
+                .setView(R.layout.dialog_base)
+                .setTitle("确定切换为该用户吗？")
+                .setButtonText("立即切换")
+                .onConfirmClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        switchUser();
+                    }
+                })
+                .build()
+                .show();
     }
 }
