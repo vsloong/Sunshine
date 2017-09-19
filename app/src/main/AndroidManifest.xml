@@ -27,6 +27,7 @@
         <activity android:name=".tools.campuscard.CampusCardActivity" />
         <activity android:name=".tools.main.MainActivity" />
         <activity android:name=".tools.user.UserActivity" />
+        <activity android:name=".tools.network.NetworkActivity"></activity>
     </application>
 
 </manifest>

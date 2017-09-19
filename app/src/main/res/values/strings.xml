@@ -14,6 +14,7 @@
     <string name="course_time">10:00&#8211;12:00</string>
     <string name="title_activity_add_user">添加用户</string>
     <string name="title_activity_campus_card">校园卡</string>
+    <string name="title_activity_network">网费</string>
     <string name="title_activity_timetable">课表</string>
     <string name="title_activity_user">我的</string>
 

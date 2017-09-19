@@ -58,7 +58,11 @@ public class UserViewModel {
 
         if (users.get(position).getUserId().equals(AppConfig.getDefaultUserId())) {
             ToastUtil.showShortToast(R.string.toast_user_delete_err01);
-        } else {
+        }
+//        else if (userDao.queryBuilder().build().list().size() <2) {
+//
+//        }
+        else {
             showDeleteConfirmDialog();
         }
 

@@ -32,8 +32,9 @@ import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.event.UnRead;
+import cn.edu.zstu.sunshine.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
-import cn.edu.zstu.sunshine.tools.service.MQMessageReceiver;
+import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.utils.OkHttpUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
             CampusCardActivity.class,
             TimetableActivity.class,
             TimetableActivity.class,
-            TimetableActivity.class,
+            NetworkActivity.class,
             TimetableActivity.class,
             TimetableActivity.class
     };
@@ -109,10 +110,10 @@ public class MainActivity extends BaseActivity {
                         viewDataBinding.getRoot().findViewById(R.id.layout_item).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (position > 1) {
-                                    ToastUtil.showShortToast(R.string.toast_notice_develop);
-                                } else {
+                                if (position == 0 || position == 1 || position == 4) {
                                     startActivity(cla[position]);
+                                } else {
+                                    ToastUtil.showShortToast(R.string.toast_notice_develop);
                                 }
                             }
                         });

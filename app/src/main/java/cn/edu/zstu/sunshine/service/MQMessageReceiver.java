@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.tools.service;
+package cn.edu.zstu.sunshine.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
