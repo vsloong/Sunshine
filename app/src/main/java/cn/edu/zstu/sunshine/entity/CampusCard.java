@@ -4,6 +4,8 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import cn.edu.zstu.sunshine.base.AppConfig;
+
 /**
  * 校园卡消费记录的实体类
  * Created by CooLoongWu on 2017-8-29 09:44.
@@ -14,6 +16,7 @@ public class CampusCard {
     @Id
     private Long id;
 
+    private String userId;          //学生的学号或者是教师的学号
     private String time;        //消费时间
     private String location;    //大致消费地址，包括餐厅、图书馆、宿舍水电、充值POS机
     private String address;     //具体消费位置
@@ -22,7 +25,7 @@ public class CampusCard {
 
     public CampusCard(String time, String location, String address,
                       double consumption, String purpose) {
-        this.id = null;
+        this.userId = AppConfig.getDefaultUserId();
         this.time = time;
         this.location = location;
         this.address = address;
@@ -30,10 +33,11 @@ public class CampusCard {
         this.purpose = purpose;
     }
 
-    @Generated(hash = 1521144516)
-    public CampusCard(Long id, String time, String location, String address,
-                      double consumption, String purpose) {
+    @Generated(hash = 409967530)
+    public CampusCard(Long id, String userId, String time, String location,
+                      String address, double consumption, String purpose) {
         this.id = id;
+        this.userId = userId;
         this.time = time;
         this.location = location;
         this.address = address;
@@ -91,6 +95,14 @@ public class CampusCard {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

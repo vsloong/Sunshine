@@ -18,7 +18,123 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/include_title"
             layout="@layout/include_title" />
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimary"
+            android:alpha="1"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp"
+            app:cardPreventCornerOverlap="false">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout_bg_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/text_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewModel.ip}"
+                    android:textColor="@color/text_white"
+                    android:textColorHint="@color/white_translucent"
+                    android:textSize="16sp"
+                    android:typeface="monospace"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="10.10.10.10" />
+
+                <TextView
+                    android:id="@+id/text_port"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:maxLines="1"
+                    android:text="@{viewModel.port}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white_translucent"
+                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_ip"
+                    tools:text="02号床位" />
+
+                <TextView
+                    android:id="@+id/text_nothing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="/"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white_translucent"
+                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_port"
+                    app:layout_constraintLeft_toRightOf="@+id/text_port"
+                    app:layout_constraintTop_toTopOf="@+id/text_port" />
+
+                <TextView
+                    android:id="@+id/text_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{viewModel.type}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white_translucent"
+                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_nothing"
+                    app:layout_constraintLeft_toRightOf="@+id/text_nothing"
+                    app:layout_constraintTop_toTopOf="@+id/text_nothing"
+                    tools:text="大网通" />
+
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{viewModel.name}"
+                    android:textColor="@color/text_white"
+                    android:textColorHint="@color/white_translucent"
+                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_port"
+                    tools:text="持卡人姓名" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{viewModel.balance}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white_translucent"
+                    android:textSize="14sp"
+                    android:typeface="monospace"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_port"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_port"
+                    tools:text="20.32元" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </layout>

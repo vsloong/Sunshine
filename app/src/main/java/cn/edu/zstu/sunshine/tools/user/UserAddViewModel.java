@@ -7,7 +7,7 @@ import com.orhanobut.logger.Logger;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.AppConfig;
-import cn.edu.zstu.sunshine.databinding.ActivityAddStudentBinding;
+import cn.edu.zstu.sunshine.databinding.ActivityUserAddBinding;
 import cn.edu.zstu.sunshine.entity.User;
 import cn.edu.zstu.sunshine.greendao.UserDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
@@ -18,16 +18,16 @@ import cn.edu.zstu.sunshine.utils.ToastUtil;
  * Created by CooLoongWu on 2017-8-28 09:57.
  */
 
-public class AddUserViewModel {
+public class UserAddViewModel {
 
     public static final String INTENT_ADD_USER_TYPE = "INTENT_ADD_USER_TYPE";
 
     private Context context;
-    private ActivityAddStudentBinding binding;
+    private ActivityUserAddBinding binding;
 
     private boolean isThisClose = false;
 
-    AddUserViewModel(Context context, ActivityAddStudentBinding binding) {
+    UserAddViewModel(Context context, ActivityUserAddBinding binding) {
         this.context = context;
         this.binding = binding;
 
@@ -35,7 +35,7 @@ public class AddUserViewModel {
     }
 
     private void getIntent() {
-        isThisClose = ((AddUserActivity) context).getIntent().getBooleanExtra(AddUserViewModel.INTENT_ADD_USER_TYPE, false);
+        isThisClose = ((UserAddActivity) context).getIntent().getBooleanExtra(UserAddViewModel.INTENT_ADD_USER_TYPE, false);
         Logger.e("Intent：" + isThisClose);
     }
 
@@ -58,7 +58,7 @@ public class AddUserViewModel {
             userDao.insert(new User(id, name));
             if (isThisClose) {
                 ToastUtil.showShortToast(R.string.toast_user_add_success);
-                ((AddUserActivity) context).finish();
+                ((UserAddActivity) context).finish();
                 return false;
             }
             return true;
@@ -70,6 +70,6 @@ public class AddUserViewModel {
     }
 
     public void onBtnBackClick(View view) {
-        ((AddUserActivity) context).finish();
+        ((UserAddActivity) context).finish();
     }
 }

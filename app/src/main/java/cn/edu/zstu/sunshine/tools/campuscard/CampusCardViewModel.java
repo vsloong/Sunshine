@@ -38,6 +38,7 @@ public class CampusCardViewModel {
         expenses.set("235.34");
         balance.set("45");
         initData();
+
     }
 
     private void initData() {

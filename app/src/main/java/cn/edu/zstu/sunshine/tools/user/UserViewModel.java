@@ -108,13 +108,13 @@ public class UserViewModel {
         if (userDao.queryBuilder().build().list().size() > 2) {
             ToastUtil.showShortToast(R.string.toast_user_full);
         } else {
-            startNewActivity(AddUserActivity.class);
+            startNewActivity(UserAddActivity.class);
         }
     }
 
     private void startNewActivity(Class cla) {
         Intent intent = new Intent(context, cla);
-        intent.putExtra(AddUserViewModel.INTENT_ADD_USER_TYPE, true);
+        intent.putExtra(UserAddViewModel.INTENT_ADD_USER_TYPE, true);
         context.startActivity(intent);
     }
 

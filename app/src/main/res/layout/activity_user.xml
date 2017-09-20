@@ -17,35 +17,15 @@
         android:background="@color/color_bg"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-
-            <Button
-                android:id="@+id/btn_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/ic_back_24dp"
-                android:onClick="@{viewModel.onBtnBackClick}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/btn_back"
-                android:text="@string/title_activity_user"
-                android:textColor="@color/text_yellow"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
+        <include
+            android:id="@+id/include_title"
+            layout="@layout/include_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/label_user_default"
             android:textColor="@color/text_green"
             android:textSize="14sp" />
@@ -101,10 +81,10 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/ic_user_add_24dp"
+                android:onClick="@{viewModel.onBtnAddUserClick}"
                 app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/circleImageView"
-                android:onClick="@{viewModel.onBtnAddUserClick}" />
+                app:layout_constraintTop_toTopOf="@+id/circleImageView" />
 
             <Button
                 android:id="@+id/btn_user_edit"
@@ -122,16 +102,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/label_user_all"
             android:textColor="@color/text_green"
             android:textSize="14sp" />
 
         <include
             android:id="@+id/include"
+            layout="@layout/include_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/include_recycler" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

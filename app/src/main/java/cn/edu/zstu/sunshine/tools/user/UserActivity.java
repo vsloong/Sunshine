@@ -26,6 +26,7 @@ public class UserActivity extends BaseActivity {
         viewModel = new UserViewModel(this, binding);
         binding.setViewModel(viewModel);
 
+        initToolBar();
         initViews();
     }
 
@@ -34,6 +35,17 @@ public class UserActivity extends BaseActivity {
         super.onResume();
         initViews();
     }
+
+    private void initToolBar() {
+        binding.includeTitle.toolbar.setTitle(R.string.title_activity_user);
+        binding.includeTitle.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
 
     private void initViews() {
         binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(this));

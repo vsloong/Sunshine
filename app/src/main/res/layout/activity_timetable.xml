@@ -22,40 +22,19 @@
         android:layout_height="match_parent"
         android:background="@color/gray">
 
-        <android.support.design.widget.AppBarLayout
+        <LinearLayout
             android:id="@+id/layout_app_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--app:elevation="0dp" 去掉Toolbar的阴影-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
-
-                <Button
-                    android:id="@+id/btn_back"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/ic_back_24dp"
-                    android:onClick="@{viewModel.onBtnBackClick}" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/btn_back"
-                    android:text="@string/title_activity_timetable"
-                    android:textColor="@color/text_yellow"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
+            <include
+                android:id="@+id/include_title"
+                layout="@layout/include_title" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -108,7 +87,7 @@
                 app:tabIndicatorHeight="0dp">
 
             </android.support.design.widget.TabLayout>
-        </android.support.design.widget.AppBarLayout>
+        </LinearLayout>
 
 
         <include
@@ -116,6 +95,7 @@
             layout="@layout/include_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

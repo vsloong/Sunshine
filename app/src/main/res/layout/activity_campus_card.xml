@@ -17,30 +17,9 @@
         android:background="@color/color_bg"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-
-            <Button
-                android:id="@+id/btn_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/ic_back_24dp"
-                android:onClick="@{viewModel.onBtnBackClick}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/btn_back"
-                android:text="@string/title_activity_campus_card"
-                android:textColor="@color/text_yellow"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
+        <include
+            android:id="@+id/include_title"
+            layout="@layout/include_title" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -48,7 +27,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
@@ -116,6 +95,7 @@
             layout="@layout/include_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
             bind:showEmptyView="@{viewModel.showEmptyView}" />
     </LinearLayout>
 </layout>

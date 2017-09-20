@@ -8,22 +8,21 @@ import android.view.View;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.databinding.ActivityAddStudentBinding;
+import cn.edu.zstu.sunshine.databinding.ActivityUserAddBinding;
 import cn.edu.zstu.sunshine.tools.main.MainActivity;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 
-public class AddUserActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class UserAddActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
-    private ActivityAddStudentBinding binding;
-    private AddUserViewModel viewModel;
+    private ActivityUserAddBinding binding;
+    private UserAddViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_add_student);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_student);
-        viewModel = new AddUserViewModel(this, binding);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_user_add);
+        viewModel = new UserAddViewModel(this, binding);
         binding.setViewModel(viewModel);
 
         onTouchCard();

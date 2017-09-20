@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import cn.edu.zstu.sunshine.R;
@@ -22,7 +23,18 @@ public class TimetableActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timetable);
         binding.setViewModel(new TimetableViewModel(this, binding));
 
+        initToolBar();
         initTabLayout();
+    }
+
+    private void initToolBar() {
+        binding.includeTitle.toolbar.setTitle(R.string.title_activity_timetable);
+        binding.includeTitle.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void initTabLayout() {

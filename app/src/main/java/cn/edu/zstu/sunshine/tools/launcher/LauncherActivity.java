@@ -7,7 +7,7 @@ import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.greendao.UserDao;
 import cn.edu.zstu.sunshine.tools.main.MainActivity;
-import cn.edu.zstu.sunshine.tools.user.AddUserActivity;
+import cn.edu.zstu.sunshine.tools.user.UserAddActivity;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class LauncherActivity extends BaseActivity {
@@ -19,7 +19,7 @@ public class LauncherActivity extends BaseActivity {
 
         UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
         if (userDao.queryBuilder().build().list().isEmpty()) {
-            goNext(AddUserActivity.class);
+            goNext(UserAddActivity.class);
         } else {
             goNext(MainActivity.class);
         }

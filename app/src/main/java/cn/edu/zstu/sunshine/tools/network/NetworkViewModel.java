@@ -1,8 +1,8 @@
 package cn.edu.zstu.sunshine.tools.network;
 
 import android.content.Context;
+import android.databinding.ObservableField;
 
-import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
 
 /**
@@ -14,14 +14,24 @@ public class NetworkViewModel {
     private Context context;
     private ActivityNetworkBinding binding;
 
+    public ObservableField<String> name = new ObservableField<>();
+    public ObservableField<String> ip = new ObservableField<>();
+    public ObservableField<String> type = new ObservableField<>();
+    public ObservableField<String> port = new ObservableField<>();
+    public ObservableField<String> balance = new ObservableField<>();
+
     NetworkViewModel(Context context, ActivityNetworkBinding binding) {
         this.context = context;
         this.binding = binding;
 
-        setToolbarName();
+        initData();
     }
 
-    private void setToolbarName() {
-        binding.include.toolbar.setTitle(R.string.title_activity_network);
+    private void initData() {
+        name.set("是我啊");
+        ip.set("127.0.0.1");
+        type.set("大网通");
+        port.set("02" + "号床位");
+        balance.set("20.34" + "元");
     }
 }

@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".tools.user.AddUserActivity"
+            android:name=".tools.user.UserAddActivity"
             android:label="@string/title_activity_add_user" />
         <activity android:name=".tools.timetable.TimetableActivity" />
         <activity android:name=".tools.campuscard.CampusCardActivity" />
