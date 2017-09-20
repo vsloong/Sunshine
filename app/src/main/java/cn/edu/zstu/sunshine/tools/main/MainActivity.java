@@ -34,10 +34,13 @@ import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
+import cn.edu.zstu.sunshine.tools.exam.ExamActivity;
+import cn.edu.zstu.sunshine.tools.exercise.ExerciseActivity;
+import cn.edu.zstu.sunshine.tools.library.LibraryActivity;
 import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
+import cn.edu.zstu.sunshine.tools.score.ScoreActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.utils.OkHttpUtil;
-import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -70,11 +73,11 @@ public class MainActivity extends BaseActivity {
     private static final Class cla[] = {
             TimetableActivity.class,
             CampusCardActivity.class,
-            TimetableActivity.class,
-            TimetableActivity.class,
+            ExamActivity.class,
+            ScoreActivity.class,
             NetworkActivity.class,
-            TimetableActivity.class,
-            TimetableActivity.class
+            ExerciseActivity.class,
+            LibraryActivity.class
     };
 
     @Override
@@ -110,11 +113,8 @@ public class MainActivity extends BaseActivity {
                         viewDataBinding.getRoot().findViewById(R.id.layout_item).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (position == 0 || position == 1 || position == 4) {
-                                    startActivity(cla[position]);
-                                } else {
-                                    ToastUtil.showShortToast(R.string.toast_notice_develop);
-                                }
+                                startActivity(cla[position]);
+
                             }
                         });
                     }

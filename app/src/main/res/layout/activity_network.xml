@@ -28,10 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@color/colorPrimary"
-            android:alpha="1"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
-            app:cardPreventCornerOverlap="false">
+            app:cardCornerRadius="10dp">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout_bg_card"

@@ -1,4 +1,4 @@
-package cn.edu.zstu.sunshine.tools.network;
+package cn.edu.zstu.sunshine.tools.exam;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -6,24 +6,23 @@ import android.view.View;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
-import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
+import cn.edu.zstu.sunshine.databinding.ActivityExamBinding;
 
-public class NetworkActivity extends BaseActivity {
+public class ExamActivity extends BaseActivity {
 
-    private ActivityNetworkBinding binding;
+    private ActivityExamBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_exam);
+        binding.setViewModel(new ExamViewModel(this, binding));
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_network);
-        binding.setViewModel(new NetworkViewModel(this, binding));
-
-        initToolBar();
+        initToolbar();
     }
 
-    private void initToolBar() {
-        binding.includeTitle.toolbar.setTitle(R.string.title_activity_network);
+    private void initToolbar() {
+        binding.includeTitle.toolbar.setTitle(R.string.title_activity_exam);
         binding.includeTitle.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

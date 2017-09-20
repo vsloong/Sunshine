@@ -17,6 +17,10 @@
     <string name="title_activity_network">网费</string>
     <string name="title_activity_timetable">课表</string>
     <string name="title_activity_user">我的</string>
+    <string name="title_activity_exam">考试</string>
+    <string name="title_activity_score">成绩</string>
+    <string name="title_activity_library">图书馆</string>
+    <string name="title_activity_exercise">锻炼</string>
 
     <string name="hint_card_number">学号</string>
     <string name="hint_expired_date">年/月</string>
