@@ -4,9 +4,17 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
+import java.io.IOException;
+
 import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.Api;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class NetworkActivity extends BaseActivity {
 
@@ -20,6 +28,7 @@ public class NetworkActivity extends BaseActivity {
         binding.setViewModel(new NetworkViewModel(this, binding));
 
         initToolBar();
+        getData();
     }
 
     private void initToolBar() {
@@ -28,6 +37,21 @@ public class NetworkActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+    }
+
+
+    private void getData() {
+        Api.getNetworkInfo(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.e("失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Logger.e("成功" + response.body().string());
             }
         });
     }

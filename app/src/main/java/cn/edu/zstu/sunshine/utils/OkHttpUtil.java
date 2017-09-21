@@ -96,7 +96,7 @@ public class OkHttpUtil {
     /**
      * @param callback 执行结果回调
      */
-    public void execute(Callback callback) {
+    public void enqueue(Callback callback) {
         okHttpClient.newCall(request).enqueue(callback);
     }
 }
