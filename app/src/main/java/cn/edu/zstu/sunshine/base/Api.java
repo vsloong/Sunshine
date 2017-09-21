@@ -1,5 +1,7 @@
 package cn.edu.zstu.sunshine.base;
 
+import android.content.Context;
+
 import cn.edu.zstu.sunshine.utils.OkHttpUtil;
 import okhttp3.Callback;
 
@@ -14,8 +16,13 @@ public class Api {
     private static final String URL_NETWORK = "network";
 
 
-    public static void getNetworkInfo(Callback callback) {
+    public static void cancel(Context context) {
+        OkHttpUtil.getInstance().cancel(context);
+    }
+
+    public static void getNetworkInfo(Context context, Callback callback) {
         OkHttpUtil.getInstance()
+                .tag(context)
                 .post(URL_BASE + URL_NETWORK)
                 .addParam("userId", AppConfig.getDefaultUserId())
                 .build()

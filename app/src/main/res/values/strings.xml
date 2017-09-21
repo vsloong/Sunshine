@@ -39,6 +39,7 @@
     <string name="toast_user_switch">切换用户成功~</string>
     <string name="toast_user_switch_err01">当前用户已是该用户~</string>
     <string name="toast_user_delete_err01">该用户是当前登录用户，请切换至其他用户再执行删除~</string>
+    <string name="toast_data_refresh_success">数据已刷新~</string>
 
     <string name="notice">\t\t使用该软件前请先填写您的学号和姓名信息，学号必须是您的真实学号，姓名可以填写您喜欢的昵称或者真实姓名。
     \n\t\t后续使用中还需要您填写相应功能的查询密码，来完成各项数据查询功能。您的密码将会存储在您手机本地的数据库中，本软件绝不会盗用您的密码。

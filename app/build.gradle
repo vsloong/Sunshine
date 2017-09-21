@@ -49,7 +49,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //==日志打印框架
     //==数据库ORM框架
     //==事件总线框架
@@ -57,8 +56,6 @@ dependencies {
     //==美洽必须的依赖库
     //==美洽必须的依赖库
     //==美洽必须的图片依赖库之一，其他还支持universal-image-loader、glide、xutils
-
-
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
@@ -71,4 +68,5 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
+    compile 'com.alibaba:fastjson:1.1.63.android'
 }

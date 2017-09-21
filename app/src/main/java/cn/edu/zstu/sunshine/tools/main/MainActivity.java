@@ -21,7 +21,6 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +39,6 @@ import cn.edu.zstu.sunshine.tools.library.LibraryActivity;
 import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
 import cn.edu.zstu.sunshine.tools.score.ScoreActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
-import cn.edu.zstu.sunshine.utils.OkHttpUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -121,23 +116,6 @@ public class MainActivity extends BaseActivity {
                 }));
 
         //new DialogUtil(this, R.layout.dialog_base).show();
-    }
-
-    private void test() {
-        OkHttpUtil.getInstance()
-                .post("http://www.easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/test")
-                .build()
-                .execute(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Logger.e("查询失败");
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        Logger.json(response.body().string());
-                    }
-                });
     }
 
     @Subscribe

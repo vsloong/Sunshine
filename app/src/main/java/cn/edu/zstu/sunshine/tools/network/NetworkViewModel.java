@@ -3,7 +3,10 @@ package cn.edu.zstu.sunshine.tools.network;
 import android.content.Context;
 import android.databinding.ObservableField;
 
+import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
+import cn.edu.zstu.sunshine.entity.Network;
+import cn.edu.zstu.sunshine.utils.ToastUtil;
 
 /**
  * 网费的ViewModel类
@@ -33,5 +36,15 @@ public class NetworkViewModel {
         type.set("大网通");
         port.set("02" + "号床位");
         balance.set("20.34" + "元");
+    }
+
+    void refreshData(Network network) {
+        name.set(network.getName());
+        ip.set(network.getIp());
+        type.set(network.getType());
+        port.set(network.getPort() + "号床位");
+        balance.set(network.getBalance() + "元");
+
+        ToastUtil.showShortToast(R.string.toast_data_refresh_success);
     }
 }
