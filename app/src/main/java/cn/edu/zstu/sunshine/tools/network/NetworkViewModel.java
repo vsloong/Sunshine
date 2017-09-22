@@ -3,10 +3,23 @@ package cn.edu.zstu.sunshine.tools.network;
 import android.content.Context;
 import android.databinding.ObservableField;
 
-import cn.edu.zstu.sunshine.R;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.orhanobut.logger.Logger;
+
+import java.io.IOException;
+
+import cn.edu.zstu.sunshine.base.Api;
+import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
+import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.entity.Network;
-import cn.edu.zstu.sunshine.utils.ToastUtil;
+import cn.edu.zstu.sunshine.greendao.NetworkDao;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
+import cn.edu.zstu.sunshine.utils.EntityCopyUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 网费的ViewModel类
@@ -16,35 +29,96 @@ import cn.edu.zstu.sunshine.utils.ToastUtil;
 public class NetworkViewModel {
     private Context context;
     private ActivityNetworkBinding binding;
+    public ObservableField<Network> network = new ObservableField<>();
 
-    public ObservableField<String> name = new ObservableField<>();
-    public ObservableField<String> ip = new ObservableField<>();
-    public ObservableField<String> type = new ObservableField<>();
-    public ObservableField<String> port = new ObservableField<>();
-    public ObservableField<String> balance = new ObservableField<>();
+    private NetworkDao networkDao;
+    private Network networkData;
 
     NetworkViewModel(Context context, ActivityNetworkBinding binding) {
         this.context = context;
         this.binding = binding;
 
-        initData();
+        loadDataFromLocal();
     }
 
-    private void initData() {
-        name.set("是我啊");
-        ip.set("127.0.0.1");
-        type.set("大网通");
-        port.set("02" + "号床位");
-        balance.set("20.34" + "元");
+    /**
+     * 加载本地数据
+     */
+    private void loadDataFromLocal() {
+        networkDao = DaoUtil.getInstance().getSession().getNetworkDao();
+        networkData = networkDao.queryBuilder()
+                .where(NetworkDao.Properties.UserId.eq(AppConfig.getDefaultUserId()))
+                .build()
+                .unique();
+
+        if (networkData != null) {
+            network.set(networkData);
+        } else {
+            loadDataFromNetwork();
+        }
     }
 
+    /**
+     * 加载网络数据
+     */
+    private void loadDataFromNetwork() {
+        Api.getNetworkInfo(context, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.e("失败" + e.toString());
+                //如果是自己取消的，那么结果为：java.io.IOException: Canceled
+                //如果是没有网络，那么结果为：java.net.UnknownHostException:
+                //超时错误：java.net.SocketTimeoutException:
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                String json = response.body().string();
+                Logger.e("成功：" + json);
+
+                JsonParse<Network> jsonParse = JSON.parseObject(
+                        json,
+                        new TypeReference<JsonParse<Network>>() {
+                        });
+
+                Network network = jsonParse.getData();
+                refreshData(network);
+            }
+        });
+    }
+
+    /**
+     * 刷新数据【刷新页面上的数据以及数据库中的数据】
+     *
+     * @param network 网费信息实体
+     */
     void refreshData(Network network) {
-        name.set(network.getName());
-        ip.set(network.getIp());
-        type.set(network.getType());
-        port.set(network.getPort() + "号床位");
-        balance.set(network.getBalance() + "元");
+        this.network.set(network);
+        this.insertOrUpdateDB(network);
+        //ToastUtil.showShortToast(R.string.toast_data_refresh_success);
+    }
 
-        ToastUtil.showShortToast(R.string.toast_data_refresh_success);
+    /**
+     * 插入或者更新网费数据
+     *
+     * @param network 网费信息实体
+     */
+    private void insertOrUpdateDB(Network network) {
+        networkData = networkDao.queryBuilder()
+                .where(NetworkDao.Properties.UserId.eq(AppConfig.getDefaultUserId()))
+                .build()
+                .unique();
+        if (networkData != null) {
+            networkDao.update(
+                    EntityCopyUtil.CopyNetwork(networkData, network)
+            );
+            Logger.e("网费数据更新");
+        } else {
+            networkDao.insert(network);
+            Logger.e("网费数据插入");
+        }
+
+
     }
 }

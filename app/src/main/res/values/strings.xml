@@ -29,6 +29,9 @@
     <string name="enrollment_time">%1$s/09</string>
     <string name="label_user_default">默认用户</string>
     <string name="label_user_all">所有用户</string>
+    <string name="label_user_name">用户名</string>
+    <string name="label_yuan">元</string>
+    <string name="label_port">号床位</string>
 
     <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦~</string>
     <string name="toast_input_not_done">请先完善学号和姓名信息哦~</string>
