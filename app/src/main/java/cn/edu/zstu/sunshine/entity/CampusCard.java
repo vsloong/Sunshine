@@ -16,7 +16,7 @@ public class CampusCard {
     @Id
     private Long id;
 
-    private String userId;          //学生的学号或者是教师的学号
+    private String userId;      //学生的学号或者是教师的学号
     private String time;        //消费时间
     private String location;    //大致消费地址，包括餐厅、图书馆、宿舍水电、充值POS机
     private String address;     //具体消费位置
