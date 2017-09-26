@@ -7,7 +7,10 @@ import android.text.style.ForegroundColorSpan;
 
 import com.orhanobut.logger.Logger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseApplication;
@@ -24,8 +27,29 @@ public class DataUtil {
     /**
      * @return 当前月份
      */
-    private static int getMonth() {
+    public static int getMonth() {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 从字符串中获取月份
+     *
+     * @param dataStr 日期时间字符串
+     * @return 月份
+     */
+    public static int getMonthFromString(String dataStr) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = df.parse(dataStr);
+            calendar.setTime(date);
+            return calendar.get(Calendar.MONTH);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+
     }
 
     /**

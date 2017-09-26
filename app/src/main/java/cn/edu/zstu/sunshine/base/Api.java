@@ -14,16 +14,38 @@ public class Api {
 
     private static final String URL_BASE = "https://easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/";
     private static final String URL_NETWORK = "network";
+    private static final String URL_CAMPUSCARD = "campuscard";
 
 
     public static void cancel(Context context) {
         OkHttpUtil.getInstance().cancel(context);
     }
 
+    /**
+     * 获取网费信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
     public static void getNetworkInfo(Context context, Callback callback) {
         OkHttpUtil.getInstance()
                 .tag(context)
                 .post(URL_BASE + URL_NETWORK)
+                .addParam("userId", AppConfig.getDefaultUserId())
+                .build()
+                .enqueue(callback);
+    }
+
+    /**
+     * 获取饭卡消费信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
+    public static void getCampusCardInfo(Context context, Callback callback) {
+        OkHttpUtil.getInstance()
+                .tag(context)
+                .post(URL_BASE + URL_CAMPUSCARD)
                 .addParam("userId", AppConfig.getDefaultUserId())
                 .build()
                 .enqueue(callback);

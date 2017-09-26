@@ -23,6 +23,8 @@ public class CampusCard {
     private double consumption; //消费金额
     private String purpose;     //消费用途
 
+    private int month;          //月份【从消费时间中获取，用来统计信息等】
+
     public CampusCard(String time, String location, String address,
                       double consumption, String purpose) {
         this.userId = AppConfig.getDefaultUserId();
@@ -33,9 +35,9 @@ public class CampusCard {
         this.purpose = purpose;
     }
 
-    @Generated(hash = 409967530)
+    @Generated(hash = 157452922)
     public CampusCard(Long id, String userId, String time, String location,
-                      String address, double consumption, String purpose) {
+                      String address, double consumption, String purpose, int month) {
         this.id = id;
         this.userId = userId;
         this.time = time;
@@ -43,6 +45,7 @@ public class CampusCard {
         this.address = address;
         this.consumption = consumption;
         this.purpose = purpose;
+        this.month = month;
     }
 
     @Generated(hash = 782523111)
@@ -103,6 +106,14 @@ public class CampusCard {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getMonth() {
+        return this.month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
 }
