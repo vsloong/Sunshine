@@ -8,6 +8,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityCampusCardBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.JsonParse;
+import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -29,6 +34,7 @@ public class CampusCardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_campus_card);
         viewModel = new CampusCardViewModel(this, binding);
         binding.setViewModel(viewModel);
@@ -47,6 +53,12 @@ public class CampusCardActivity extends BaseActivity {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(CampusCard campusCard) {
+        viewModel.loadDataFromLocal();
+        ToastUtil.showShortToast(R.string.toast_data_refresh_success);
+    }
+
     private void getDataFromNetWork() {
         Api.getCampusCardInfo(this, new Callback() {
             @Override
@@ -63,13 +75,7 @@ public class CampusCardActivity extends BaseActivity {
                         }
                 );
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        viewModel.initData(jsonParse.getData());
-                        viewModel.insert(jsonParse.getData());
-                    }
-                });
+                viewModel.insert(jsonParse.getData());
             }
         });
     }
@@ -77,6 +83,9 @@ public class CampusCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         Api.cancel(this);
     }
+
+
 }

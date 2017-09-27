@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,39 +47,41 @@ public class CampusCardViewModel {
 
         campusCardDao = DaoUtil.getInstance().getSession().getCampusCardDao();
 
-        expenses.set("235.34");
-        balance.set("45");
+
         loadDataFromLocal();
 
     }
 
-    private void loadDataFromLocal() {
-
-
+    /**
+     * 加载本地当月消费数据【按照日期降序排列】
+     */
+    void loadDataFromLocal() {
         List<CampusCard> cards = campusCardDao.queryBuilder()
                 .where(
                         CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
                         CampusCardDao.Properties.Year.eq(DataUtil.getCurrentYear()),
                         CampusCardDao.Properties.Month.eq(DataUtil.getCurrentMonth())
                 )
+                .orderDesc(CampusCardDao.Properties.Time)
                 .build().list();
-
-        for (CampusCard card :
-                cards) {
-            Logger.e("UID" + card.getUserId());
-            Logger.e("YEAR" + card.getYear());
-            Logger.e("MONTH" + card.getMonth());
-        }
         initData(cards);
     }
 
-    void initData(List<CampusCard> info) {
+    private void initData(List<CampusCard> info) {
         data.clear();
         data.addAll(info);
         binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_campus_card, BR.campusCard, data));
 
         showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
+
+        double temp = 0;
+        for (CampusCard ca :
+                info) {
+            temp += ca.getConsumption();
+        }
+        expenses.set(String.valueOf(temp));
+        balance.set("45");
     }
 
     /**
@@ -92,6 +96,8 @@ public class CampusCardViewModel {
                 for (CampusCard card : data) {
                     insert(card);
                 }
+                //通知页面数据刷新
+                EventBus.getDefault().post(new CampusCard());
             }
         });
     }
