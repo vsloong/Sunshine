@@ -1,10 +1,11 @@
 package cn.edu.zstu.sunshine.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 import cn.edu.zstu.sunshine.base.AppConfig;
+import cn.edu.zstu.sunshine.utils.DataUtil;
 
 /**
  * 校园卡消费记录的实体类
@@ -23,21 +24,22 @@ public class CampusCard {
     private double consumption; //消费金额
     private String purpose;     //消费用途
 
+    private int year;           //年份【从消费时间中获取，用来统计信息等】
     private int month;          //月份【从消费时间中获取，用来统计信息等】
 
-    public CampusCard(String time, String location, String address,
-                      double consumption, String purpose) {
+    /**
+     * 补全其他所需信息
+     */
+    public void complete() {
         this.userId = AppConfig.getDefaultUserId();
-        this.time = time;
-        this.location = location;
-        this.address = address;
-        this.consumption = consumption;
-        this.purpose = purpose;
+        setYear(DataUtil.getYearFromString(time));
+        setMonth(DataUtil.getMonthFromString(time));
     }
 
-    @Generated(hash = 157452922)
+    @Generated(hash = 1119695301)
     public CampusCard(Long id, String userId, String time, String location,
-                      String address, double consumption, String purpose, int month) {
+                      String address, double consumption, String purpose, int year,
+                      int month) {
         this.id = id;
         this.userId = userId;
         this.time = time;
@@ -45,6 +47,7 @@ public class CampusCard {
         this.address = address;
         this.consumption = consumption;
         this.purpose = purpose;
+        this.year = year;
         this.month = month;
     }
 
@@ -58,6 +61,14 @@ public class CampusCard {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getTime() {
@@ -100,12 +111,12 @@ public class CampusCard {
         this.purpose = purpose;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public int getYear() {
+        return this.year;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public int getMonth() {
@@ -115,5 +126,6 @@ public class CampusCard {
     public void setMonth(int month) {
         this.month = month;
     }
+
 
 }

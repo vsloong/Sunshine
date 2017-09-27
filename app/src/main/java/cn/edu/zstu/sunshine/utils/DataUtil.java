@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseApplication;
@@ -25,38 +26,62 @@ public class DataUtil {
     public static String week[] = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
 
     /**
-     * @return 当前月份
+     * @return 当前月份【1月就是1】
      */
-    public static int getMonth() {
+    public static int getCurrentMonth() {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;
     }
 
     /**
-     * 从字符串中获取月份
+     * @return 当前年份
+     */
+    public static int getCurrentYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    /**
+     * 从字符串中获取年份【字符串形式类似2017-09-29 xx(后面无所谓)】
      *
      * @param dataStr 日期时间字符串
-     * @return 月份
+     * @return 年份（0代表解析错误的年份）
      */
-    public static int getMonthFromString(String dataStr) {
+    public static int getYearFromString(String dataStr) {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         try {
             Date date = df.parse(dataStr);
             calendar.setTime(date);
-            return calendar.get(Calendar.MONTH);
+            return calendar.get(Calendar.YEAR);
         } catch (ParseException e) {
             e.printStackTrace();
             return 0;
         }
+    }
 
-
+    /**
+     * 从字符串中获取月份【字符串形式类似2017-09-29 xx(后面无所谓)】
+     *
+     * @param dataStr 日期时间字符串
+     * @return 月份（1月就是1,0代表解析错误的月份）
+     */
+    public static int getMonthFromString(String dataStr) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        try {
+            Date date = df.parse(dataStr);
+            calendar.setTime(date);
+            return calendar.get(Calendar.MONTH) + 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
      * @return 彩色的月份信息
      */
     public static SpannableString getMonthString() {
-        String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), DataUtil.getMonth());
+        String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), DataUtil.getCurrentMonth());
         return getColorText(month, R.color.text_yellow, 0, month.length() - 1);
     }
 

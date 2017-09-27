@@ -13,6 +13,7 @@ import java.util.List;
 
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityCampusCardBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
@@ -51,8 +52,22 @@ public class CampusCardViewModel {
     }
 
     private void loadDataFromLocal() {
-        List<CampusCard> cards = campusCardDao.queryBuilder().where(
-                CampusCardDao.Properties.Month.eq(DataUtil.getMonth())).build().list();
+
+
+        List<CampusCard> cards = campusCardDao.queryBuilder()
+                .where(
+                        CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                        CampusCardDao.Properties.Year.eq(DataUtil.getCurrentYear()),
+                        CampusCardDao.Properties.Month.eq(DataUtil.getCurrentMonth())
+                )
+                .build().list();
+
+        for (CampusCard card :
+                cards) {
+            Logger.e("UID" + card.getUserId());
+            Logger.e("YEAR" + card.getYear());
+            Logger.e("MONTH" + card.getMonth());
+        }
         initData(cards);
     }
 
@@ -87,8 +102,12 @@ public class CampusCardViewModel {
      * @param card 饭卡数据
      */
     private void insert(CampusCard card) {
-        CampusCard campusCard = campusCardDao.queryBuilder().where(CampusCardDao.Properties.Time.eq(card.getTime())).unique();
+        CampusCard campusCard = campusCardDao.queryBuilder().where(
+                CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                CampusCardDao.Properties.Time.eq(card.getTime())
+        ).unique();
         if (campusCard == null) {
+            card.complete();
             campusCardDao.insert(card);
             Logger.e("插入新的饭卡消费数据");
         } else {
