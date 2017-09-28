@@ -47,9 +47,7 @@ public class CampusCardViewModel {
 
         campusCardDao = DaoUtil.getInstance().getSession().getCampusCardDao();
 
-
         loadDataFromLocal();
-
     }
 
     /**
@@ -76,8 +74,7 @@ public class CampusCardViewModel {
         showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
 
         double temp = 0;
-        for (CampusCard ca :
-                info) {
+        for (CampusCard ca : info) {
             temp += ca.getConsumption();
         }
         expenses.set(String.valueOf(temp));

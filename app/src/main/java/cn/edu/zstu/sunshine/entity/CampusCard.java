@@ -31,7 +31,7 @@ public class CampusCard {
      * 补全其他所需信息
      */
     public void complete() {
-        this.userId = AppConfig.getDefaultUserId();
+        setUserId(AppConfig.getDefaultUserId());
         setYear(DataUtil.getYearFromString(time));
         setMonth(DataUtil.getMonthFromString(time));
     }

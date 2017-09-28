@@ -4,6 +4,8 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import cn.edu.zstu.sunshine.base.AppConfig;
+
 /**
  * 网络信息的实体类
  * Created by CooLoongWu on 2017-9-20 10:25.
@@ -21,6 +23,13 @@ public class Network {
     private String balance; //余额
     private String type;    //网络类型（移动网通电信）
     private String port;    //端口号
+
+    /**
+     * 补全用户名信息
+     */
+    public void complete() {
+        setUserId(AppConfig.getDefaultUserId());
+    }
 
     @Generated(hash = 1785083936)
     public Network(Long id, String userId, String name, String ip, String balance,

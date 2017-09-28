@@ -9,13 +9,12 @@ import cn.edu.zstu.sunshine.entity.Network;
 
 public class EntityCopyUtil {
 
-    public static Network CopyNetwork(Network networkTo, Network networkFrom) {
+    public static Network copyNetwork(Network networkTo, Network networkFrom) {
         networkTo.setPort(networkFrom.getPort());
         networkTo.setIp(networkFrom.getIp());
         networkTo.setType(networkFrom.getType());
         networkTo.setName(networkFrom.getName());
         networkTo.setBalance(networkFrom.getBalance());
-        networkTo.setUserId(networkFrom.getUserId());
         return networkTo;
     }
 }

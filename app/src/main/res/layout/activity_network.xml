@@ -89,7 +89,7 @@
                     android:layout_marginEnd="8dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{viewModel.network.get().getType}"
+                    android:text="@{viewModel.network.get().getType,default=@string/label_network_type}"
                     android:textAllCaps="true"
                     android:textColor="@color/white_translucent"
                     android:textSize="14sp"

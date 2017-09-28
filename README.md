@@ -30,8 +30,10 @@ VectorDrawable 的特点就是它不会因为图像的缩放而失真，这样�
 ## 依赖的第三方库及其他工具
 * 日志打印[orhanobut/logger](https://github.com/orhanobut/logger)
 * ORM数据库[greenrobot/greenDAO](https://github.com/greenrobot/greenDAO)
+* 事件总线框架[greenrobot/EventBus](https://github.com/greenrobot/EventBus)
 * 网络请求库[square/okhttp](https://github.com/square/okhttp)
 * 图片处理库[square/picasso](https://github.com/square/picasso)
+* Json解析[alibaba/fastjson](https://github.com/alibaba/fastjson)
 * 客服[美洽](https://meiqia.com/)  
 * 模拟数据[EasyMock](https://github.com/easy-mock/easy-mock)
   

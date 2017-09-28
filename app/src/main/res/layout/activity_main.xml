@@ -18,21 +18,15 @@
         android:layout_height="match_parent"
         android:background="@color/color_bg">
 
-        <FrameLayout
-            android:id="@+id/layout_banner"
+        <cn.edu.zstu.sunshine.views.SelfAdaptationImageView
+            android:id="@+id/img_banner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="180dp"
+            android:src="@mipmap/festival_national"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <cn.edu.zstu.sunshine.views.SelfAdaptationImageView
-                android:id="@+id/img_banner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/festival_national" />
-        </FrameLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -41,7 +35,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_banner" />
+            app:layout_constraintTop_toBottomOf="@+id/img_banner" />
 
         <!--<cn.edu.zstu.sunshine.views.RunView-->
         <!--android:id="@+id/ring_view"-->
@@ -51,132 +45,81 @@
         <!--app:layout_constraintRight_toRightOf="parent"-->
         <!--app:layout_constraintTop_toBottomOf="@+id/img_banner" />-->
 
-        <Button
-            android:id="@+id/btn_user"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="38dp"
-            android:background="@drawable/ic_main_user_24dp"
-            android:onClick="@{viewModel.onUserClick}"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <RelativeLayout
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_user"
-            app:layout_constraintRight_toLeftOf="@+id/btn_user"
-            app:layout_constraintTop_toTopOf="@+id/btn_user">
+            android:id="@+id/layout_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/shape_unread"
-                android:visibility="@{viewModel.haveUnRead ? View.VISIBLE : View.GONE}" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="中秋国庆"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:typeface="monospace" />
 
             <Button
-                android:layout_width="88dp"
-                android:layout_height="48dp"
-                android:background="@drawable/ic_main_service_24dp"
-                android:onClick="@{viewModel.onCustomerServiceClick}" />
+                android:id="@+id/btn_user"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_main_user_24dp"
+                android:onClick="@{viewModel.onUserClick}" />
+
+            <RelativeLayout
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/btn_user">
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    android:background="@drawable/shape_unread"
+                    android:visibility="@{viewModel.haveUnRead ? View.VISIBLE : View.GONE}" />
+
+                <Button
+                    android:layout_width="88dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/ic_main_service_24dp"
+                    android:onClick="@{viewModel.onCustomerServiceClick}" />
+            </RelativeLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_search"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_top">
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/layout"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/ring_view">-->
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:srcCompat="@drawable/ic_search_24dp" />
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="输入图书、作者名"
+                android:textSize="14sp" />
+        </LinearLayout>
 
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_timetable_24dp"-->
-        <!--android:onClick="@{viewModel.onTimeTableClick}" />-->
-        <!--</LinearLayout>-->
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
-
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_campus_24dp"-->
-        <!--android:onClick="@{viewModel.onCampusCardClick}" />-->
-        <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/layout">-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
-
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_library_24dp" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
-
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_exam_24dp" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
-
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_result_24dp" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center">-->
-
-        <!--<Button-->
-        <!--android:layout_width="48dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ic_main_network_24dp" />-->
-        <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
     </android.support.constraint.ConstraintLayout>
 </layout>
 
