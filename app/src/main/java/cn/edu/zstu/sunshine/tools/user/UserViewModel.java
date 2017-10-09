@@ -120,7 +120,7 @@ public class UserViewModel {
 
     private void showDeleteConfirmDialog() {
         new DialogUtil(context)
-                .setView(R.layout.dialog_base)
+                .setLayout(R.layout.dialog_base)
                 .setTitle("确定删除该用户吗？")
                 .setContent("删除后该用户的资料也会全部删除，请三思~")
                 .setButtonText("删掉吧")
@@ -136,7 +136,7 @@ public class UserViewModel {
 
     private void showSwitchConfirmDialog() {
         new DialogUtil(context)
-                .setView(R.layout.dialog_base)
+                .setLayout(R.layout.dialog_base)
                 .setTitle("确定切换为该用户吗？")
                 .setButtonText("立即切换")
                 .onConfirmClickListener(new View.OnClickListener() {

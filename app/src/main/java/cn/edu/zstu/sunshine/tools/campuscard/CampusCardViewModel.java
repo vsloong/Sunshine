@@ -3,6 +3,8 @@ package cn.edu.zstu.sunshine.tools.campuscard;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ViewDataBinding;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -18,10 +20,13 @@ import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityCampusCardBinding;
+import cn.edu.zstu.sunshine.databinding.DialogMonthBinding;
+import cn.edu.zstu.sunshine.databinding.ItemMonthBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DialogUtil;
 
 /**
  * 校园卡消费记录的VM
@@ -40,6 +45,8 @@ public class CampusCardViewModel {
     private List<CampusCard> data = new ArrayList<>();
 
     private CampusCardDao campusCardDao;
+
+    private int month = 0;
 
     CampusCardViewModel(Context context, ActivityCampusCardBinding binding) {
         this.context = context;
@@ -79,6 +86,51 @@ public class CampusCardViewModel {
         }
         expenses.set(String.valueOf(temp));
         balance.set("45");
+    }
+
+    public void onBtnSelectMonthClick(View view) {
+        final List<String> monthStr = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            monthStr.add(String.valueOf(i + 1));
+        }
+
+        new DialogUtil(context)
+                .setLayout(R.layout.dialog_month)
+                .setTitle("请选择相应的月份")
+                .onSetViewListener(new DialogUtil.IonSetViewListener() {
+                    @Override
+                    public void setView(final ViewDataBinding binding) {
+                        Logger.e("执行了");
+                        ((DialogMonthBinding) binding).include.recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
+                        ((DialogMonthBinding) binding).include.recyclerView.setAdapter(
+                                new BaseAdapter<>(R.layout.item_month, BR.month, monthStr)
+                                        .setOnItemHandler(new BaseAdapter.OnItemHandler() {
+                                            @Override
+                                            public void onItemHandler(final ViewDataBinding viewDataBinding, final int position) {
+                                                ((ItemMonthBinding) viewDataBinding).layoutItem.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+//                                                        if (month != 0) {
+//                                                            ((DialogMonthBinding) binding).include.recyclerView.getAdapter().notifyItemChanged(month - 1);
+//                                                        }
+                                                        Logger.e("点击了" + (position + 1) + "月");
+                                                        ((ItemMonthBinding) viewDataBinding).layoutItem.setBackgroundResource(R.drawable.shape_round_selected);
+                                                        month = position + 1;
+                                                    }
+                                                });
+                                            }
+                                        })
+                        );
+                    }
+                })
+                .onConfirmClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Logger.e("点击了确定");
+                    }
+                })
+                .build()
+                .show();
     }
 
     /**

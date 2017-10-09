@@ -1,7 +1,10 @@
 package cn.edu.zstu.sunshine.utils;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,13 +19,15 @@ import cn.edu.zstu.sunshine.R;
 public class DialogUtil {
 
     private Context context;
-    private int layoutId;
     private boolean cancelable = false;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
+    private int layoutId;
+    private ViewDataBinding binding;
 
     private View.OnClickListener confirmClickListener;
     private View.OnClickListener cancelClickListener;
+    private IonSetViewListener onSetViewListener;
 
     private View dialogView;
 
@@ -30,11 +35,12 @@ public class DialogUtil {
     public DialogUtil(Context context) {
         this.context = context;
         builder = new AlertDialog.Builder(context, R.style.DialogTheme);
-        dialogView = View.inflate(context, R.layout.dialog_base, null);
     }
 
-    public DialogUtil setView(int layoutId) {
+    public DialogUtil setLayout(int layoutId) {
         this.layoutId = layoutId;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false);
+        dialogView = binding.getRoot();
         return this;
     }
 
@@ -53,8 +59,13 @@ public class DialogUtil {
         return this;
     }
 
-    public AlertDialog build() {
+    public DialogUtil onSetViewListener(IonSetViewListener listener) {
+        this.onSetViewListener = listener;
+        listener.setView(binding);
+        return this;
+    }
 
+    public AlertDialog build() {
         builder.setView(dialogView);
         dialog = builder.create();
         dialog.setCancelable(cancelable);
@@ -79,7 +90,6 @@ public class DialogUtil {
             }
         });
 
-
         return dialog;
     }
 
@@ -101,6 +111,10 @@ public class DialogUtil {
         Button btn = dialogView.findViewById(R.id.btn_confirm);
         btn.setText(str);
         return this;
+    }
+
+    public interface IonSetViewListener {
+        void setView(ViewDataBinding binding);
     }
 
 }

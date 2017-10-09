@@ -27,6 +27,9 @@ VectorDrawable 的特点就是它不会因为图像的缩放而失真，这样�
 * DataBinding基本使用
 * [DataBinding中include布局使用][5]
 
+### FastJson  
+fastjson是一款Json处理库，支持序列化和反序列化，正如其名字一样号称是解析速度最快的。
+
 ## 依赖的第三方库及其他工具
 * 日志打印[orhanobut/logger](https://github.com/orhanobut/logger)
 * ORM数据库[greenrobot/greenDAO](https://github.com/greenrobot/greenDAO)
