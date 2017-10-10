@@ -39,6 +39,8 @@ public class CampusCardViewModel {
 
     public ObservableField<String> expenses = new ObservableField<>();  //本月累计消费金额
     public ObservableField<String> balance = new ObservableField<>();   //余额
+    public ObservableField<Integer> month = new ObservableField<>();   //月份
+    public ObservableField<String> monthInfo = new ObservableField<>();   //月份信息
 
     private Context context;
     private ActivityCampusCardBinding binding;
@@ -46,12 +48,12 @@ public class CampusCardViewModel {
 
     private CampusCardDao campusCardDao;
 
-    private int month = 0;
-
     CampusCardViewModel(Context context, ActivityCampusCardBinding binding) {
         this.context = context;
         this.binding = binding;
 
+        month.set(0);
+        monthInfo.set("本月消费");
         campusCardDao = DaoUtil.getInstance().getSession().getCampusCardDao();
 
         loadDataFromLocal();
@@ -89,9 +91,9 @@ public class CampusCardViewModel {
     }
 
     public void onBtnSelectMonthClick(View view) {
-        final List<String> monthStr = new ArrayList<>();
+        final List<String> months = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            monthStr.add(String.valueOf(i + 1));
+            months.add(String.valueOf(i + 1));
         }
 
         new DialogUtil(context)
@@ -103,7 +105,7 @@ public class CampusCardViewModel {
                         Logger.e("执行了");
                         ((DialogMonthBinding) binding).include.recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
                         ((DialogMonthBinding) binding).include.recyclerView.setAdapter(
-                                new BaseAdapter<>(R.layout.item_month, BR.month, monthStr)
+                                new BaseAdapter<>(R.layout.item_month, BR.month, months)
                                         .setOnItemHandler(new BaseAdapter.OnItemHandler() {
                                             @Override
                                             public void onItemHandler(final ViewDataBinding viewDataBinding, final int position) {
@@ -115,7 +117,7 @@ public class CampusCardViewModel {
 //                                                        }
                                                         Logger.e("点击了" + (position + 1) + "月");
                                                         ((ItemMonthBinding) viewDataBinding).layoutItem.setBackgroundResource(R.drawable.shape_round_selected);
-                                                        month = position + 1;
+                                                        month.set(position + 1);
                                                     }
                                                 });
                                             }
@@ -126,7 +128,7 @@ public class CampusCardViewModel {
                 .onConfirmClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Logger.e("点击了确定");
+                        monthInfo.set(month.get() + "月消费");
                     }
                 })
                 .build()

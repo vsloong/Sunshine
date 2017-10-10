@@ -83,7 +83,7 @@
                             android:id="@+id/text_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="本月消费"
+                            android:text="@{viewModel.monthInfo}"
                             android:textColor="@color/white_translucent"
                             android:textSize="14sp" />
 
