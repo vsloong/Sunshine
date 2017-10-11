@@ -41,6 +41,9 @@ public class DialogUtil {
         this.layoutId = layoutId;
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, null, false);
         dialogView = binding.getRoot();
+
+        builder.setView(dialogView);
+        dialog = builder.create();
         return this;
     }
 
@@ -60,14 +63,14 @@ public class DialogUtil {
     }
 
     public DialogUtil onSetViewListener(IonSetViewListener listener) {
+
         this.onSetViewListener = listener;
-        listener.setView(binding);
+        listener.setView(binding, dialog);
         return this;
     }
 
     public AlertDialog build() {
-        builder.setView(dialogView);
-        dialog = builder.create();
+
         dialog.setCancelable(cancelable);
 
         dialogView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
@@ -114,7 +117,7 @@ public class DialogUtil {
     }
 
     public interface IonSetViewListener {
-        void setView(ViewDataBinding binding);
+        void setView(ViewDataBinding binding, AlertDialog dialog);
     }
 
 }

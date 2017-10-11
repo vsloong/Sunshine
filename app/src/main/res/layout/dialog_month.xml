@@ -63,7 +63,8 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/selector_btn_dialog"
                     android:text="确定"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <Button
