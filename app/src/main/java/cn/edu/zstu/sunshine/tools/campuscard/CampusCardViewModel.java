@@ -6,7 +6,6 @@ import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.orhanobut.logger.Logger;
@@ -41,7 +40,6 @@ public class CampusCardViewModel {
     public ObservableField<String> expenses = new ObservableField<>();  //本月累计消费金额
     public ObservableField<String> balance = new ObservableField<>();   //余额
     public ObservableField<Integer> month = new ObservableField<>();   //月份
-    public ObservableField<String> monthInfo = new ObservableField<>();   //月份信息
 
     private Context context;
     private ActivityCampusCardBinding binding;
@@ -53,42 +51,95 @@ public class CampusCardViewModel {
         this.context = context;
         this.binding = binding;
 
-        month.set(0);
-        monthInfo.set("本月消费");
+        month.set(DataUtil.getCurrentMonth());
         campusCardDao = DaoUtil.getInstance().getSession().getCampusCardDao();
 
+        init();
+    }
+
+    List<CampusCard> getData() {
+        return data;
+    }
+
+    private void setData(List<CampusCard> cards) {
+        data.clear();
+        data.addAll(cards);
+    }
+
+    void init() {
         loadDataFromLocal();
+        loadDataIntoView();
     }
 
     /**
      * 加载本地当月消费数据【按照日期降序排列】
      */
-    void loadDataFromLocal() {
+    private void loadDataFromLocal() {
         List<CampusCard> cards = campusCardDao.queryBuilder()
                 .where(
                         CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
                         CampusCardDao.Properties.Year.eq(DataUtil.getCurrentYear()),
-                        CampusCardDao.Properties.Month.eq(DataUtil.getCurrentMonth())
+                        CampusCardDao.Properties.Month.eq(month.get())
                 )
                 .orderDesc(CampusCardDao.Properties.Time)
                 .build().list();
-        initData(cards);
+        setData(cards);
     }
 
-    private void initData(List<CampusCard> info) {
-        data.clear();
-        data.addAll(info);
-        binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_campus_card, BR.campusCard, data));
+    /**
+     * 加载数据到视图
+     */
+    private void loadDataIntoView() {
+        showEmptyView.set(data.size() <= 0);
 
-        showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
+        if (binding.include.recyclerView.getAdapter() != null) {
+            binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+        }
 
         double temp = 0;
-        for (CampusCard ca : info) {
+        for (CampusCard ca : data) {
             temp += ca.getConsumption();
         }
         expenses.set(String.valueOf(temp));
         balance.set("45");
+    }
+
+    /**
+     * 存储饭卡数据
+     *
+     * @param data 饭卡消费列表数据
+     */
+    void insert(final List<CampusCard> data) {
+        campusCardDao.getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (CampusCard card : data) {
+                    insert(card);
+                }
+
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new CampusCard());
+            }
+        });
+    }
+
+    /**
+     * 判断是否存储了相同的数据
+     *
+     * @param card 饭卡数据
+     */
+    private void insert(CampusCard card) {
+        CampusCard campusCard = campusCardDao.queryBuilder().where(
+                CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                CampusCardDao.Properties.Time.eq(card.getTime())
+        ).unique();
+        if (campusCard == null) {
+            card.complete();
+            campusCardDao.insert(card);
+            Logger.e("插入新的饭卡消费数据");
+        } else {
+            Logger.e("饭卡消费数据已存在");
+        }
     }
 
     public void onBtnSelectMonthClick(View view) {
@@ -118,7 +169,8 @@ public class CampusCardViewModel {
                                                         Logger.e("点击了" + (position + 1) + "月");
 
                                                         month.set(position + 1);
-                                                        monthInfo.set(month.get() + "月消费");
+
+                                                        init();
 
                                                         dialog.dismiss();
                                                     }
@@ -130,46 +182,5 @@ public class CampusCardViewModel {
                 })
                 .build()
                 .show();
-    }
-
-    /**
-     * 存储饭卡数据
-     *
-     * @param data 饭卡消费列表数据
-     */
-    void insert(final List<CampusCard> data) {
-        campusCardDao.getSession().runInTx(new Runnable() {
-            @Override
-            public void run() {
-                for (CampusCard card : data) {
-                    insert(card);
-                }
-                //通知页面数据刷新
-                EventBus.getDefault().post(new CampusCard());
-            }
-        });
-    }
-
-    /**
-     * 判断是否存储了相同的数据
-     *
-     * @param card 饭卡数据
-     */
-    private void insert(CampusCard card) {
-        CampusCard campusCard = campusCardDao.queryBuilder().where(
-                CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
-                CampusCardDao.Properties.Time.eq(card.getTime())
-        ).unique();
-        if (campusCard == null) {
-            card.complete();
-            campusCardDao.insert(card);
-            Logger.e("插入新的饭卡消费数据");
-        } else {
-            Logger.e("饭卡消费数据已存在");
-        }
-    }
-
-    public void onBtnBackClick(View view) {
-        ((CampusCardActivity) context).finish();
     }
 }

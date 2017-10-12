@@ -75,15 +75,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
                         android:clickable="true"
-                        android:onClick="@{viewModel.onBtnSelectMonthClick}">
+                        android:onClick="@{viewModel.onBtnSelectMonthClick}"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.monthInfo}"
+                            android:text="@{viewModel.month + @string/label_card_month,default=@string/label_card_month_default}"
                             android:textColor="@color/white_translucent"
                             android:textSize="14sp" />
 
