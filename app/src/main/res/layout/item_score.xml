@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="exam"
-            type="cn.edu.zstu.sunshine.entity.Exam" />
+            name="score"
+            type="cn.edu.zstu.sunshine.entity.Score" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -52,26 +52,29 @@
             tools:text="数字图像分析与艺术化处理" />
 
 
-        <ImageView
-            android:id="@+id/img_classroom"
+        <TextView
+            android:id="@+id/text_score_info"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginTop="4dp"
+            android:text="补"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
             app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
             app:layout_constraintTop_toBottomOf="@+id/text_name_course"
-            app:srcCompat="@drawable/ic_sunshine_yellow_24dp" />
+            android:background="@drawable/ic_score_24dp" />
 
         <TextView
-            android:id="@+id/text_class_address"
+            android:id="@+id/text_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="8dp"
             android:textColor="@color/text_green"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_classroom"
-            app:layout_constraintLeft_toRightOf="@+id/img_classroom"
-            app:layout_constraintTop_toTopOf="@+id/img_classroom"
+            app:layout_constraintBottom_toBottomOf="@+id/text_score_info"
+            app:layout_constraintLeft_toRightOf="@+id/text_score_info"
+            app:layout_constraintTop_toTopOf="@+id/text_score_info"
             tools:text="98" />
 
 

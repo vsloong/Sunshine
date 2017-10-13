@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cn.edu.zstu.sunshine.tools.exam.ExamActivity">
 
@@ -13,8 +14,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/color_bg"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_bg">
 
         <include
             android:id="@+id/include_title"
@@ -26,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/include_recycler"
+            android:id="@+id/include"
             layout="@layout/include_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -35,7 +36,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include_title" />
+            app:layout_constraintTop_toBottomOf="@+id/include_title"
+            bind:showEmptyView="@{viewModel.showEmptyView}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

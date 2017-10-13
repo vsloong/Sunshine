@@ -2,23 +2,29 @@ package cn.edu.zstu.sunshine.tools.exam;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityExamBinding;
 
 public class ExamActivity extends BaseActivity {
 
     private ActivityExamBinding binding;
+    private ExamViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exam);
-        binding.setViewModel(new ExamViewModel(this, binding));
+        viewModel = new ExamViewModel(this, binding);
+        binding.setViewModel(viewModel);
 
         initToolbar();
+        initViews();
     }
 
     private void initToolbar() {
@@ -29,5 +35,10 @@ public class ExamActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    private void initViews() {
+        binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_exam, BR.exam, viewModel.getData()));
     }
 }
