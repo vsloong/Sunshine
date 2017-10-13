@@ -12,6 +12,7 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,11 +97,13 @@ public class CampusCardViewModel {
             binding.include.recyclerView.getAdapter().notifyDataSetChanged();
         }
 
-        double temp = 0;
+        BigDecimal bigDecimal = new BigDecimal("0");
         for (CampusCard ca : data) {
-            temp += ca.getConsumption();
+            bigDecimal = new BigDecimal(
+                    bigDecimal.add(new BigDecimal(Double.toString(ca.getConsumption()))).toString()
+            );
         }
-        expenses.set(String.valueOf(temp));
+        expenses.set(bigDecimal.toString());
         balance.set("45");
     }
 
