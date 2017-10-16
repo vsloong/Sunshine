@@ -26,6 +26,7 @@ import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityCampusCardBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.JsonParse;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DataUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
@@ -88,7 +89,7 @@ public class CampusCardActivity extends BaseActivity {
                         }
                 );
 
-                viewModel.insert(jsonParse.getData());
+                DaoUtil.insertOrUpdate(jsonParse.getData());
             }
         });
     }

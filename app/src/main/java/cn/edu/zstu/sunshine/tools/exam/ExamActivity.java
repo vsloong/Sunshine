@@ -5,11 +5,24 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.orhanobut.logger.Logger;
+
+import java.io.IOException;
+import java.util.List;
+
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.Api;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityExamBinding;
+import cn.edu.zstu.sunshine.entity.Exam;
+import cn.edu.zstu.sunshine.entity.JsonParse;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ExamActivity extends BaseActivity {
 
@@ -25,6 +38,7 @@ public class ExamActivity extends BaseActivity {
 
         initToolbar();
         initViews();
+        loadDataFromNetWork();
     }
 
     private void initToolbar() {
@@ -40,5 +54,26 @@ public class ExamActivity extends BaseActivity {
     private void initViews() {
         binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_exam, BR.exam, viewModel.getData()));
+    }
+
+    private void loadDataFromNetWork() {
+        Api.getExamInfo(this, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.e("获取信息失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String data = response.body().string();
+                Logger.e("获取信息成功：" + data);
+                final JsonParse<List<Exam>> jsonParse = JSON.parseObject(data,
+                        new TypeReference<JsonParse<List<Exam>>>() {
+                        }
+                );
+
+                //viewModel.insert(jsonParse.getData());
+            }
+        });
     }
 }

@@ -10,8 +10,6 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,44 +103,6 @@ public class CampusCardViewModel {
         }
         expenses.set(bigDecimal.toString());
         balance.set("45");
-    }
-
-    /**
-     * 存储饭卡数据
-     *
-     * @param data 饭卡消费列表数据
-     */
-    void insert(final List<CampusCard> data) {
-        campusCardDao.getSession().runInTx(new Runnable() {
-            @Override
-            public void run() {
-                for (CampusCard card : data) {
-                    insert(card);
-                }
-
-                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
-                EventBus.getDefault().post(new CampusCard());
-            }
-        });
-    }
-
-    /**
-     * 判断是否存储了相同的数据
-     *
-     * @param card 饭卡数据
-     */
-    private void insert(CampusCard card) {
-        CampusCard campusCard = campusCardDao.queryBuilder().where(
-                CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
-                CampusCardDao.Properties.Time.eq(card.getTime())
-        ).unique();
-        if (campusCard == null) {
-            card.complete();
-            campusCardDao.insert(card);
-            Logger.e("插入新的饭卡消费数据");
-        } else {
-            Logger.e("饭卡消费数据已存在");
-        }
     }
 
     public void onBtnSelectMonthClick(View view) {

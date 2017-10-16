@@ -15,6 +15,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.Api;
@@ -22,6 +24,7 @@ import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.entity.Network;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -91,7 +94,11 @@ public class NetworkActivity extends BaseActivity {
                 Logger.e("类型：" + network.getType());
                 Logger.e("端口号：" + network.getPort());
                 network.complete();
-                viewModel.insertOrUpdateDB(network);
+
+                //为了统一使用插入删除的方法
+                List<Network> data = new ArrayList<>();
+                data.add(network);
+                DaoUtil.insertOrUpdate(data);
             }
         });
     }

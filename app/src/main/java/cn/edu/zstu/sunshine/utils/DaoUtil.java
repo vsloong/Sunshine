@@ -1,9 +1,19 @@
 package cn.edu.zstu.sunshine.utils;
 
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseApplication;
+import cn.edu.zstu.sunshine.entity.CampusCard;
+import cn.edu.zstu.sunshine.entity.Network;
+import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
 import cn.edu.zstu.sunshine.greendao.DaoSession;
+import cn.edu.zstu.sunshine.greendao.NetworkDao;
 
 /**
  * GreenDao的工具类
@@ -31,5 +41,79 @@ public class DaoUtil {
 
     public DaoSession getSession() {
         return daoSession;
+    }
+
+    public static <T> void insertOrUpdate(List<T> data) {
+
+        if (data != null && !data.isEmpty()) {
+            String[] name = data.get(0).getClass().getName().split("\\.");
+            String className = name[name.length - 1];
+            Logger.e("泛型名称：" + className);
+            switch (className) {
+                case "CampusCard":
+                    insert((List<CampusCard>) data);
+                    break;
+                case "Network":
+                    insert((Network) data.get(0));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            Logger.e("泛型类型：" + "null");
+        }
+    }
+
+    /**
+     * 存储饭卡数据
+     *
+     * @param data 饭卡消费列表数据
+     */
+    private static void insert(final List<CampusCard> data) {
+        daoSession.getCampusCardDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (CampusCard card : data) {
+                    CampusCard campusCard = daoSession
+                            .getCampusCardDao()
+                            .queryBuilder()
+                            .where(
+                                    CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    CampusCardDao.Properties.Time.eq(card.getTime()))
+                            .unique();
+                    if (campusCard == null) {
+                        card.complete();
+                        daoSession.getCampusCardDao().insert(card);
+                        Logger.e("插入新的饭卡消费数据");
+                    } else {
+                        Logger.e("饭卡消费数据已存在");
+                    }
+                }
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new CampusCard());
+            }
+        });
+    }
+
+    /**
+     * 插入或者更新网费数据
+     *
+     * @param network 网费信息实体
+     */
+    private static void insert(Network network) {
+        Network networkData = daoSession.getNetworkDao().queryBuilder()
+                .where(NetworkDao.Properties.UserId.eq(AppConfig.getDefaultUserId()))
+                .build()
+                .unique();
+        if (networkData != null) {
+            daoSession.getNetworkDao().update(
+                    EntityCopyUtil.copyNetwork(networkData, network)
+            );
+            Logger.e("网费数据更新");
+        } else {
+            daoSession.getNetworkDao().insert(network);
+            Logger.e("网费数据插入");
+        }
+        EventBus.getDefault().post(network);
     }
 }

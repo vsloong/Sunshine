@@ -5,8 +5,6 @@ import android.databinding.ObservableField;
 
 import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
-
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityNetworkBinding;
 import cn.edu.zstu.sunshine.entity.Network;
@@ -59,25 +57,5 @@ public class NetworkViewModel {
         }
     }
 
-    /**
-     * 插入或者更新网费数据
-     *
-     * @param network 网费信息实体
-     */
-    void insertOrUpdateDB(Network network) {
-        Network networkData = networkDao.queryBuilder()
-                .where(NetworkDao.Properties.UserId.eq(AppConfig.getDefaultUserId()))
-                .build()
-                .unique();
-        if (networkData != null) {
-            networkDao.update(
-                    EntityCopyUtil.copyNetwork(networkData, network)
-            );
-            Logger.e("网费数据更新");
-        } else {
-            networkDao.insert(network);
-            Logger.e("网费数据插入");
-        }
-        EventBus.getDefault().post(network);
-    }
+
 }
