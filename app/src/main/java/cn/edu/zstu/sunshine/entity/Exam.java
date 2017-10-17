@@ -1,8 +1,10 @@
 package cn.edu.zstu.sunshine.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
+import cn.edu.zstu.sunshine.base.AppConfig;
 
 /**
  * 考试的实体类
@@ -19,6 +21,13 @@ public class Exam {
     private String time;    //考试时间
     private String address; //考试地点
     private String seatNumber;//座位号
+
+    /**
+     * 补全其他所需信息
+     */
+    public void complete() {
+        setUserId(AppConfig.getDefaultUserId());
+    }
 
     @Generated(hash = 701916772)
     public Exam(Long id, String userId, String course, String time, String address,

@@ -1,5 +1,6 @@
 package cn.edu.zstu.sunshine.utils;
 
+import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
 
 /**
@@ -16,5 +17,13 @@ public class EntityCopyUtil {
         networkTo.setName(networkFrom.getName());
         networkTo.setBalance(networkFrom.getBalance());
         return networkTo;
+    }
+
+    public static Exam copyExam(Exam examTo, Exam examFrom) {
+        examTo.setCourse(examFrom.getCourse());
+        examTo.setAddress(examFrom.getAddress());
+        examTo.setSeatNumber(examFrom.getSeatNumber());
+        examTo.setTime(examFrom.getTime());
+        return examTo;
     }
 }

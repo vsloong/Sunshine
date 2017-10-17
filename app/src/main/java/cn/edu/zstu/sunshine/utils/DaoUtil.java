@@ -9,10 +9,12 @@ import java.util.List;
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseApplication;
 import cn.edu.zstu.sunshine.entity.CampusCard;
+import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
 import cn.edu.zstu.sunshine.greendao.DaoSession;
+import cn.edu.zstu.sunshine.greendao.ExamDao;
 import cn.edu.zstu.sunshine.greendao.NetworkDao;
 
 /**
@@ -44,17 +46,19 @@ public class DaoUtil {
     }
 
     public static <T> void insertOrUpdate(List<T> data) {
-
         if (data != null && !data.isEmpty()) {
             String[] name = data.get(0).getClass().getName().split("\\.");
             String className = name[name.length - 1];
             Logger.e("泛型名称：" + className);
             switch (className) {
                 case "CampusCard":
-                    insert((List<CampusCard>) data);
+                    insertCampusCard((List<CampusCard>) data);
                     break;
                 case "Network":
-                    insert((Network) data.get(0));
+                    insertNetwork((Network) data.get(0));
+                    break;
+                case "Exam":
+                    insertExam((List<Exam>) data);
                     break;
                 default:
                     break;
@@ -69,7 +73,7 @@ public class DaoUtil {
      *
      * @param data 饭卡消费列表数据
      */
-    private static void insert(final List<CampusCard> data) {
+    private static void insertCampusCard(final List<CampusCard> data) {
         daoSession.getCampusCardDao().getSession().runInTx(new Runnable() {
             @Override
             public void run() {
@@ -96,11 +100,46 @@ public class DaoUtil {
     }
 
     /**
+     * 存储考试数据
+     *
+     * @param data 考试列表数据
+     */
+    private static void insertExam(final List<Exam> data) {
+        daoSession.getCampusCardDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (Exam exam : data) {
+                    Exam oldExam = daoSession
+                            .getExamDao()
+                            .queryBuilder()
+                            .where(
+                                    ExamDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
+                                    //ExamDao.Properties.Time.eq(exam.getTime()))
+                            )
+                            .unique();
+                    if (oldExam == null) {
+                        exam.complete();
+                        daoSession.getExamDao().insert(exam);
+                        Logger.e("插入新的考试数据");
+                    } else {
+                        Logger.e("考试数据已存在");
+                        daoSession.getExamDao().update(
+                                EntityCopyUtil.copyExam(oldExam, exam)
+                        );
+                    }
+                }
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new Exam());
+            }
+        });
+    }
+
+    /**
      * 插入或者更新网费数据
      *
      * @param network 网费信息实体
      */
-    private static void insert(Network network) {
+    private static void insertNetwork(Network network) {
         Network networkData = daoSession.getNetworkDao().queryBuilder()
                 .where(NetworkDao.Properties.UserId.eq(AppConfig.getDefaultUserId()))
                 .build()

@@ -9,6 +9,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,6 +24,8 @@ import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityExamBinding;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.JsonParse;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
+import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -32,6 +38,7 @@ public class ExamActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exam);
         viewModel = new ExamViewModel(this, binding);
         binding.setViewModel(viewModel);
@@ -43,6 +50,7 @@ public class ExamActivity extends BaseActivity {
 
     private void initToolbar() {
         binding.includeTitle.toolbar.setTitle(R.string.title_activity_exam);
+        setSupportActionBar(binding.includeTitle.toolbar);
         binding.includeTitle.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,8 +80,21 @@ public class ExamActivity extends BaseActivity {
                         }
                 );
 
-                //viewModel.insert(jsonParse.getData());
+                DaoUtil.insertOrUpdate(jsonParse.getData());
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(Exam exam) {
+        viewModel.init();
+        ToastUtil.showShortToast(R.string.toast_data_refresh_success);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        Api.cancel(this);
     }
 }
