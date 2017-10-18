@@ -2,6 +2,7 @@ package cn.edu.zstu.sunshine.utils;
 
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
+import cn.edu.zstu.sunshine.entity.Score;
 
 /**
  * 实体类属性复制
@@ -25,5 +26,16 @@ public class EntityCopyUtil {
         examTo.setSeatNumber(examFrom.getSeatNumber());
         examTo.setTime(examFrom.getTime());
         return examTo;
+    }
+
+    public static Score copyScore(Score scoreTo, Score scoreFrom) {
+        scoreTo.setCourse(scoreFrom.getCourse());
+        scoreTo.setInstitute(scoreFrom.getInstitute());
+        scoreTo.setRebuildScore(scoreFrom.getRebuildScore());
+        scoreTo.setScore(scoreFrom.getScore());
+        scoreTo.setResitScore(scoreFrom.getResitScore());
+        scoreTo.setYear(scoreFrom.getYear());
+        scoreTo.setTerm(scoreFrom.getTerm());
+        return scoreTo;
     }
 }

@@ -55,6 +55,7 @@ public class ExamViewModel {
                         ExamDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
                 )
                 .list();
+
         setData(exams);
     }
 

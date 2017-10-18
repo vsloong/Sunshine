@@ -11,11 +11,13 @@ import cn.edu.zstu.sunshine.base.BaseApplication;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
+import cn.edu.zstu.sunshine.entity.Score;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
 import cn.edu.zstu.sunshine.greendao.DaoSession;
 import cn.edu.zstu.sunshine.greendao.ExamDao;
 import cn.edu.zstu.sunshine.greendao.NetworkDao;
+import cn.edu.zstu.sunshine.greendao.ScoreDao;
 
 /**
  * GreenDao的工具类
@@ -60,6 +62,9 @@ public class DaoUtil {
                 case "Exam":
                     insertExam((List<Exam>) data);
                     break;
+                case "Score":
+                    insertScore((List<Score>) data);
+                    break;
                 default:
                     break;
             }
@@ -69,7 +74,7 @@ public class DaoUtil {
     }
 
     /**
-     * 存储饭卡数据
+     * 存储饭卡数据【不存在更新情况】
      *
      * @param data 饭卡消费列表数据
      */
@@ -100,12 +105,12 @@ public class DaoUtil {
     }
 
     /**
-     * 存储考试数据
+     * 存储或更新考试数据【可能更新考试地点】
      *
      * @param data 考试列表数据
      */
     private static void insertExam(final List<Exam> data) {
-        daoSession.getCampusCardDao().getSession().runInTx(new Runnable() {
+        daoSession.getExamDao().getSession().runInTx(new Runnable() {
             @Override
             public void run() {
                 for (Exam exam : data) {
@@ -113,8 +118,8 @@ public class DaoUtil {
                             .getExamDao()
                             .queryBuilder()
                             .where(
-                                    ExamDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
-                                    //ExamDao.Properties.Time.eq(exam.getTime()))
+                                    ExamDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    ExamDao.Properties.CourseId.eq(exam.getCourseId())
                             )
                             .unique();
                     if (oldExam == null) {
@@ -130,6 +135,41 @@ public class DaoUtil {
                 }
                 //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
                 EventBus.getDefault().post(new Exam());
+            }
+        });
+    }
+
+    /**
+     * 存储或更新成绩数据【可能更新补考成绩等】
+     *
+     * @param data 成绩列表数据
+     */
+    private static void insertScore(final List<Score> data) {
+        daoSession.getScoreDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (Score score : data) {
+                    Score oldScore = daoSession
+                            .getScoreDao()
+                            .queryBuilder()
+                            .where(
+                                    ScoreDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    ScoreDao.Properties.CourseId.eq(score.getCourseId())
+                            )
+                            .unique();
+                    if (oldScore == null) {
+                        score.complete();
+                        daoSession.getScoreDao().insert(score);
+                        Logger.e("插入新的成绩数据");
+                    } else {
+                        Logger.e("成绩数据已存在");
+                        daoSession.getScoreDao().update(
+                                EntityCopyUtil.copyScore(oldScore, score)
+                        );
+                    }
+                }
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new Score());
             }
         });
     }

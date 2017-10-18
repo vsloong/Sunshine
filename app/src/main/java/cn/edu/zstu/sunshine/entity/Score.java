@@ -4,8 +4,11 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import cn.edu.zstu.sunshine.base.AppConfig;
+
 /**
  * 考试成绩的实体类
+ * 课程、考试、成绩三项添加courseId来作为唯一
  * Created by CooLoongWu on 2017-9-25 15:12.
  */
 
@@ -19,20 +22,29 @@ public class Score {
 
     private String year;//学年
     private String term;//学期
+    private String courseId;          //课程ID
     private String course;          //课程名
     private String score;           //成绩
     private String resitScore;     //补考成绩
     private String rebuildScore;    //重修成绩
     private String institute;       //开课学院
 
-    @Generated(hash = 1668242109)
-    public Score(Long id, String userId, String year, String term, String course,
-                 String score, String resitScore, String rebuildScore,
+    /**
+     * 补全其他所需信息
+     */
+    public void complete() {
+        setUserId(AppConfig.getDefaultUserId());
+    }
+
+    @Generated(hash = 304644328)
+    public Score(Long id, String userId, String year, String term, String courseId,
+                 String course, String score, String resitScore, String rebuildScore,
                  String institute) {
         this.id = id;
         this.userId = userId;
         this.year = year;
         this.term = term;
+        this.courseId = courseId;
         this.course = course;
         this.score = score;
         this.resitScore = resitScore;
@@ -114,6 +126,14 @@ public class Score {
 
     public void setInstitute(String institute) {
         this.institute = institute;
+    }
+
+    public String getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
 }

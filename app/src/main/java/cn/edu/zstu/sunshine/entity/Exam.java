@@ -8,6 +8,7 @@ import cn.edu.zstu.sunshine.base.AppConfig;
 
 /**
  * 考试的实体类
+ * 课程、考试、成绩三项添加courseId来作为唯一
  * Created by CooLoongWu on 2017-9-25 14:49.
  */
 @Entity
@@ -17,6 +18,8 @@ public class Exam {
     private Long id;
 
     private String userId;
+
+    private String courseId;  //课程ID
     private String course;  //考试科目
     private String time;    //考试时间
     private String address; //考试地点
@@ -29,11 +32,12 @@ public class Exam {
         setUserId(AppConfig.getDefaultUserId());
     }
 
-    @Generated(hash = 701916772)
-    public Exam(Long id, String userId, String course, String time, String address,
-                String seatNumber) {
+    @Generated(hash = 1546043229)
+    public Exam(Long id, String userId, String courseId, String course, String time,
+                String address, String seatNumber) {
         this.id = id;
         this.userId = userId;
+        this.courseId = courseId;
         this.course = course;
         this.time = time;
         this.address = address;
@@ -90,5 +94,13 @@ public class Exam {
 
     public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public String getCourseId() {
+        return this.courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 }

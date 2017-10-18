@@ -16,11 +16,8 @@ public class Api {
     private static final String URL_NETWORK = "network";
     private static final String URL_CAMPUSCARD = "campuscard";
     private static final String URL_EXAM = "exam";
+    private static final String URL_SCORE = "score";
 
-
-    public static void cancel(Context context) {
-        OkHttpUtil.getInstance().cancel(context);
-    }
 
     /**
      * 获取网费信息
@@ -29,12 +26,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getNetworkInfo(Context context, Callback callback) {
-        OkHttpUtil.getInstance()
-                .tag(context)
-                .post(URL_BASE + URL_NETWORK)
-                .addParam("userId", AppConfig.getDefaultUserId())
-                .build()
-                .enqueue(callback);
+        post(context, callback, URL_NETWORK);
     }
 
     /**
@@ -44,12 +36,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getCampusCardInfo(Context context, Callback callback) {
-        OkHttpUtil.getInstance()
-                .tag(context)
-                .post(URL_BASE + URL_CAMPUSCARD)
-                .addParam("userId", AppConfig.getDefaultUserId())
-                .build()
-                .enqueue(callback);
+        post(context, callback, URL_CAMPUSCARD);
     }
 
     /**
@@ -59,11 +46,29 @@ public class Api {
      * @param callback 回调
      */
     public static void getExamInfo(Context context, Callback callback) {
+        post(context, callback, URL_EXAM);
+    }
+
+    /**
+     * 获取成绩信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
+    public static void getScoreInfo(Context context, Callback callback) {
+        post(context, callback, URL_SCORE);
+    }
+
+    private static void post(Context context, Callback callback, String url) {
         OkHttpUtil.getInstance()
                 .tag(context)
-                .post(URL_BASE + URL_EXAM)
+                .post(URL_BASE + url)
                 .addParam("userId", AppConfig.getDefaultUserId())
                 .build()
                 .enqueue(callback);
+    }
+
+    public static void cancel(Context context) {
+        OkHttpUtil.getInstance().cancel(context);
     }
 }
