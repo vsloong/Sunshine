@@ -17,6 +17,7 @@ public class Api {
     private static final String URL_CAMPUSCARD = "campuscard";
     private static final String URL_EXAM = "exam";
     private static final String URL_SCORE = "score";
+    private static final String URL_TIMETABLE = "timetable";
 
 
     /**
@@ -47,6 +48,16 @@ public class Api {
      */
     public static void getExamInfo(Context context, Callback callback) {
         post(context, callback, URL_EXAM);
+    }
+
+    /**
+     * 获取课表信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
+    public static void getTimetableInfo(Context context, Callback callback) {
+        post(context, callback, URL_TIMETABLE);
     }
 
     /**

@@ -1,5 +1,6 @@
 package cn.edu.zstu.sunshine.utils;
 
+import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.entity.Score;
@@ -11,31 +12,39 @@ import cn.edu.zstu.sunshine.entity.Score;
 
 public class EntityCopyUtil {
 
-    public static Network copyNetwork(Network networkTo, Network networkFrom) {
-        networkTo.setPort(networkFrom.getPort());
-        networkTo.setIp(networkFrom.getIp());
-        networkTo.setType(networkFrom.getType());
-        networkTo.setName(networkFrom.getName());
-        networkTo.setBalance(networkFrom.getBalance());
-        return networkTo;
+    public static Network copyNetwork(Network to, Network from) {
+        to.setPort(from.getPort());
+        to.setIp(from.getIp());
+        to.setType(from.getType());
+        to.setName(from.getName());
+        to.setBalance(from.getBalance());
+        return to;
     }
 
-    public static Exam copyExam(Exam examTo, Exam examFrom) {
-        examTo.setCourse(examFrom.getCourse());
-        examTo.setAddress(examFrom.getAddress());
-        examTo.setSeatNumber(examFrom.getSeatNumber());
-        examTo.setTime(examFrom.getTime());
-        return examTo;
+    public static Exam copyExam(Exam to, Exam from) {
+        to.setCourse(from.getCourse());
+        to.setAddress(from.getAddress());
+        to.setSeatNumber(from.getSeatNumber());
+        to.setTime(from.getTime());
+        return to;
     }
 
-    public static Score copyScore(Score scoreTo, Score scoreFrom) {
-        scoreTo.setCourse(scoreFrom.getCourse());
-        scoreTo.setInstitute(scoreFrom.getInstitute());
-        scoreTo.setRebuildScore(scoreFrom.getRebuildScore());
-        scoreTo.setScore(scoreFrom.getScore());
-        scoreTo.setResitScore(scoreFrom.getResitScore());
-        scoreTo.setYear(scoreFrom.getYear());
-        scoreTo.setTerm(scoreFrom.getTerm());
-        return scoreTo;
+    public static Score copyScore(Score to, Score from) {
+        to.setCourse(from.getCourse());
+        to.setInstitute(from.getInstitute());
+        to.setRebuildScore(from.getRebuildScore());
+        to.setScore(from.getScore());
+        to.setResitScore(from.getResitScore());
+        to.setYear(from.getYear());
+        to.setTerm(from.getTerm());
+        return to;
+    }
+
+    public static Course copyCourse(Course to, Course from) {
+        to.setTime(from.getTime());
+        to.setAddress(from.getAddress());
+        to.setCourseName(from.getCourseName());
+        to.setTeacherName(from.getTeacherName());
+        return to;
     }
 }

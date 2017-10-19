@@ -23,6 +23,14 @@ public class Course {
     private String teacherName;
     private String address;
     private String time;
+    private int day;//星期几，周一就是1
+
+    /**
+     * 补全其他所需信息
+     */
+    public void complete() {
+        setUserId(AppConfig.getDefaultUserId());
+    }
 
     public Course(String courseName, String teacherName, String address, String time) {
         this.userId = AppConfig.getDefaultUserId();

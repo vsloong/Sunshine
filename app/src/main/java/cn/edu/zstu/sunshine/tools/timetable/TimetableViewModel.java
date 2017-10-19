@@ -3,17 +3,16 @@ package cn.edu.zstu.sunshine.tools.timetable;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.zstu.sunshine.BR;
-import cn.edu.zstu.sunshine.R;
-import cn.edu.zstu.sunshine.base.BaseAdapter;
+import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.entity.Course;
+import cn.edu.zstu.sunshine.greendao.CourseDao;
+import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DataUtil;
 
 /**
@@ -29,19 +28,44 @@ public class TimetableViewModel {
     private ActivityTimetableBinding binding;
     private List<Course> data = new ArrayList<>();
 
+    private CourseDao dao;
+
+    private int day = DataUtil.getDayOfWeek();//星期几，周一就是1
+
     TimetableViewModel(Context context, ActivityTimetableBinding binding) {
         this.context = context;
         this.binding = binding;
 
-        initData();
+        dao = DaoUtil.getInstance().getSession().getCourseDao();
+        init();
     }
 
-    private void initData() {
-        //data.add(new Course("计算机原理与应用", "CooLoongWu", "2S-503", "07:00-09:00"));
-        binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, data));
+    public List<Course> getData() {
+        return data;
+    }
 
-        showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
+    public void setData(List<Course> courses) {
+        data.clear();
+        data.addAll(courses);
+    }
+
+    void init() {
+        loadDataFromLocal();
+        loadDataIntoView();
+    }
+
+    private void loadDataFromLocal() {
+        List<Course> courses = dao.queryBuilder().where(
+                CourseDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
+        ).list();
+        setData(courses);
+    }
+
+    private void loadDataIntoView() {
+        showEmptyView.set(data.size() <= 0);
+        if (binding.include.recyclerView.getAdapter() != null) {
+            binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     /**
@@ -55,13 +79,7 @@ public class TimetableViewModel {
             tab.select();
         }
 
-        data.add(new Course("生物科学制药", "伍德", "2N-324", "10:00-12:00"));
-        data.add(new Course("操作系统原理", "詹妮", "2N-324", "15:00-17:00"));
-        binding.include.recyclerView.getAdapter().notifyDataSetChanged();
-        showEmptyView.set(binding.include.recyclerView.getAdapter().getItemCount() <= 0);
+        init();
     }
 
-    public void onBtnBackClick(View view) {
-        ((TimetableActivity) context).finish();
-    }
 }

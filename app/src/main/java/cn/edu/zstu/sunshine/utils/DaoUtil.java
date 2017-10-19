@@ -9,10 +9,12 @@ import java.util.List;
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseApplication;
 import cn.edu.zstu.sunshine.entity.CampusCard;
+import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.entity.Score;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
+import cn.edu.zstu.sunshine.greendao.CourseDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
 import cn.edu.zstu.sunshine.greendao.DaoSession;
 import cn.edu.zstu.sunshine.greendao.ExamDao;
@@ -64,6 +66,9 @@ public class DaoUtil {
                     break;
                 case "Score":
                     insertScore((List<Score>) data);
+                    break;
+                case "Course":
+                    insertCourse((List<Course>) data);
                     break;
                 default:
                     break;
@@ -135,6 +140,41 @@ public class DaoUtil {
                 }
                 //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
                 EventBus.getDefault().post(new Exam());
+            }
+        });
+    }
+
+    /**
+     * 存储或更新课表数据【可能更新课程地点】
+     *
+     * @param data 考试列表数据
+     */
+    private static void insertCourse(final List<Course> data) {
+        daoSession.getCourseDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (Course course : data) {
+                    Course oldCourse = daoSession
+                            .getCourseDao()
+                            .queryBuilder()
+                            .where(
+                                    CourseDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    CourseDao.Properties.CourseId.eq(course.getCourseId())
+                            )
+                            .unique();
+                    if (oldCourse == null) {
+                        course.complete();
+                        daoSession.getCourseDao().insert(course);
+                        Logger.e("插入新的课表数据");
+                    } else {
+                        Logger.e("课表数据已存在");
+                        daoSession.getCourseDao().update(
+                                EntityCopyUtil.copyCourse(oldCourse, course)
+                        );
+                    }
+                }
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new Course());
             }
         });
     }
