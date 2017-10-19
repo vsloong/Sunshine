@@ -3,6 +3,8 @@ package cn.edu.zstu.sunshine.tools.score;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
@@ -88,6 +90,20 @@ public class ScoreActivity extends BaseActivity {
     public void refresh(Score score) {
         viewModel.init();
         ToastUtil.showShortToast(R.string.toast_data_refresh_success);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        loadDataFromNetWork();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
