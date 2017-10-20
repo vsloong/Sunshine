@@ -40,9 +40,9 @@ public class Course {
         this.time = time;
     }
 
-    @Generated(hash = 13235015)
+    @Generated(hash = 535727025)
     public Course(Long id, String userId, String courseId, String courseName,
-                  String teacherName, String address, String time) {
+                  String teacherName, String address, String time, int day) {
         this.id = id;
         this.userId = userId;
         this.courseId = courseId;
@@ -50,6 +50,7 @@ public class Course {
         this.teacherName = teacherName;
         this.address = address;
         this.time = time;
+        this.day = day;
     }
 
     @Generated(hash = 1355838961)
@@ -110,5 +111,13 @@ public class Course {
 
     public void setCourseId(String courseId) {
         this.courseId = courseId;
+    }
+
+    public int getDay() {
+        return this.day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 }

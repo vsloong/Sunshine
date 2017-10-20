@@ -3,6 +3,7 @@ package cn.edu.zstu.sunshine.tools.timetable;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +21,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 
+import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.Api;
 import cn.edu.zstu.sunshine.base.BaseActivity;
+import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.databinding.ItemTabBinding;
 import cn.edu.zstu.sunshine.entity.Course;
@@ -34,7 +37,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class TimetableActivity extends BaseActivity {
+public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     private ActivityTimetableBinding binding;
     private TimetableViewModel viewModel;
@@ -49,6 +52,7 @@ public class TimetableActivity extends BaseActivity {
 
         initToolBar();
         initTabLayout();
+        initViews();
     }
 
     private void initToolBar() {
@@ -60,6 +64,11 @@ public class TimetableActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    private void initViews() {
+        binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, viewModel.getData()));
     }
 
     private void initTabLayout() {
@@ -84,6 +93,7 @@ public class TimetableActivity extends BaseActivity {
             }
         }
         binding.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        binding.tabLayout.addOnTabSelectedListener(this);
     }
 
     private void loadDataFromNetWork() {
@@ -109,7 +119,7 @@ public class TimetableActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refresh(Course course) {
-        viewModel.init();
+        viewModel.backToToday();
         ToastUtil.showShortToast(R.string.toast_data_refresh_success);
     }
 
@@ -131,5 +141,22 @@ public class TimetableActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         Api.cancel(this);
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Logger.e("点击了周" + (tab.getPosition() + 1));
+        viewModel.setDay(tab.getPosition() + 1);
+        viewModel.init();
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }

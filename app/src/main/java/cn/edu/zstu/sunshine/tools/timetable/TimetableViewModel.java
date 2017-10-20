@@ -49,15 +49,23 @@ public class TimetableViewModel {
         data.addAll(courses);
     }
 
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     void init() {
         loadDataFromLocal();
         loadDataIntoView();
     }
 
     private void loadDataFromLocal() {
-        List<Course> courses = dao.queryBuilder().where(
-                CourseDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
-        ).list();
+        List<Course> courses = dao
+                .queryBuilder()
+                .where(
+                        CourseDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                        CourseDao.Properties.Day.eq(day)
+                )
+                .list();
         setData(courses);
     }
 
@@ -74,11 +82,16 @@ public class TimetableViewModel {
      * @param view 按钮
      */
     public void onBtnTodayClickListener(View view) {
+        backToToday();
+    }
+
+    void backToToday() {
         TabLayout.Tab tab = binding.tabLayout.getTabAt(DataUtil.getDayOfWeek() - 1);
         if (tab != null) {
             tab.select();
         }
 
+        setDay(DataUtil.getDayOfWeek());
         init();
     }
 
