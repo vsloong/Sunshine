@@ -69,7 +69,7 @@
 
                     <EditText
                         android:id="@+id/edit_card_id"
-                        android:layout_width="wrap_content"
+                        android:layout_width="232dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:background="@android:color/transparent"
@@ -98,7 +98,7 @@
 
                     <EditText
                         android:id="@+id/edit_card_holder"
-                        android:layout_width="wrap_content"
+                        android:layout_width="232dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@android:color/transparent"
