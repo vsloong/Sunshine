@@ -23,7 +23,6 @@ public class ExamViewModel {
     private List<Exam> data = new ArrayList<>();
 
     private ExamDao examDao;
-
     public ObservableBoolean showEmptyView = new ObservableBoolean(true);
 
     public ExamViewModel(Context context, ActivityExamBinding binding) {

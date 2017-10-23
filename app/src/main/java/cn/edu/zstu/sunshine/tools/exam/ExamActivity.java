@@ -106,6 +106,7 @@ public class ExamActivity extends BaseActivity {
         loadDataFromNetWork();
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

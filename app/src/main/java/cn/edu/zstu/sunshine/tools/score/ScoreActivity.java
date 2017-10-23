@@ -33,6 +33,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ScoreActivity extends BaseActivity {
+
     private ActivityScoreBinding binding;
     private ScoreViewModel viewModel;
 

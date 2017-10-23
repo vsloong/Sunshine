@@ -10,77 +10,83 @@
             type="cn.edu.zstu.sunshine.entity.Score" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:background="@color/colorPrimary"
-        android:padding="16dp">
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="8dp">
 
-        <ImageView
-            android:id="@+id/img_clock"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_clock_24dp" />
-
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@{score.year}"
-            android:textColor="@color/text_gray_light"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_clock"
-            app:layout_constraintLeft_toRightOf="@+id/img_clock"
-            app:layout_constraintTop_toTopOf="@+id/img_clock"
-            tools:text="2017-2018学年 第1学期" />
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/img_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_clock_24dp" />
+
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@{score.year}"
+                android:textColor="@color/text_gray_light"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_clock"
+                app:layout_constraintLeft_toRightOf="@+id/img_clock"
+                app:layout_constraintTop_toTopOf="@+id/img_clock"
+                tools:text="2017年12月25日  07:00-09:00" />
+
+            <TextView
+                android:id="@+id/text_name_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{score.course}"
+                android:textColor="@color/text_white"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="@+id/text_time"
+                app:layout_constraintTop_toBottomOf="@+id/text_time"
+                tools:text="数字图像分析与艺术化处理" />
 
 
-        <TextView
-            android:id="@+id/text_name_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{score.course}"
-            android:textColor="@color/text_white"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="@+id/text_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_time"
-            tools:text="数字图像分析与艺术化处理" />
+            <TextView
+                android:id="@+id/img_classroom"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/ic_score_24dp"
+                android:padding="1dp"
+                android:text="补"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
+                app:layout_constraintTop_toBottomOf="@+id/text_name_course"
+                app:srcCompat="@drawable/ic_classroom_24dp" />
 
+            <TextView
+                android:id="@+id/text_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="8dp"
+                android:text="@{score.score}"
+                android:textColor="@color/text_green"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_classroom"
+                app:layout_constraintLeft_toRightOf="@+id/img_classroom"
+                app:layout_constraintTop_toTopOf="@+id/img_classroom"
+                tools:text="45" />
 
-        <TextView
-            android:id="@+id/text_score_info"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/ic_score_24dp"
-            android:gravity="center"
-            android:text="补"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintLeft_toLeftOf="@+id/text_name_course"
-            app:layout_constraintTop_toBottomOf="@+id/text_name_course" />
-
-        <TextView
-            android:id="@+id/text_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="8dp"
-            android:text="@{score.score}"
-            android:textColor="@color/text_green"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_score_info"
-            app:layout_constraintLeft_toRightOf="@+id/text_score_info"
-            app:layout_constraintTop_toTopOf="@+id/text_score_info"
-            tools:text="98" />
-
-
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </layout>

@@ -20,11 +20,10 @@ import cn.edu.zstu.sunshine.utils.DaoUtil;
 public class ScoreViewModel {
     private Context context;
     private ActivityScoreBinding binding;
-
     private List<Score> data = new ArrayList<>();
-    public ObservableBoolean showEmptyView = new ObservableBoolean(true);
 
     private ScoreDao scoreDao;
+    public ObservableBoolean showEmptyView = new ObservableBoolean(true);
 
     public ScoreViewModel(Context context, ActivityScoreBinding binding) {
         this.context = context;
