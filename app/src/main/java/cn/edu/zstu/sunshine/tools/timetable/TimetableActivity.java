@@ -126,13 +126,23 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        getMenuInflater().inflate(R.menu.menu_timetable, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        loadDataFromNetWork();
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                ToastUtil.showShortToast(R.string.toast_tip_enrollment_time);
+                break;
+            case R.id.menu_refresh:
+                loadDataFromNetWork();
+                break;
+            default:
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

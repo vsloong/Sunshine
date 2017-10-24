@@ -89,6 +89,19 @@
             </android.support.design.widget.TabLayout>
         </LinearLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:pressedTranslationZ="12dp"
+            app:rippleColor="@color/colorPrimary"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_add_24dp" />
+
 
         <include
             android:id="@+id/include"
