@@ -35,6 +35,8 @@
     <string name="label_network_type">网络类型</string>
     <string name="label_card_month">月消费</string>
     <string name="label_card_month_default">月消费</string>
+    <string name="label_course_di">第</string>
+    <string name="label_course_jie">节</string>
 
     <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦~</string>
     <string name="toast_input_not_done">请先完善学号和姓名信息哦~</string>

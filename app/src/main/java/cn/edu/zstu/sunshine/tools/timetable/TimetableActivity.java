@@ -1,6 +1,7 @@
 package cn.edu.zstu.sunshine.tools.timetable;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,7 +69,22 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
 
     private void initViews() {
         binding.include.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, viewModel.getData()));
+        binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, viewModel.getData()).setOnItemHandler(
+                new BaseAdapter.OnItemHandler() {
+                    @Override
+                    public void onItemHandler(ViewDataBinding viewDataBinding, int position) {
+                        viewDataBinding.getRoot().findViewById(R.id.btn_modify).setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        //ToastUtil.showShortToast(R.string.toast_tip_enrollment_time);
+                                        startActivity(TimetableAddActivity.class);
+                                    }
+                                }
+                        );
+                    }
+                }
+        ));
     }
 
     private void initTabLayout() {
@@ -134,7 +150,7 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-                ToastUtil.showShortToast(R.string.toast_tip_enrollment_time);
+                startActivity(TimetableAddActivity.class);
                 break;
             case R.id.menu_refresh:
                 loadDataFromNetWork();
