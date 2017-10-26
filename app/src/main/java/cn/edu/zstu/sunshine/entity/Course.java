@@ -26,6 +26,13 @@ public class Course {
     private int day;                //星期几，周一就是1
     private String weeks;           //课程持续的周数，为空表示一直上，1-9表示从第一周上到第9周
 
+    /**
+     * 补全其他所需信息
+     */
+    public void complete() {
+        setUserId(AppConfig.getDefaultUserId());
+    }
+
     @Generated(hash = 689215176)
     public Course(Long id, String userId, String courseId, String courseName,
                   String teacherName, String address, String time, int day,
@@ -43,13 +50,6 @@ public class Course {
 
     @Generated(hash = 1355838961)
     public Course() {
-    }
-
-    /**
-     * 补全其他所需信息
-     */
-    public void complete() {
-        setUserId(AppConfig.getDefaultUserId());
     }
 
     public Long getId() {

@@ -15,8 +15,12 @@ public class TimetableAddActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String courseId = getIntent().getStringExtra("courseId");
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timetable_add);
-        viewModel = new TimetableAddViewModel(this, binding);
+        viewModel = new TimetableAddViewModel(this, binding, courseId);
         binding.setViewModel(viewModel);
     }
+
 }

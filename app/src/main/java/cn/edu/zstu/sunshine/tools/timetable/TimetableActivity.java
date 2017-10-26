@@ -33,6 +33,7 @@ import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.IntentUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -72,13 +73,14 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
         binding.include.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_course, BR.course, viewModel.getData()).setOnItemHandler(
                 new BaseAdapter.OnItemHandler() {
                     @Override
-                    public void onItemHandler(ViewDataBinding viewDataBinding, int position) {
+                    public void onItemHandler(final ViewDataBinding viewDataBinding, final int position) {
                         viewDataBinding.getRoot().findViewById(R.id.btn_modify).setOnClickListener(
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         //ToastUtil.showShortToast(R.string.toast_tip_enrollment_time);
-                                        startActivity(TimetableAddActivity.class);
+                                        Logger.e(viewModel.getData().get(position).getCourseName());
+                                        IntentUtil.startTimetableAddActivity(TimetableActivity.this, viewModel.getData().get(position).getCourseId());
                                     }
                                 }
                         );
@@ -150,7 +152,7 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-                startActivity(TimetableAddActivity.class);
+                IntentUtil.startTimetableAddActivity(TimetableActivity.this, "");
                 break;
             case R.id.menu_refresh:
                 loadDataFromNetWork();

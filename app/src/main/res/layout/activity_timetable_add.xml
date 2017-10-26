@@ -38,7 +38,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/ic_done_24dp" />
+                android:background="@drawable/ic_done_24dp"
+                android:onClick="@{viewModel.onBtnConfirmClick}" />
         </RelativeLayout>
 
         <LinearLayout
@@ -77,12 +78,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:text="@{@string/label_course_di + viewModel.course.get().time + @string/label_course_jie}"
                         android:textColor="@color/text_gray_light"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/img_clock"
                         app:layout_constraintLeft_toRightOf="@+id/img_clock"
                         app:layout_constraintTop_toTopOf="@+id/img_clock"
-                        tools:text="07:00-09:00" />
+                        tools:text="上课时间" />
 
                     <TextView
                         android:id="@+id/text_status"
@@ -97,12 +99,13 @@
                         tools:text="已下课" />
 
                     <EditText
-                        android:id="@+id/edit_name_course"
+                        android:id="@+id/edit_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:background="@android:color/transparent"
                         android:hint="点击输入课程名"
+                        android:text="@={viewModel.course.get().courseName}"
                         android:textColor="@color/text_white"
                         android:textColorHint="@color/white_translucent"
                         android:textSize="18sp"
@@ -117,12 +120,13 @@
                         android:layout_marginTop="8dp"
                         android:background="@android:color/transparent"
                         android:hint="点击输入任课教师名"
+                        android:text="@={viewModel.course.get().teacherName}"
                         android:textColor="@color/text_white"
                         android:textColorHint="@color/white_translucent"
                         android:textSize="16sp"
-                        app:layout_constraintLeft_toLeftOf="@+id/edit_name_course"
+                        app:layout_constraintLeft_toLeftOf="@+id/edit_name"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/edit_name_course" />
+                        app:layout_constraintTop_toBottomOf="@+id/edit_name" />
 
                     <ImageView
                         android:id="@+id/img_classroom"
@@ -136,10 +140,11 @@
                     <EditText
                         android:id="@+id/edit_address"
                         android:layout_width="0dp"
-                        android:background="@android:color/transparent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:background="@android:color/transparent"
                         android:hint="上课地点"
+                        android:text="@={viewModel.course.get().address}"
                         android:textColor="@color/text_green"
                         android:textColorHint="@color/white_translucent"
                         android:textSize="15sp"
