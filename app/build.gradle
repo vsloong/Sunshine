@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "cn.edu.zstu.sunshine"
         minSdkVersion 19
@@ -13,6 +13,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -37,7 +38,7 @@ android {
 //greenDAO配置
 greendao {
     //版本号，升级时进行配置
-    schemaVersion 1000
+    schemaVersion 1001
     //greenDAO生成代码所在的包名，默认的是在项目包下面新建一个gen
     daoPackage 'cn.edu.zstu.sunshine.greendao'
     //设置自动生成代码的目录
@@ -56,17 +57,18 @@ dependencies {
     //==美洽必须的依赖库
     //==美洽必须的依赖库
     //==美洽必须的图片依赖库之一，其他还支持universal-image-loader、glide、xutils
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-    compile 'com.android.support:design:26.0.0-alpha1'
-    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.orhanobut:logger:2.1.1'
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
-    compile 'com.meiqia:meiqiasdk:3.4.3@aar'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.meiqia:meiqiasdk:3.4.6@aar'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.alibaba:fastjson:1.1.63.android'
+    compile 'com.alibaba:fastjson:1.1.64.android'
+//    compile 'com.android.support:multidex:1.0.2'
     testCompile 'junit:junit:4.12'
 }

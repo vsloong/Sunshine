@@ -32,7 +32,7 @@
         <activity android:name=".tools.score.ScoreActivity" />
         <activity android:name=".tools.exercise.ExerciseActivity" />
         <activity android:name=".tools.library.LibraryActivity" />
-        <activity android:name=".tools.timetable.TimetableAddActivity"></activity>
+        <activity android:name=".tools.timetable.TimetableAddActivity" />
     </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 package cn.edu.zstu.sunshine.base;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -13,7 +13,7 @@ import cn.edu.zstu.sunshine.BuildConfig;
  * Created by CooLoongWu on 2017-8-17 15:26.
  */
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     private static Context context;
 
@@ -34,4 +34,5 @@ public class BaseApplication extends Application {
     public static Context getAppContext() {
         return BaseApplication.context;
     }
+
 }
