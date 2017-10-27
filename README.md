@@ -11,6 +11,10 @@
 （学校也不稀罕这个，哈哈~~）。这次的是“阳光浙理light版”（工程名Sunshine），主要也是为了自己学习MVVM+DataBinding模式而做的，打算暂时去除
 社交功能，专注于各个实用查询功能的开发，如果有能力有可能的话尽量也能给其他高校方便的对接使用。
 
+## 页面功能一览
+![image](./imgs/launcher.jpg) ![image](./imgs/main.jpg) ![image](./imgs/timetable.jpg) 
+![image](./imgs/network.jpg) ![image](./imgs/service.jpg) ![image](./imgs/exam.jpg) 
+
 ## 需要记录的文档吧
 暂时还没有写完，我会一篇一篇的写，写完的会添上博客连接。
 ### 自定义控件

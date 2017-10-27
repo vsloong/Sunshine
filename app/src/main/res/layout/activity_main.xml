@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="180dp"
-            android:src="@mipmap/festival_national"
+            android:src="@mipmap/banner_school"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:text="中秋国庆"
+                android:text="阳光浙理"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:typeface="monospace" />

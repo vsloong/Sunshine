@@ -16,10 +16,13 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:layout_marginTop="4dp"
-        android:padding="8dp"
+
         android:background="@drawable/selector_layout"
+        android:padding="8dp"
         android:gravity="center"
         android:orientation="vertical">
+        <!--
+        android:background="@drawable/selector_layout"-->
 
         <ImageView
             android:id="@+id/img_tool_icon"
