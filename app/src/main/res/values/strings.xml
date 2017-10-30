@@ -38,6 +38,7 @@
     <string name="label_card_month_default">月消费</string>
     <string name="label_course_di">第</string>
     <string name="label_course_jie">节</string>
+    <string name="label_course_time">点击选择上课时间</string>
 
     <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦~</string>
     <string name="toast_input_not_done">请先完善学号和姓名信息哦~</string>
@@ -50,6 +51,8 @@
     <string name="toast_user_delete_err01">该用户是当前登录用户，请切换至其他用户再执行删除~</string>
     <string name="toast_data_refresh_success">数据已刷新~</string>
     <string name="toast_course_id">课程ID是该课程的唯一编号哦~</string>
+    <string name="toast_course_conflict">已存在冲突课程~</string>
+    <string name="toast_course_fill">请完善所有的课程信息哦~</string>
 
     <string name="notice">\t\t使用该软件前请先填写您的学号和姓名信息，学号必须是您的真实学号，姓名可以填写您喜欢的昵称或者真实姓名。
     \n\t\t后续使用中还需要您填写相应功能的查询密码，来完成各项数据查询功能。您的密码将会存储在您手机本地的数据库中，本软件绝不会盗用您的密码。

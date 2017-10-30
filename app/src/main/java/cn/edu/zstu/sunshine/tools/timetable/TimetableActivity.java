@@ -55,6 +55,7 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
         initToolBar();
         initTabLayout();
         initViews();
+        loadDataFromNetWork();
     }
 
     private void initToolBar() {
