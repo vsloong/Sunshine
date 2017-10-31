@@ -41,7 +41,8 @@ fastjson是一款Json处理库，支持序列化和反序列化，正如其名�
 * 网络请求库[square/okhttp](https://github.com/square/okhttp)
 * 图片处理库[square/picasso](https://github.com/square/picasso)
 * Json解析[alibaba/fastjson](https://github.com/alibaba/fastjson)
-* 客服[美洽](https://meiqia.com/)  
+* 环形拖动条[harjot-oberai/Croller](https://github.com/harjot-oberai/Croller)
+* 客服[美洽](https://meiqia.com/)
 * 模拟数据[EasyMock](https://github.com/easy-mock/easy-mock)
   
   

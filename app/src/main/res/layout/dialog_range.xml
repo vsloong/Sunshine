@@ -29,7 +29,7 @@
                     android:id="@+id/text_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="发现新版本"
+                    android:text="设置上课时间"
                     android:textColor="@color/text_gray_dark"
                     android:textSize="18sp"
                     android:visibility="gone"
@@ -37,19 +37,16 @@
                     tools:visibility="visible" />
 
                 <TextView
-                    android:id="@+id/text_content"
+                    android:id="@+id/text_course_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="佛啊撒打发红色的发送了的法术佛哇哦阿斯顿发韩到阿斯蒂芬撒打发斯蒂芬哈送礼等法司法所"
+                    android:text="上课时间（第2,3节）"
                     android:textColor="@color/text_gray_light"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    tools:text="内容"
-                    tools:visibility="gone" />
+                    android:textSize="16sp" />
 
                 <cn.edu.zstu.sunshine.views.RangeSeekBar
-                    android:id="@+id/seek_bar"
+                    android:id="@+id/seek_bar_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -58,17 +55,39 @@
                     app:rightCursorBackground="@drawable/ic_sunshine_24dp" />
 
                 <TextView
-                    android:id="@+id/text_result"
+                    android:id="@+id/text_course_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="上课周数（整个学期）"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="16sp" />
+
+                <cn.edu.zstu.sunshine.views.Croller
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    app:back_circle_color="#EDEDED"
+                    app:label="上课周数"
+                    app:label_color="@color/text_gray_dark"
+                    app:main_circle_color="#FFFFFF"
+                    app:max="25"
+                    app:start_offset="45" />
+
+                <TextView
+                    android:id="@+id/text_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textColor="@color/text_gray_light"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     tools:text="已选择" />
 
                 <Button
                     android:id="@+id/btn_confirm"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"

@@ -139,7 +139,7 @@ public class TimetableAddViewModel {
                 .onSetViewListener(new DialogUtil.IonSetViewListener() {
                     @Override
                     public void setView(ViewDataBinding binding, AlertDialog dialog) {
-                        ((RangeSeekBar) binding.getRoot().findViewById(R.id.seek_bar)).setOnCursorChangeListener(
+                        ((RangeSeekBar) binding.getRoot().findViewById(R.id.seek_bar_time)).setOnCursorChangeListener(
                                 new RangeSeekBar.OnCursorChangeListener() {
                                     @Override
                                     public void onLeftCursorChanged(int location, String textMark) {
