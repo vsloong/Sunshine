@@ -18,6 +18,7 @@ public class Api {
     private static final String URL_EXAM = "exam";
     private static final String URL_SCORE = "score";
     private static final String URL_TIMETABLE = "timetable";
+    private static final String URL_LIBRARY = "library";
 
 
     /**
@@ -68,6 +69,16 @@ public class Api {
      */
     public static void getScoreInfo(Context context, Callback callback) {
         post(context, callback, URL_SCORE);
+    }
+
+    /**
+     * 获取图书馆借书信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
+    public static void getLibraryInfo(Context context, Callback callback) {
+        post(context, callback, URL_LIBRARY);
     }
 
     private static void post(Context context, Callback callback, String url) {

@@ -19,17 +19,19 @@ public class BookBorrow {
 
     private String userId;      //学生的学号或者是教师的学号
 
+    private String bookId;      //书的ID或者索书号等唯一标识
     private String bookName;    //书名
     private String author;      //作者名
     private String borrowDate;  //借书日期
     private String returnDate;  //归还日期
 
 
-    @Generated(hash = 1406867693)
-    public BookBorrow(Long id, String userId, String bookName, String author,
-                      String borrowDate, String returnDate) {
+    @Generated(hash = 2053554754)
+    public BookBorrow(Long id, String userId, String bookId, String bookName,
+                      String author, String borrowDate, String returnDate) {
         this.id = id;
         this.userId = userId;
+        this.bookId = bookId;
         this.bookName = bookName;
         this.author = author;
         this.borrowDate = borrowDate;
@@ -106,6 +108,16 @@ public class BookBorrow {
 
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
+    }
+
+
+    public String getBookId() {
+        return this.bookId;
+    }
+
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
 

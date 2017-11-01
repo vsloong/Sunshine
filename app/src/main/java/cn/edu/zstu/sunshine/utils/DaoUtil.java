@@ -8,11 +8,13 @@ import java.util.List;
 
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseApplication;
+import cn.edu.zstu.sunshine.entity.BookBorrow;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.entity.Score;
+import cn.edu.zstu.sunshine.greendao.BookBorrowDao;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.greendao.CourseDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
@@ -69,6 +71,9 @@ public class DaoUtil {
                     break;
                 case "Course":
                     insertCourse((List<Course>) data);
+                    break;
+                case "BookBorrow":
+                    insertBookBorrow((List<BookBorrow>) data);
                     break;
                 default:
                     break;
@@ -234,5 +239,40 @@ public class DaoUtil {
             Logger.e("网费数据插入");
         }
         EventBus.getDefault().post(network);
+    }
+
+    /**
+     * 插入或者更新借书数据
+     *
+     * @param books 借书数据列表
+     */
+    private static void insertBookBorrow(final List<BookBorrow> books) {
+        daoSession.getBookBorrowDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (BookBorrow book : books) {
+                    BookBorrow bookBorrow = daoSession
+                            .getBookBorrowDao()
+                            .queryBuilder()
+                            .where(
+                                    BookBorrowDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    BookBorrowDao.Properties.BookId.eq(book.getBookId())
+                            )
+                            .build()
+                            .unique();
+                    if (bookBorrow == null) {
+                        book.complete();
+                        daoSession.getBookBorrowDao().insert(book);
+                        Logger.e("借书数据插入");
+                    } else {
+                        daoSession.getBookBorrowDao().update(
+                                EntityCopyUtil.copyBookBorrow(bookBorrow, book)
+                        );
+                        Logger.e("借书数据更新");
+                    }
+                }
+                EventBus.getDefault().post(new BookBorrow());
+            }
+        });
     }
 }

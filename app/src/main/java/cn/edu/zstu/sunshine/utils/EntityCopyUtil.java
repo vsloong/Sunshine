@@ -1,5 +1,6 @@
 package cn.edu.zstu.sunshine.utils;
 
+import cn.edu.zstu.sunshine.entity.BookBorrow;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
 import cn.edu.zstu.sunshine.entity.Network;
@@ -45,6 +46,14 @@ public class EntityCopyUtil {
         to.setAddress(from.getAddress());
         to.setCourseName(from.getCourseName());
         to.setTeacherName(from.getTeacherName());
+        return to;
+    }
+
+    public static BookBorrow copyBookBorrow(BookBorrow to, BookBorrow from) {
+        to.setAuthor(from.getAuthor());
+        to.setBookName(from.getBookName());
+        to.setBorrowDate(from.getBorrowDate());
+        to.setReturnDate(from.getReturnDate());
         return to;
     }
 }

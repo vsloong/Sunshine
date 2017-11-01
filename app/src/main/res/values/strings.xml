@@ -39,6 +39,7 @@
     <string name="label_course_di">第</string>
     <string name="label_course_jie">节</string>
     <string name="label_course_time">点击选择上课时间</string>
+    <string name="label_book_zhi">至</string>
 
     <string name="toast_tip_enrollment_time">入学年份在你输入学号后会自动填写哦~</string>
     <string name="toast_input_not_done">请先完善学号和姓名信息哦~</string>
