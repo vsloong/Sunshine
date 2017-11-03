@@ -1,6 +1,7 @@
 package cn.edu.zstu.sunshine.tools.library;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 
 import java.util.List;
 
@@ -18,22 +19,13 @@ import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class LibraryViewModel extends BaseViewModel<BookBorrow> {
 
-    private ActivityLibraryBinding binding;
     private BookBorrowDao dao;
 
-    LibraryViewModel(Context context, ActivityLibraryBinding binding) {
-        super(context);
-        this.binding = binding;
+    LibraryViewModel(Context context, ViewDataBinding binding) {
+        super(context, binding);
+        this.dao = DaoUtil.getInstance().getSession().getBookBorrowDao();
 
-        dao = DaoUtil.getInstance().getSession().getBookBorrowDao();
         init();
-    }
-
-    @Override
-    public void init() {
-        super.init();
-        //showEmptyView必须在这里设置才可以生效，在父类中不可以
-        showEmptyView.set(data.size() <= 0);
     }
 
     @Override
@@ -49,8 +41,9 @@ public class LibraryViewModel extends BaseViewModel<BookBorrow> {
 
     @Override
     protected void loadDataIntoView() {
-        if (binding.include.recyclerView.getAdapter() != null) {
-            binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+        ActivityLibraryBinding libraryBinding = (ActivityLibraryBinding) binding;
+        if (libraryBinding.include.recyclerView.getAdapter() != null) {
+            libraryBinding.include.recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 }
