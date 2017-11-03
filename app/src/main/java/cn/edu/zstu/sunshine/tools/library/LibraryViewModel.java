@@ -19,24 +19,19 @@ import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class LibraryViewModel extends BaseViewModel<BookBorrow> {
 
-    private BookBorrowDao dao;
-
     LibraryViewModel(Context context, ViewDataBinding binding) {
         super(context, binding);
-        this.dao = DaoUtil.getInstance().getSession().getBookBorrowDao();
-
-        init();
     }
 
     @Override
-    protected void loadDataFromLocal() {
-        List<BookBorrow> books = dao
+    protected List<BookBorrow> loadDataFromLocal() {
+        return DaoUtil.getInstance().getSession()
+                .getBookBorrowDao()
                 .queryBuilder()
                 .where(
                         BookBorrowDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
                 )
                 .list();
-        setData(books);
     }
 
     @Override

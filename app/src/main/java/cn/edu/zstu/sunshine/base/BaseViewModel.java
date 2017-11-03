@@ -25,6 +25,7 @@ public abstract class BaseViewModel<T> {
     protected BaseViewModel(Context context, ViewDataBinding binding) {
         this.context = context;
         this.binding = binding;
+        init();
     }
 
     public List<T> getData() {
@@ -38,11 +39,11 @@ public abstract class BaseViewModel<T> {
     }
 
     public void init() {
-        loadDataFromLocal();
+        setData(loadDataFromLocal());
         loadDataIntoView();
     }
 
-    protected abstract void loadDataFromLocal();
+    protected abstract List<T> loadDataFromLocal();
 
     protected abstract void loadDataIntoView();
 }
