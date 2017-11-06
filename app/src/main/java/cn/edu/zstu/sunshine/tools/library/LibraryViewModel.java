@@ -5,9 +5,7 @@ import android.databinding.ViewDataBinding;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.orhanobut.logger.Logger;
 
-import java.io.IOException;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.base.Api;
@@ -18,9 +16,6 @@ import cn.edu.zstu.sunshine.entity.BookBorrow;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.greendao.BookBorrowDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 /**
  * 图书馆的ViewModel
@@ -53,30 +48,16 @@ public class LibraryViewModel extends BaseViewModel<BookBorrow> {
     }
 
     @Override
-    protected void loadDataFromNetWork() {
-        Api.getLibraryInfo(context, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                handelFailure();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String data = response.body().string();
-                Logger.e("获取信息成功：" + data);
-
-                final JsonParse<List<BookBorrow>> jsonParse = JSON.parseObject(
-                        data,
-                        new TypeReference<JsonParse<List<BookBorrow>>>() {
-                        }
-                );
-
-                if (jsonParse.getCode() == 404) {
-                    Logger.e("获取信息404");
-                } else {
-                    DaoUtil.insertOrUpdate(jsonParse.getData());
+    protected JsonParse<List<BookBorrow>> handelResponse(String data) {
+        return JSON.parseObject(
+                data,
+                new TypeReference<JsonParse<List<BookBorrow>>>() {
                 }
-            }
-        });
+        );
+    }
+
+    @Override
+    protected String loadUrl() {
+        return Api.URL_LIBRARY;
     }
 }

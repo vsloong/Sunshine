@@ -13,13 +13,16 @@ import okhttp3.Callback;
 public class Api {
 
     private static final String URL_BASE = "https://easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/";
-    private static final String URL_NETWORK = "network";
-    private static final String URL_CAMPUSCARD = "campuscard";
-    private static final String URL_EXAM = "exam";
-    private static final String URL_SCORE = "score";
-    private static final String URL_TIMETABLE = "timetable";
-    private static final String URL_LIBRARY = "library";
+    public static final String URL_NETWORK = "network";
+    public static final String URL_CAMPUSCARD = "campuscard";
+    public static final String URL_EXAM = "exam";
+    public static final String URL_SCORE = "score";
+    public static final String URL_TIMETABLE = "timetable";
+    public static final String URL_LIBRARY = "library";
 
+
+    public static final int ERR_CODE_400 = 400;
+    public static final int ERR_CODE_404 = 404;
 
     /**
      * 获取网费信息
@@ -28,7 +31,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getNetworkInfo(Context context, Callback callback) {
-        post(context, callback, URL_NETWORK);
+        post(context, URL_NETWORK, callback);
     }
 
     /**
@@ -38,7 +41,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getCampusCardInfo(Context context, Callback callback) {
-        post(context, callback, URL_CAMPUSCARD);
+        post(context, URL_CAMPUSCARD, callback);
     }
 
     /**
@@ -48,7 +51,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getExamInfo(Context context, Callback callback) {
-        post(context, callback, URL_EXAM);
+        post(context, URL_EXAM, callback);
     }
 
     /**
@@ -58,7 +61,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getTimetableInfo(Context context, Callback callback) {
-        post(context, callback, URL_TIMETABLE);
+        post(context, URL_TIMETABLE, callback);
     }
 
     /**
@@ -68,7 +71,7 @@ public class Api {
      * @param callback 回调
      */
     public static void getScoreInfo(Context context, Callback callback) {
-        post(context, callback, URL_SCORE);
+        post(context, URL_SCORE, callback);
     }
 
     /**
@@ -78,10 +81,10 @@ public class Api {
      * @param callback 回调
      */
     public static void getLibraryInfo(Context context, Callback callback) {
-        post(context, callback, URL_LIBRARY);
+        post(context, URL_LIBRARY, callback);
     }
 
-    private static void post(Context context, Callback callback, String url) {
+    public static void post(Context context, String url, Callback callback) {
         OkHttpUtil.getInstance()
                 .tag(context)
                 .post(URL_BASE + url)

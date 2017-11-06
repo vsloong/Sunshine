@@ -53,6 +53,7 @@ public class DaoUtil {
 
     public static <T> void insertOrUpdate(List<T> data) {
         if (data != null && !data.isEmpty()) {
+            Logger.e("泛型名称：" + data.get(0).getClass().getName());
             String[] name = data.get(0).getClass().getName().split("\\.");
             String className = name[name.length - 1];
             Logger.e("泛型名称：" + className);
