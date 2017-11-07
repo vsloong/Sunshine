@@ -22,8 +22,8 @@ public class Croller extends View {
 
     private boolean isContinuous = false;
 
-    private int backCircleColor = Color.parseColor("#222222");
-    private int mainCircleColor = Color.parseColor("#000000");
+    private int backCircleColor = Color.parseColor("#EDEDED");
+    private int mainCircleColor = Color.parseColor("#FFFFFF");
     private int indicatorColor = Color.parseColor("#FFA036");
     private int progressPrimaryColor = Color.parseColor("#FFA036");
     private int progressSecondaryColor = Color.parseColor("#111111");

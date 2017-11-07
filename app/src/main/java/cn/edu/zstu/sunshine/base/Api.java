@@ -16,6 +16,7 @@ public class Api {
     public static final String URL_NETWORK = "network";
     public static final String URL_CAMPUSCARD = "campuscard";
     public static final String URL_EXAM = "exam";
+    public static final String URL_EXERCISE = "exercise";
     public static final String URL_SCORE = "score";
     public static final String URL_TIMETABLE = "timetable";
     public static final String URL_LIBRARY = "library";

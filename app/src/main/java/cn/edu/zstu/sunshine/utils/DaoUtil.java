@@ -12,6 +12,7 @@ import cn.edu.zstu.sunshine.entity.BookBorrow;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
+import cn.edu.zstu.sunshine.entity.Exercise;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.entity.Score;
 import cn.edu.zstu.sunshine.greendao.BookBorrowDao;
@@ -20,6 +21,7 @@ import cn.edu.zstu.sunshine.greendao.CourseDao;
 import cn.edu.zstu.sunshine.greendao.DaoMaster;
 import cn.edu.zstu.sunshine.greendao.DaoSession;
 import cn.edu.zstu.sunshine.greendao.ExamDao;
+import cn.edu.zstu.sunshine.greendao.ExerciseDao;
 import cn.edu.zstu.sunshine.greendao.NetworkDao;
 import cn.edu.zstu.sunshine.greendao.ScoreDao;
 
@@ -66,6 +68,9 @@ public class DaoUtil {
                     break;
                 case "Exam":
                     insertExam((List<Exam>) data);
+                    break;
+                case "Exercise":
+                    insertExercise((List<Exercise>) data);
                     break;
                 case "Score":
                     insertScore((List<Score>) data);
@@ -155,6 +160,42 @@ public class DaoUtil {
                 }
                 //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
                 EventBus.getDefault().post(new Exam());
+            }
+        });
+    }
+
+    /**
+     * 存储或更新锻炼数据
+     *
+     * @param data 考试列表数据
+     */
+    private static void insertExercise(final List<Exercise> data) {
+        daoSession.getExerciseDao().getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                for (Exercise exercise : data) {
+                    Exercise oldExercise = daoSession
+                            .getExerciseDao()
+                            .queryBuilder()
+                            .where(
+                                    ExerciseDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
+                                    ExerciseDao.Properties.First.eq(exercise.getFirst()),
+                                    ExerciseDao.Properties.Second.eq(exercise.getSecond())
+                            )
+                            .unique();
+                    if (oldExercise == null) {
+                        exercise.complete();
+                        daoSession.getExerciseDao().insert(exercise);
+                        Logger.e("插入新的锻炼数据");
+                    } else {
+                        Logger.e("锻炼数据已存在");
+                        daoSession.getExerciseDao().update(
+                                EntityCopyUtil.copyExercise(oldExercise, exercise)
+                        );
+                    }
+                }
+                //存储完毕刷新页面，因为在线程中，所以需要使用EventBus来通知
+                EventBus.getDefault().post(new Exercise());
             }
         });
     }

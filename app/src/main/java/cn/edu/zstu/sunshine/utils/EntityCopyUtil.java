@@ -3,6 +3,7 @@ package cn.edu.zstu.sunshine.utils;
 import cn.edu.zstu.sunshine.entity.BookBorrow;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.Exam;
+import cn.edu.zstu.sunshine.entity.Exercise;
 import cn.edu.zstu.sunshine.entity.Network;
 import cn.edu.zstu.sunshine.entity.Score;
 
@@ -27,6 +28,14 @@ public class EntityCopyUtil {
         to.setAddress(from.getAddress());
         to.setSeatNumber(from.getSeatNumber());
         to.setTime(from.getTime());
+        return to;
+    }
+
+    public static Exercise copyExercise(Exercise to, Exercise from) {
+        to.setDate(from.getDate());
+        to.setDuration(from.getDuration());
+        to.setFirst(from.getFirst());
+        to.setSecond(from.getSecond());
         return to;
     }
 
