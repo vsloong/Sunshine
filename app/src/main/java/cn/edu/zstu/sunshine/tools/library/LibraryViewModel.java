@@ -48,7 +48,7 @@ public class LibraryViewModel extends BaseViewModel<BookBorrow> {
     }
 
     @Override
-    protected JsonParse<List<BookBorrow>> handelResponse(String data) {
+    protected JsonParse<List<BookBorrow>> parseStrToJson(String data) {
         return JSON.parseObject(
                 data,
                 new TypeReference<JsonParse<List<BookBorrow>>>() {

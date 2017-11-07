@@ -61,13 +61,7 @@ public abstract class BaseViewModel<T> {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String data = response.body().string();
-                if (handelResponse(data).getCode() == 404) {
-                    Logger.e("获取信息404");
-                    handelFailure(Api.ERR_CODE_404);
-                } else {
-                    DaoUtil.insertOrUpdate(handelResponse(data).getData());
-                }
+                handelResponse(response.body().string());
             }
         });
     }
@@ -76,7 +70,17 @@ public abstract class BaseViewModel<T> {
         Logger.e("获取信息失败");
     }
 
-    protected abstract JsonParse<List<T>> handelResponse(String data);
+    private void handelResponse(String jsonStr) {
+        JsonParse<List<T>> s = parseStrToJson(jsonStr);
+        if (s.getCode() == 404) {
+            Logger.e("获取信息404");
+            handelFailure(Api.ERR_CODE_404);
+        } else {
+            DaoUtil.insertOrUpdate(s.getData());
+        }
+    }
+
+    protected abstract JsonParse<List<T>> parseStrToJson(String data);
 
     protected abstract String loadUrl();
 

@@ -84,6 +84,15 @@ public class DaoUtil {
         }
     }
 
+    public static <T> void insertOrUpdate2(final List<T> data) {
+        daoSession.runInTx(new Runnable() {
+            @Override
+            public void run() {
+                daoSession.update(data);
+            }
+        });
+    }
+
     /**
      * 存储饭卡数据【不存在更新情况】
      *
