@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="ordinal"
+            type="cn.edu.zstu.sunshine.entity.Ordinal" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_num"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:focusable="@{ordinal.selected}"
+            android:layout_margin="4dp"
+            android:background="@drawable/selector_ordinal"
+            android:gravity="center"
+            android:text="@{String.valueOf(ordinal.getId()+1)}"
+            android:textColor="@drawable/selector_tab_day"
+            android:textSize="24sp"
+            tools:text="@string/tab_day" />
+    </LinearLayout>
+</layout>

@@ -28,6 +28,7 @@ import cn.edu.zstu.sunshine.base.Api;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
+import cn.edu.zstu.sunshine.databinding.ItemCourseBinding;
 import cn.edu.zstu.sunshine.databinding.ItemTabBinding;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.JsonParse;
@@ -75,7 +76,8 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
                 new BaseAdapter.OnItemHandler() {
                     @Override
                     public void onItemHandler(final ViewDataBinding viewDataBinding, final int position) {
-                        viewDataBinding.getRoot().findViewById(R.id.btn_modify).setOnClickListener(
+                        ItemCourseBinding binding = (ItemCourseBinding) viewDataBinding;
+                        binding.btnModify.setOnClickListener(
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

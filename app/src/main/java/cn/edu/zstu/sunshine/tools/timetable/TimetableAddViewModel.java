@@ -10,12 +10,14 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.databinding.ActivityTimetableAddBinding;
 import cn.edu.zstu.sunshine.entity.Course;
+import cn.edu.zstu.sunshine.entity.Ordinal;
 import cn.edu.zstu.sunshine.greendao.CourseDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 import cn.edu.zstu.sunshine.utils.DialogUtil;
@@ -37,6 +39,8 @@ public class TimetableAddViewModel {
 
     public ObservableField<Course> course = new ObservableField<>();
 
+    private List<Ordinal> weeks = new ArrayList<>();
+
     public TimetableAddViewModel(Context context, ActivityTimetableAddBinding binding, String courseId) {
         this.context = context;
         this.binding = binding;
@@ -44,7 +48,21 @@ public class TimetableAddViewModel {
 
         dao = DaoUtil.getInstance().getSession().getCourseDao();
 
+        for (int i = 0; i < 7; i++) {
+            weeks.add(new Ordinal(i, false));
+        }
+
         init();
+    }
+
+    public void setWeeks(List<Ordinal> data) {
+        this.weeks.clear();
+        Logger.e("设置数据：" + data.size());
+        this.weeks.addAll(data);
+    }
+
+    public List<Ordinal> getWeeks() {
+        return weeks;
     }
 
     private void init() {
