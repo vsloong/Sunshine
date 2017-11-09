@@ -41,6 +41,9 @@ public class TimetableAddViewModel {
 
     private List<Ordinal> weeks = new ArrayList<>();
 
+
+    private List<Ordinal> time = new ArrayList<>();
+
     public TimetableAddViewModel(Context context, ActivityTimetableAddBinding binding, String courseId) {
         this.context = context;
         this.binding = binding;
@@ -48,21 +51,16 @@ public class TimetableAddViewModel {
 
         dao = DaoUtil.getInstance().getSession().getCourseDao();
 
-        for (int i = 0; i < 7; i++) {
-            weeks.add(new Ordinal(i, false));
-        }
 
         init();
     }
 
-    public void setWeeks(List<Ordinal> data) {
-        this.weeks.clear();
-        Logger.e("设置数据：" + data.size());
-        this.weeks.addAll(data);
-    }
-
     public List<Ordinal> getWeeks() {
         return weeks;
+    }
+
+    public List<Ordinal> getTime() {
+        return time;
     }
 
     private void init() {
@@ -71,7 +69,13 @@ public class TimetableAddViewModel {
             Course newCourse = new Course();
             newCourse.setCourseId(String.valueOf(System.currentTimeMillis()));
             course.set(newCourse);
+            for (int i = 0; i < 7; i++) {
+                weeks.add(new Ordinal(i, false));
+            }
 
+            for (int i = 0; i < 12; i++) {
+                time.add(new Ordinal(i, false));
+            }
         } else {
             isUpdate = true;
             //修改课程
@@ -83,6 +87,27 @@ public class TimetableAddViewModel {
                     .build()
                     .unique();
             course.set(oldCourse);
+
+            for (int i = 0; i < 7; i++) {
+                if (oldCourse.getDay() == (i + 1)) {
+                    weeks.add(new Ordinal(i, true));
+                } else {
+                    weeks.add(new Ordinal(i, false));
+                }
+            }
+
+            String[] temp = oldCourse.getTime().split("，");
+            for (int i = 0; i < 12; i++) {
+                for (int x = 0; x < temp.length; x++) {
+                    if (temp[x].equals(String.valueOf(i + 1))) {
+                        time.add(new Ordinal(i, true));
+                        break;
+                    }
+                }
+                if (time.size() != i + 1) {
+                    time.add(new Ordinal(i, false));
+                }
+            }
         }
 
     }

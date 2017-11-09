@@ -109,11 +109,16 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_time">
 
                         <include
+                            android:id="@+id/include_week"
                             layout="@layout/include_recycler"
-                            android:id="@+id/include_weeks"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+                        <include
+                            android:id="@+id/include_time"
+                            layout="@layout/include_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
                         <RadioGroup
                             android:id="@+id/radio_group_ordinal"
