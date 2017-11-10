@@ -120,11 +120,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                        <RadioGroup
-                            android:id="@+id/radio_group_ordinal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal" />
+                        <cn.edu.zstu.sunshine.views.Croller
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:layout_gravity="center_horizontal" />
                     </LinearLayout>
 
                     <EditText

@@ -16,11 +16,18 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppManager.getInstance().addActivity(this);
         //设置日间，夜间模式
         if (AppConfig.isNightMode()) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             //recreate();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getInstance().finishActivity(this);
     }
 
     public void startActivity(Class cla) {
