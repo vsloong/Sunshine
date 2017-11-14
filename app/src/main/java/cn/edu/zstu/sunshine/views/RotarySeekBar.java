@@ -18,6 +18,10 @@ public class RotarySeekBar extends View {
     private float centerX;  //圆心X
     private float centerY;  //圆心Y
 
+    //day：星期
+    //ordinal：课程节数
+    //week：课程周数
+
     private int backCircleColor = Color.parseColor("#EDEDED");
     private int mainCircleColor = Color.parseColor("#FFFFFF");
     private int indicatorColor = Color.parseColor("#FFA036");//指示器的颜色
@@ -29,6 +33,8 @@ public class RotarySeekBar extends View {
     private Paint indicatorPaint;
     private Paint progressDefaultPaint;
     private Paint progressAccentPaint;
+
+    private float progressRadius = 120;
 
     public RotarySeekBar(Context context) {
         super(context);
@@ -43,18 +49,6 @@ public class RotarySeekBar extends View {
     public RotarySeekBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
-    }
-
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        centerX = canvas.getWidth() / 2;
-        centerY = canvas.getHeight() / 2;
-
-        canvas.drawCircle(centerX, centerY, 90, backCirclePaint);
-        canvas.drawCircle(centerX, centerY, 80, mainCirclePaint);
     }
 
     private void init() {
@@ -74,5 +68,48 @@ public class RotarySeekBar extends View {
         indicatorPaint.setAntiAlias(true);
         indicatorPaint.setStrokeWidth(2);
         indicatorPaint.setColor(indicatorColor);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        centerX = canvas.getWidth() / 2;
+        centerY = canvas.getHeight() / 2;
+
+        canvas.drawCircle(centerX, centerY, 90, backCirclePaint);
+        canvas.drawCircle(centerX, centerY, 80, mainCirclePaint);
+
+        drawDial(330, 11, canvas);
+    }
+
+
+    /**
+     * 画刻度盘
+     *
+     * @param sweepAngle 总角度
+     * @param dialCount  刻度数量
+     * @param canvas     画布
+     */
+    private void drawDial(int sweepAngle, int dialCount, Canvas canvas) {
+        /*
+         * 假设一个圆的圆心坐标是(a,b)，半径为r，则圆上每个点的
+         * X坐标=a + Math.sin(2*Math.PI / 360) * r ；
+         * Y坐标=b + Math.cos(2*Math.PI / 360) * r ；
+         */
+
+        //每个刻度的圆心X
+        float x;
+        //每个刻度的圆心Y
+        float y;
+        //刻度间的角度偏移量
+        float angleOffset = sweepAngle / dialCount;
+
+        for (int i = 0; i < dialCount; i++) {
+            float angle = angleOffset * i + (360 - sweepAngle) / 2;
+            x = centerX + (float) (progressRadius * Math.sin(2 * Math.PI / 360 * angle));
+            y = centerY + (float) (progressRadius * Math.cos(2 * Math.PI / 360 * angle));
+            canvas.drawCircle(x, y, 8, indicatorPaint);
+        }
     }
 }

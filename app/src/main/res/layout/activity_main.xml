@@ -37,6 +37,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_banner" />
 
+        <cn.edu.zstu.sunshine.views.RotarySeekBar
+            android:id="@+id/croller"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
         <!--<cn.edu.zstu.sunshine.views.RunView-->
         <!--android:id="@+id/ring_view"-->
         <!--android:layout_width="0dp"-->
