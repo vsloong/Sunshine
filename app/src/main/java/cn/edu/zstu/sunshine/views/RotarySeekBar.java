@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 /**
  * 旋转式拖动条（单指针和双指针模式）
  * Created by CooLoongWu on 2017-11-13 14:28.
@@ -80,7 +82,7 @@ public class RotarySeekBar extends View {
         canvas.drawCircle(centerX, centerY, 90, backCirclePaint);
         canvas.drawCircle(centerX, centerY, 80, mainCirclePaint);
 
-        drawDial(330, 11, canvas);
+        drawDial(270, 10, canvas);
     }
 
 
@@ -102,14 +104,18 @@ public class RotarySeekBar extends View {
         float x;
         //每个刻度的圆心Y
         float y;
-        //刻度间的角度偏移量
-        float angleOffset = sweepAngle / dialCount;
+        //刻度间的角度偏移量（注意-1，因为10个刻度间有9段距离）
+        float angleOffset = sweepAngle / (dialCount - 1);
 
+        //角度是参考竖直方向最下端，逆时针方向
         for (int i = 0; i < dialCount; i++) {
             float angle = angleOffset * i + (360 - sweepAngle) / 2;
+            Logger.e("角度：" + angle);
             x = centerX + (float) (progressRadius * Math.sin(2 * Math.PI / 360 * angle));
             y = centerY + (float) (progressRadius * Math.cos(2 * Math.PI / 360 * angle));
+
             canvas.drawCircle(x, y, 8, indicatorPaint);
         }
+
     }
 }
