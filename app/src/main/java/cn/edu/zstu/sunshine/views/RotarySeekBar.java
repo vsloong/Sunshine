@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.orhanobut.logger.Logger;
+
+import cn.edu.zstu.sunshine.utils.UnitUtil;
 
 /**
  * 旋转式拖动条（单指针和双指针模式）
@@ -36,7 +39,9 @@ public class RotarySeekBar extends View {
     private Paint progressDefaultPaint;
     private Paint progressAccentPaint;
 
-    private float progressRadius = 120;
+    RectF rectF = new RectF();
+
+    private float progressRadius = 160;
 
     public RotarySeekBar(Context context) {
         super(context);
@@ -58,17 +63,16 @@ public class RotarySeekBar extends View {
         backCirclePaint.setAntiAlias(true);
         backCirclePaint.setColor(backCircleColor);
         backCirclePaint.setStyle(Paint.Style.FILL);
-        backCirclePaint.setStrokeWidth(25);
 
         mainCirclePaint = new Paint();
         mainCirclePaint.setAntiAlias(true);
         mainCirclePaint.setColor(mainCircleColor);
         mainCirclePaint.setStyle(Paint.Style.FILL);
-        mainCirclePaint.setStrokeWidth(20);
 
         indicatorPaint = new Paint();
         indicatorPaint.setAntiAlias(true);
-        indicatorPaint.setStrokeWidth(2);
+        indicatorPaint.setStrokeWidth(1);
+        indicatorPaint.setStyle(Paint.Style.STROKE);
         indicatorPaint.setColor(indicatorColor);
     }
 
@@ -79,21 +83,107 @@ public class RotarySeekBar extends View {
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        canvas.drawCircle(centerX, centerY, 90, backCirclePaint);
-        canvas.drawCircle(centerX, centerY, 80, mainCirclePaint);
+        Logger.e("当前圆心X：" + centerX + "；Y：" + centerY);
 
-        drawDial(270, 10, canvas);
+        canvas.drawCircle(centerX, centerY, progressRadius - 110, backCirclePaint);
+        canvas.drawCircle(centerX, centerY, progressRadius - 120, mainCirclePaint);
+
+        drawDay(270, 7, canvas);
+        //drawOrdinal(270, 12, canvas);
+        //drawWeek(270, 20, canvas);
+
+        float radius = progressRadius - 20;
+
+        rectF.left = centerX - radius;
+        rectF.top = centerY + radius;
+        rectF.right = centerX + radius;
+        rectF.bottom = centerY - radius;
+
+//        rectF.left = UnitUtil.dp2px(centerX - radius, this.getContext());
+//        rectF.top = UnitUtil.dp2px(centerY + radius, this.getContext());
+//        rectF.right = UnitUtil.dp2px(centerX + radius, this.getContext());
+//        rectF.bottom = UnitUtil.dp2px(centerY - radius, this.getContext());
+
+        Logger.e("left:" + rectF.left + ";top:" + rectF.top + ";right:" + rectF.right + ";bottom:" + rectF.bottom);
+
+        indicatorPaint.setStrokeWidth(5);
+        canvas.drawPoint(rectF.left, rectF.top, indicatorPaint);
+        canvas.drawPoint(rectF.left, rectF.bottom, indicatorPaint);
+        canvas.drawPoint(rectF.right, rectF.top, indicatorPaint);
+        canvas.drawPoint(rectF.right, rectF.bottom, indicatorPaint);
+        canvas.drawRect(rectF, indicatorPaint);
+        canvas.drawArc(rectF, 0, 120, false, indicatorPaint);
     }
 
 
     /**
-     * 画刻度盘
+     * 画星期的刻度盘
      *
      * @param sweepAngle 总角度
      * @param dialCount  刻度数量
      * @param canvas     画布
      */
-    private void drawDial(int sweepAngle, int dialCount, Canvas canvas) {
+    private void drawDay(int sweepAngle, int dialCount, Canvas canvas) {
+        /*
+         * 假设一个圆的圆心坐标是(a,b)，半径为r，则圆上每个点的
+         * X坐标=a + Math.sin(2*Math.PI / 360) * r ；
+         * Y坐标=b + Math.cos(2*Math.PI / 360) * r ；
+         */
+
+        //每个刻度的圆心X
+        float x;
+        //每个刻度的圆心Y
+        float y;
+        //刻度间的角度偏移量（注意-1，因为10个刻度间有9段距离）
+        float angleOffset = sweepAngle / (dialCount - 1);
+
+        //星期刻度盘的半径
+        float radius = progressRadius - 40;
+
+        //角度是参考竖直方向最下端，逆时针方向
+        for (int i = 0; i < dialCount; i++) {
+            float angle = angleOffset * i + (360 - sweepAngle) / 2;
+            x = centerX + (float) (radius * Math.sin(2 * Math.PI / 360 * angle));
+            y = centerY + (float) (radius * Math.cos(2 * Math.PI / 360 * angle));
+
+            canvas.drawCircle(x, y, 6, indicatorPaint);
+//            canvas.drawPoint(x, y, indicatorPaint);
+        }
+
+    }
+
+    /**
+     * 画一天课程节数的刻度盘
+     *
+     * @param sweepAngle 总角度
+     * @param dialCount  刻度数量
+     * @param canvas     画布
+     */
+    private void drawOrdinal(int sweepAngle, int dialCount, Canvas canvas) {
+
+        //课程节数刻度盘的半径
+        float radius = progressRadius - 20;
+
+        RectF rectF = new RectF(
+                UnitUtil.dp2px(centerX - radius, this.getContext()),
+                UnitUtil.dp2px(centerY + radius, this.getContext()),
+                UnitUtil.dp2px(centerX + radius, this.getContext()),
+                UnitUtil.dp2px(centerY - radius, this.getContext())
+        );
+
+        Logger.e("left:" + rectF.left + ";top:" + rectF.top + ";right:" + rectF.right + ";bottom:" + rectF.bottom);
+
+        canvas.drawArc(rectF, 0, 120, false, indicatorPaint);
+    }
+
+    /**
+     * 画周数的刻度盘
+     *
+     * @param sweepAngle 总角度
+     * @param dialCount  刻度数量
+     * @param canvas     画布
+     */
+    private void drawWeek(int sweepAngle, int dialCount, Canvas canvas) {
         /*
          * 假设一个圆的圆心坐标是(a,b)，半径为r，则圆上每个点的
          * X坐标=a + Math.sin(2*Math.PI / 360) * r ；
@@ -110,7 +200,6 @@ public class RotarySeekBar extends View {
         //角度是参考竖直方向最下端，逆时针方向
         for (int i = 0; i < dialCount; i++) {
             float angle = angleOffset * i + (360 - sweepAngle) / 2;
-            Logger.e("角度：" + angle);
             x = centerX + (float) (progressRadius * Math.sin(2 * Math.PI / 360 * angle));
             y = centerY + (float) (progressRadius * Math.cos(2 * Math.PI / 360 * angle));
 

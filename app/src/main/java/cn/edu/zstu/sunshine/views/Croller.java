@@ -179,8 +179,8 @@ public class Croller extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int minWidth = (int) UnitUtil.convertDpToPixel(160, getContext());
-        int minHeight = (int) UnitUtil.convertDpToPixel(160, getContext());
+        int minWidth = (int) UnitUtil.dp2px(160, getContext());
+        int minHeight = (int) UnitUtil.dp2px(160, getContext());
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
