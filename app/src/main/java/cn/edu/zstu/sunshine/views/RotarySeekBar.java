@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.orhanobut.logger.Logger;
@@ -28,12 +29,14 @@ public class RotarySeekBar extends View {
     private int backCircleColor = Color.parseColor("#EDEDED");
     private int mainCircleColor = Color.parseColor("#FFFFFF");
     private int indicatorColor = Color.parseColor("#FFA036");//指示器的颜色
-    private int progressDefaultColor = Color.parseColor("#111111");//进度条默认颜色
-    private int progressAccentColor = Color.parseColor("#FFA036");//进度条选中颜色
+    private int progressUnfocusedColor = Color.parseColor("#EDEDED");//进度条没有焦点时的颜色
+    private int progressDefaultColor = Color.parseColor("#FFA036");//进度条默认的颜色
+    private int progressAccentColor = Color.parseColor("#95E362");//进度条选中时的颜色
 
     private Paint backCirclePaint;
     private Paint mainCirclePaint;
     private Paint indicatorPaint;
+    private Paint progressUnfocusedPaint;
     private Paint progressDefaultPaint;
     private Paint progressAccentPaint;
 
@@ -69,9 +72,27 @@ public class RotarySeekBar extends View {
 
         indicatorPaint = new Paint();
         indicatorPaint.setAntiAlias(true);
-        indicatorPaint.setStrokeWidth(2);
+        indicatorPaint.setStrokeWidth(4);
         indicatorPaint.setStyle(Paint.Style.STROKE);
         indicatorPaint.setColor(indicatorColor);
+
+        progressUnfocusedPaint = new Paint();
+        progressUnfocusedPaint.setAntiAlias(true);
+        progressUnfocusedPaint.setStrokeWidth(1);
+        progressUnfocusedPaint.setStyle(Paint.Style.STROKE);
+        progressUnfocusedPaint.setColor(progressUnfocusedColor);
+
+        progressDefaultPaint = new Paint();
+        progressDefaultPaint.setAntiAlias(true);
+        progressDefaultPaint.setStrokeWidth(2);
+        progressDefaultPaint.setStyle(Paint.Style.STROKE);
+        progressDefaultPaint.setColor(progressDefaultColor);
+
+        progressAccentPaint = new Paint();
+        progressAccentPaint.setAntiAlias(true);
+        progressAccentPaint.setStrokeWidth(2);
+        progressAccentPaint.setStyle(Paint.Style.STROKE);
+        progressAccentPaint.setColor(progressAccentColor);
     }
 
     @Override
@@ -80,8 +101,6 @@ public class RotarySeekBar extends View {
 
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
-
-        Logger.e("当前圆心X：" + centerX + "；Y：" + centerY);
 
         canvas.drawCircle(centerX, centerY, progressRadius - 100, backCirclePaint);
         canvas.drawCircle(centerX, centerY, progressRadius - 110, mainCirclePaint);
@@ -117,16 +136,30 @@ public class RotarySeekBar extends View {
         //星期刻度盘的半径
         float radius = progressRadius - 70;
 
-        //角度是参考竖直方向最下端，逆时针方向
+        //角度是参考竖直方向最下端，逆时针方向绘制
         for (int i = 0; i < dialCount; i++) {
             float angle = angleOffset * i + (360 - sweepAngle) / 2;
             x = centerX + (float) (radius * Math.sin(2 * Math.PI / 360 * angle));
             y = centerY + (float) (radius * Math.cos(2 * Math.PI / 360 * angle));
 
-            canvas.drawCircle(x, y, 6, indicatorPaint);
+            Logger.e("绘制星期角度：" + angle);
+            canvas.drawCircle(x, y, 6, progressDefaultPaint);
 //            canvas.drawPoint(x, y, indicatorPaint);
+
+            if (i == dialCount - 1) {
+                drawIndicator(angle, canvas);
+            }
         }
 
+    }
+
+    private void drawIndicator(float angle, Canvas canvas) {
+        float length = 50;//指示器线的长度
+        float endX, endY;
+        endX = centerX + (float) (length * Math.sin(2 * Math.PI / 360 * angle));
+        endY = centerY + (float) (length * Math.cos(2 * Math.PI / 360 * angle));
+
+        canvas.drawLine(centerX, centerY, endX, endY, indicatorPaint);
     }
 
     /**
@@ -151,6 +184,14 @@ public class RotarySeekBar extends View {
         drawDial(progressRadius, sweepAngle, dialCount, canvas);
     }
 
+    /**
+     * 画刻度线以及进度条
+     *
+     * @param radius     半径
+     * @param sweepAngle 横扫角度
+     * @param dialCount  刻度数量
+     * @param canvas     画布
+     */
     private void drawDial(float radius, int sweepAngle, int dialCount, Canvas canvas) {
         //课程节数刻度盘的半径
         rectF.left = centerX - radius;
@@ -159,7 +200,7 @@ public class RotarySeekBar extends View {
         rectF.bottom = centerY + radius;
         //startAngle：从横向最右侧起始点顺时针方向度量的角度
         //sweepAngle：顺时针方向度量的角度
-        canvas.drawArc(rectF, 90 + (360 - sweepAngle) / 2, sweepAngle, false, indicatorPaint);
+        canvas.drawArc(rectF, 90 + (360 - sweepAngle) / 2, sweepAngle, false, progressUnfocusedPaint);
 
         //绘制刻度线
         float length = 8;//刻度线的长度
@@ -181,7 +222,34 @@ public class RotarySeekBar extends View {
             endX = centerX + (float) ((radius - length) * Math.sin(2 * Math.PI / 360 * angle));
             endY = centerY + (float) ((radius - length) * Math.cos(2 * Math.PI / 360 * angle));
 
-            canvas.drawLine(startX, startY, endX, endY, indicatorPaint);
+            canvas.drawLine(startX, startY, endX, endY, progressUnfocusedPaint);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float downAngle;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+
+                float dx = event.getX() - centerX;
+                float dy = event.getY() - centerY;
+                //这个角度是从最右侧开始，逆时针到-180度，顺时针到180度
+                downAngle = (float) ((Math.atan2(dy, dx) * 180) / Math.PI);
+                if (downAngle > 0) {
+                    downAngle = 360 - downAngle;
+                } else {
+                    downAngle = Math.abs(downAngle);
+                }
+                Logger.e("按下时的角度：" + downAngle);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 }
