@@ -43,6 +43,10 @@ public class RotarySeekBar extends View {
     RectF rectF = new RectF();
 
     private float progressRadius = 180;
+    float downAngle = 0;
+    float currentAngle = 0;
+
+    private int day = 0;
 
     public RotarySeekBar(Context context) {
         super(context);
@@ -105,10 +109,11 @@ public class RotarySeekBar extends View {
         canvas.drawCircle(centerX, centerY, progressRadius - 100, backCirclePaint);
         canvas.drawCircle(centerX, centerY, progressRadius - 110, mainCirclePaint);
 
+        drawIndicator(180, 7, canvas);
         drawDay(180, 7, canvas);
+
         drawOrdinal(190, 12, canvas);
         drawWeek(200, 12, canvas);
-
     }
 
 
@@ -142,18 +147,33 @@ public class RotarySeekBar extends View {
             x = centerX + (float) (radius * Math.sin(2 * Math.PI / 360 * angle));
             y = centerY + (float) (radius * Math.cos(2 * Math.PI / 360 * angle));
 
-            Logger.e("绘制星期角度：" + angle);
-            canvas.drawCircle(x, y, 6, progressDefaultPaint);
-//            canvas.drawPoint(x, y, indicatorPaint);
-
-            if (i == dialCount - 1) {
-                drawIndicator(angle, canvas);
+            //Logger.e("绘制星期角度：" + angle);
+            if (i == (6 - day)) {
+                canvas.drawCircle(x, y, 6, progressAccentPaint);
+            } else {
+                canvas.drawCircle(x, y, 6, progressDefaultPaint);
             }
+
         }
 
     }
 
-    private void drawIndicator(float angle, Canvas canvas) {
+    private void drawIndicator(int sweepAngle, int dialCount, Canvas canvas) {
+
+        //刻度间的角度偏移量（注意-1，因为10个刻度间有9段距离）
+        float angleOffset = sweepAngle / (dialCount - 1);
+        int temp = (int) ((downAngle - (360 - sweepAngle) / 2) / angleOffset);
+        Logger.e("转换的结果：" + temp);
+        float angle;
+        if (temp < 1) {
+            day = 0;
+        } else if (temp > dialCount - 1) {
+            day = 6;
+        } else {
+            day = temp;
+        }
+        angle = angleOffset * (6 - day) + (360 - sweepAngle) / 2;
+
         float length = 50;//指示器线的长度
         float endX, endY;
         endX = centerX + (float) (length * Math.sin(2 * Math.PI / 360 * angle));
@@ -228,28 +248,45 @@ public class RotarySeekBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float downAngle;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                float dx = event.getX() - centerX;
-                float dy = event.getY() - centerY;
+                float downX = event.getX() - centerX;
+                float downY = event.getY() - centerY;
                 //这个角度是从最右侧开始，逆时针到-180度，顺时针到180度
-                downAngle = (float) ((Math.atan2(dy, dx) * 180) / Math.PI);
-                if (downAngle > 0) {
-                    downAngle = 360 - downAngle;
-                } else {
-                    downAngle = Math.abs(downAngle);
+                downAngle = (float) ((Math.atan2(downY, downX) * 180) / Math.PI);
+
+                //转换为从最底部开始，顺时针方向
+                downAngle -= 90;
+                if (downAngle < 0) {
+                    downAngle += 360;
                 }
-                Logger.e("按下时的角度：" + downAngle);
+                //downAngle = 360 - downAngle;
+
+                //Logger.e("按下时的角度：" + downAngle);
+                //invalidate();
+
                 break;
             case MotionEvent.ACTION_MOVE:
+                float moveX = event.getX() - centerX;
+                float moveY = event.getY() - centerY;
+
+                currentAngle = (float) ((Math.atan2(moveY, moveX) * 180) / Math.PI);
+                currentAngle -= 90;
+                if (currentAngle < 0) {
+                    currentAngle += 360;
+                }
+                //currentAngle = 360 - currentAngle;
+                downAngle = currentAngle;
+
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 break;
             default:
                 break;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 }
