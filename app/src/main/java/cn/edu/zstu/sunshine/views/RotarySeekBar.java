@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import cn.edu.zstu.sunshine.utils.UnitUtil;
+
 /**
  * 旋转式拖动条（单指针和双指针模式）
  * Created by CooLoongWu on 2017-11-13 14:28.
@@ -28,7 +30,7 @@ public class RotarySeekBar extends View {
 
     private int backCircleColor = Color.parseColor("#EDEDED");
     private int mainCircleColor = Color.parseColor("#FFFFFF");
-    private int indicatorColor = Color.parseColor("#FFA036");//指示器的颜色
+    private int indicatorColor = Color.parseColor("#95E362");//指示器的颜色
     private int progressUnfocusedColor = Color.parseColor("#EDEDED");//进度条没有焦点时的颜色
     private int progressDefaultColor = Color.parseColor("#FFA036");//进度条默认的颜色
     private int progressAccentColor = Color.parseColor("#95E362");//进度条选中时的颜色
@@ -76,7 +78,7 @@ public class RotarySeekBar extends View {
 
         indicatorPaint = new Paint();
         indicatorPaint.setAntiAlias(true);
-        indicatorPaint.setStrokeWidth(4);
+        indicatorPaint.setStrokeWidth(2);
         indicatorPaint.setStyle(Paint.Style.STROKE);
         indicatorPaint.setColor(indicatorColor);
 
@@ -88,13 +90,13 @@ public class RotarySeekBar extends View {
 
         progressDefaultPaint = new Paint();
         progressDefaultPaint.setAntiAlias(true);
-        progressDefaultPaint.setStrokeWidth(2);
+        progressDefaultPaint.setStrokeWidth(1);
         progressDefaultPaint.setStyle(Paint.Style.STROKE);
         progressDefaultPaint.setColor(progressDefaultColor);
 
         progressAccentPaint = new Paint();
         progressAccentPaint.setAntiAlias(true);
-        progressAccentPaint.setStrokeWidth(2);
+        progressAccentPaint.setStrokeWidth(1);
         progressAccentPaint.setStyle(Paint.Style.STROKE);
         progressAccentPaint.setColor(progressAccentColor);
     }
@@ -106,8 +108,8 @@ public class RotarySeekBar extends View {
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        canvas.drawCircle(centerX, centerY, progressRadius - 100, backCirclePaint);
-        canvas.drawCircle(centerX, centerY, progressRadius - 110, mainCirclePaint);
+        canvas.drawCircle(centerX, centerY, progressRadius - 130, backCirclePaint);
+        canvas.drawCircle(centerX, centerY, progressRadius - 140, mainCirclePaint);
 
         drawIndicator(180, 7, canvas);
         drawDay(180, 7, canvas);
@@ -140,6 +142,9 @@ public class RotarySeekBar extends View {
 
         //星期刻度盘的半径
         float radius = progressRadius - 70;
+        float textSize = UnitUtil.dp2px(14, getContext());
+        progressDefaultPaint.setTextSize(textSize);
+        progressAccentPaint.setTextSize(textSize);
 
         //角度是参考竖直方向最下端，逆时针方向绘制
         for (int i = 0; i < dialCount; i++) {
@@ -148,11 +153,34 @@ public class RotarySeekBar extends View {
             y = centerY + (float) (radius * Math.cos(2 * Math.PI / 360 * angle));
 
             //Logger.e("绘制星期角度：" + angle);
+            String dayString;
+            if (i == 0) {
+                dayString = "日";
+            } else if (i == 1) {
+                dayString = "六";
+            } else if (i == 2) {
+                dayString = "五";
+            } else if (i == 3) {
+                dayString = "四";
+            } else if (i == 4) {
+                dayString = "三";
+            } else if (i == 5) {
+                dayString = "二";
+            } else if (i == 6) {
+                dayString = "一";
+            } else dayString = "一";
+
+            float textWidth = progressAccentPaint.measureText(dayString);
             if (i == (6 - day)) {
-                canvas.drawCircle(x, y, 6, progressAccentPaint);
+                canvas.drawCircle(x, y, 25, progressAccentPaint);
+                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, progressAccentPaint);
             } else {
-                canvas.drawCircle(x, y, 6, progressDefaultPaint);
+                canvas.drawCircle(x, y, 25, progressDefaultPaint);
+                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, progressDefaultPaint);
             }
+
+//            canvas.drawCircle(x, y, 20, i == 6 - day ? progressAccentPaint : progressDefaultPaint);
+//            canvas.drawText(String.valueOf(7 - i), x, y, i == 6 - day ? progressAccentPaint : progressDefaultPaint);
 
         }
 
@@ -174,7 +202,7 @@ public class RotarySeekBar extends View {
         }
         angle = angleOffset * (6 - day) + (360 - sweepAngle) / 2;
 
-        float length = 50;//指示器线的长度
+        float length = 85;//指示器线的长度
         float endX, endY;
         endX = centerX + (float) (length * Math.sin(2 * Math.PI / 360 * angle));
         endY = centerY + (float) (length * Math.cos(2 * Math.PI / 360 * angle));
