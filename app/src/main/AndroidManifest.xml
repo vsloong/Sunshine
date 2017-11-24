@@ -33,6 +33,7 @@
         <activity android:name=".tools.exercise.ExerciseActivity" />
         <activity android:name=".tools.library.LibraryActivity" />
         <activity android:name=".tools.timetable.TimetableAddActivity" />
+        <activity android:name=".tools.TestActivity"></activity>
     </application>
 
 </manifest>

@@ -16,14 +16,14 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_bg">
+        android:background="@color/white">
 
         <cn.edu.zstu.sunshine.views.SelfAdaptationImageView
             android:id="@+id/img_banner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="180dp"
-            android:src="@mipmap/banner_school"
+            android:src="@mipmap/festival_christmas"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,21 +31,12 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_banner" />
 
-        <cn.edu.zstu.sunshine.views.RotarySeekBar
-            android:id="@+id/croller"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
         <!--<cn.edu.zstu.sunshine.views.RunView-->
         <!--android:id="@+id/ring_view"-->
@@ -59,20 +50,22 @@
             android:id="@+id/layout_top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:text="阳光浙理"
                 android:textColor="@color/white"
-                android:textSize="24sp"
-                android:typeface="monospace" />
+                android:textSize="16sp"
+                android:typeface="monospace"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_user"
@@ -85,6 +78,7 @@
                 android:onClick="@{viewModel.onUserClick}" />
 
             <RelativeLayout
+                android:id="@+id/layout_service"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_centerVertical="true"
@@ -103,31 +97,32 @@
                     android:background="@drawable/ic_main_service_24dp"
                     android:onClick="@{viewModel.onCustomerServiceClick}" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_margin="16dp"
+                android:layout_toEndOf="@+id/text_name"
+                android:layout_toStartOf="@+id/layout_service"
+                android:background="@drawable/shape_search"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    app:srcCompat="@drawable/ic_search_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:text="输入图书、作者名"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_margin="16dp"
-            android:background="@drawable/shape_search"
-            android:gravity="center"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_top">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                app:srcCompat="@drawable/ic_search_24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="输入图书、作者名"
-                android:textSize="14sp" />
-        </LinearLayout>
 
 
     </android.support.constraint.ConstraintLayout>

@@ -32,6 +32,7 @@ import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
+import cn.edu.zstu.sunshine.tools.TestActivity;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.exam.ExamActivity;
 import cn.edu.zstu.sunshine.tools.exercise.ExerciseActivity;
@@ -42,7 +43,6 @@ import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
 
 public class MainActivity extends BaseActivity {
 
-    private ActivityMainBinding binding;
     public MainActivityViewModel viewModel;
     private MQMessageReceiver messageReceiver = new MQMessageReceiver();
 
@@ -53,7 +53,8 @@ public class MainActivity extends BaseActivity {
             "成绩",
             "网费",
             "锻炼",
-            "图书馆"
+            "图书馆",
+            "测试"
     };
     private static final int toolsIcon[] = {
             R.mipmap.ic_main_timetable,
@@ -62,7 +63,8 @@ public class MainActivity extends BaseActivity {
             R.mipmap.ic_main_score,
             R.mipmap.ic_main_networke,
             R.mipmap.ic_main_exercise,
-            R.mipmap.ic_main_library
+            R.mipmap.ic_main_library,
+            R.mipmap.ic_launcher
     };
 
     private static final Class cla[] = {
@@ -72,7 +74,8 @@ public class MainActivity extends BaseActivity {
             ScoreActivity.class,
             NetworkActivity.class,
             ExerciseActivity.class,
-            LibraryActivity.class
+            LibraryActivity.class,
+            TestActivity.class
     };
 
     @Override
@@ -88,7 +91,7 @@ public class MainActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
 
@@ -109,7 +112,6 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void onClick(View view) {
                                 startActivity(cla[position]);
-
                             }
                         });
                     }

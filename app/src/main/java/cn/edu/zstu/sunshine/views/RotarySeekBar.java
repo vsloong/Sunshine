@@ -44,7 +44,7 @@ public class RotarySeekBar extends View {
 
     RectF rectF = new RectF();
 
-    private float progressRadius = 180;
+    private float progressRadius;
     float downAngle = 0;
     float currentAngle = 0;
 
@@ -79,7 +79,7 @@ public class RotarySeekBar extends View {
         indicatorPaint = new Paint();
         indicatorPaint.setAntiAlias(true);
         indicatorPaint.setStrokeWidth(2);
-        indicatorPaint.setStyle(Paint.Style.STROKE);
+        indicatorPaint.setStyle(Paint.Style.FILL);
         indicatorPaint.setColor(indicatorColor);
 
         progressUnfocusedPaint = new Paint();
@@ -108,8 +108,8 @@ public class RotarySeekBar extends View {
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        canvas.drawCircle(centerX, centerY, progressRadius - 130, backCirclePaint);
-        canvas.drawCircle(centerX, centerY, progressRadius - 140, mainCirclePaint);
+        canvas.drawCircle(centerX, centerY, progressRadius - 40, backCirclePaint);
+        //canvas.drawCircle(centerX, centerY, progressRadius - 140, mainCirclePaint);
 
         drawIndicator(180, 7, canvas);
         drawDay(180, 7, canvas);
@@ -118,6 +118,13 @@ public class RotarySeekBar extends View {
         drawWeek(200, 12, canvas);
     }
 
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        progressRadius = MeasureSpec.getSize(widthMeasureSpec) / 2;
+        Logger.e("控件的宽度：" + progressRadius);
+    }
 
     /**
      * 画星期的刻度盘
@@ -175,7 +182,7 @@ public class RotarySeekBar extends View {
                 canvas.drawCircle(x, y, 25, progressAccentPaint);
                 canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, progressAccentPaint);
             } else {
-                canvas.drawCircle(x, y, 25, progressDefaultPaint);
+                //canvas.drawCircle(x, y, 25, progressDefaultPaint);
                 canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, progressDefaultPaint);
             }
 
@@ -191,7 +198,7 @@ public class RotarySeekBar extends View {
         //刻度间的角度偏移量（注意-1，因为10个刻度间有9段距离）
         float angleOffset = sweepAngle / (dialCount - 1);
         int temp = (int) ((downAngle - (360 - sweepAngle) / 2) / angleOffset);
-        Logger.e("转换的结果：" + temp);
+        //Logger.e("转换的结果：" + temp);
         float angle;
         if (temp < 1) {
             day = 0;
