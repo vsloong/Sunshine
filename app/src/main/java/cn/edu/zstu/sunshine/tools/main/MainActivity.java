@@ -57,14 +57,14 @@ public class MainActivity extends BaseActivity {
             "测试"
     };
     private static final int toolsIcon[] = {
-            R.mipmap.ic_main_timetable,
-            R.mipmap.ic_main_card,
-            R.mipmap.ic_main_exam,
-            R.mipmap.ic_main_score,
-            R.mipmap.ic_main_networke,
-            R.mipmap.ic_main_exercise,
-            R.mipmap.ic_main_library,
-            R.mipmap.ic_launcher
+            R.mipmap.ic_main_1,
+            R.mipmap.ic_main_2,
+            R.mipmap.ic_main_3,
+            R.mipmap.ic_main_4,
+            R.mipmap.ic_main_5,
+            R.mipmap.ic_main_6,
+            R.mipmap.ic_main_7,
+            R.mipmap.ic_main_8
     };
 
     private static final Class cla[] = {
