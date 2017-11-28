@@ -7,10 +7,12 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.meiqia.core.MQManager;
 import com.meiqia.core.MQMessageManager;
@@ -21,6 +23,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,8 @@ import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
+import cn.edu.zstu.sunshine.skin.ISkinChangingCallback;
+import cn.edu.zstu.sunshine.skin.SkinManager;
 import cn.edu.zstu.sunshine.tools.TestActivity;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.exam.ExamActivity;
@@ -80,6 +85,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SkinManager.getInstance().register(this);
         super.onCreate(savedInstanceState);
 
         //设置透明状态栏
@@ -118,6 +124,28 @@ public class MainActivity extends BaseActivity {
                 }));
 
         //new DialogUtil(this, R.layout.dialog_base).show();
+
+        String mSkinPkgPath = Environment.getExternalStorageDirectory() + File.separator + "sunshine_skin.apk";
+
+
+        SkinManager.getInstance().changeSkin(
+                mSkinPkgPath,
+                "cn.edu.zstu.sunshineskin",
+                new ISkinChangingCallback() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(MainActivity.this, "换肤失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(MainActivity.this, "换肤成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Subscribe
@@ -168,5 +196,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
         EventBus.getDefault().unregister(this);
+        SkinManager.getInstance().unregister(this);
     }
 }
