@@ -22,7 +22,7 @@ public class AppConfig {
 
     public static final String KEY_MEIQIA = "d7a224565c67228db92576ec3897d980";
 
-    public static final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine" + File.separator;
+    public static final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
 
     public static String getDBName() {
         return DB_NAME;

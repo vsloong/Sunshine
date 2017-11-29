@@ -7,7 +7,6 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
@@ -183,63 +182,74 @@ public class MainActivity extends BaseActivity {
 
                 Logger.e("更新信息" + update.isSkinChange());
                 if (update.isSkinChange()) {
-                    downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl());
+                    String fileName = update.getSkinName() + "_" + update.getSkinCode() + ".skin";
+                    if (AppConfig.isFileExists(fileName)) {
+                        changeSkin(fileName);
+                    } else {
+                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl());
+                    }
                 }
             }
         });
     }
 
     private void downloadSkin(final String fileName, final long fileCode, String url) {
-        Api.download(this, fileName, url, new Callback() {
+        Api.download(this, url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Logger.e(fileName + "检查更新成功");
+                Logger.e(fileName + "下载失败");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                File file = new File(AppConfig.FILE_PATH, fileName + "_" + fileCode + ".skin");
+                File fileDir = new File(AppConfig.FILE_PATH);
+                if (!fileDir.exists()) {
+                    fileDir.mkdir();
+                }
                 InputStream is = null;
                 byte[] buf = new byte[2048];
-                int len;
+                int len = 0;
                 FileOutputStream fos = null;
                 try {
-                    long total = response.body().contentLength();
-                    long current = 0;
                     is = response.body().byteStream();
+                    final long total = response.body().contentLength();
+
+                    long sum = 0;
+
+                    String tempName = fileName + "_" + fileCode + ".skin";
+                    File file = new File(fileDir, tempName);
                     fos = new FileOutputStream(file);
                     while ((len = is.read(buf)) != -1) {
-                        current += len;
+                        sum += len;
                         fos.write(buf, 0, len);
-                        //Log.e(TAG, "current------>" + current);
+                        final long finalSum = sum;
+
+                        Logger.e("下载进度：" + (finalSum * 1.0f / total));
                     }
                     fos.flush();
-                    //successCallBack((T) file, callBack);
-                    Logger.e("下载成功");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    //Log.e(TAG, e.toString());
-                    //failedCallBack("下载失败", callBack);
+
+                    Logger.e("下载完成");
+                    changeSkin(tempName);
+
                 } finally {
                     try {
-                        if (is != null) {
-                            is.close();
-                        }
-                        if (fos != null) {
-                            fos.close();
-                        }
+                        response.body().close();
+                        if (is != null) is.close();
                     } catch (IOException e) {
-                        //Log.e(TAG, e.toString());
                     }
+                    try {
+                        if (fos != null) fos.close();
+                    } catch (IOException e) {
+                    }
+
                 }
             }
         });
     }
 
-    private void changeSkin() {
-        String mSkinPkgPath = Environment.getExternalStorageDirectory() + File.separator + "sunshine_skin.apk";
+    private void changeSkin(String fileName) {
         SkinManager.getInstance().changeSkin(
-                mSkinPkgPath,
+                AppConfig.FILE_PATH + File.separator + fileName,
                 "cn.edu.zstu.sunshineskin",
                 new ISkinChangingCallback() {
                     @Override

@@ -100,17 +100,18 @@ public class Api {
     static void post(Context context, String url, Callback callback) {
         OkHttpUtil.getInstance()
                 .tag(context)
-                .post(URL_BASE + url)
+                .post()
+                .url(URL_BASE + url)
                 .addParam("userId", AppConfig.getDefaultUserId())
                 .build()
                 .enqueue(callback);
     }
 
-    public static void download(Context context, String fileName, String url, Callback callback) {
+    public static void download(Context context, String url, Callback callback) {
         OkHttpUtil.getInstance()
                 .tag(context)
-                .post(URL_BASE + url)
-                .addParam("userId", AppConfig.getDefaultUserId())
+                .get()
+                .url(url)
                 .build()
                 .enqueue(callback);
     }

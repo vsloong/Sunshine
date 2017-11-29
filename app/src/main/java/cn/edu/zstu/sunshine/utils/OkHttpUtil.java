@@ -24,6 +24,7 @@ public class OkHttpUtil {
     private Request.Builder requestBuilder;
     private Request request;
     private Call call;
+    private boolean isPost = false;
 
     private OkHttpUtil() {
         this.okHttpClient = new OkHttpClient();
@@ -67,14 +68,35 @@ public class OkHttpUtil {
         return okHttpClient;
     }
 
+
     /**
      * 添加RequestBuilder请求地址
      *
      * @param url 地址
      * @return OkHttpUtil
      */
-    public OkHttpUtil post(String url) {
+    public OkHttpUtil url(String url) {
         requestBuilder.url(url);
+        return okHttpUtil;
+    }
+
+    /**
+     * 请求类型
+     *
+     * @return OkHttpUtil
+     */
+    public OkHttpUtil post() {
+        isPost = true;
+        return okHttpUtil;
+    }
+
+    /**
+     * 请求类型
+     *
+     * @return OkHttpUtil
+     */
+    public OkHttpUtil get() {
+        isPost = false;
         return okHttpUtil;
     }
 
@@ -107,10 +129,15 @@ public class OkHttpUtil {
      * @return OkHttpUtil
      */
     public OkHttpUtil build() {
-        request = requestBuilder.post(requestBody.build()).build();
+        if (isPost) {
+            request = requestBuilder.post(requestBody.build()).build();
+        } else {
+            request = requestBuilder.get().build();
+        }
         call = okHttpClient.newCall(request);
         return okHttpUtil;
     }
+
 
     /**
      * @param callback 执行结果回调
