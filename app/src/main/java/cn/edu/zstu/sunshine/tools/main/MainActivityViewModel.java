@@ -3,6 +3,7 @@ package cn.edu.zstu.sunshine.tools.main;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.view.View;
 
 import com.meiqia.core.callback.OnInitCallback;
@@ -10,10 +11,16 @@ import com.meiqia.meiqiasdk.util.MQConfig;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.AppConfig;
+import cn.edu.zstu.sunshine.base.BaseViewModel;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
+import cn.edu.zstu.sunshine.entity.JsonParse;
+import cn.edu.zstu.sunshine.entity.Tool;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
 import cn.edu.zstu.sunshine.tools.user.UserActivity;
@@ -23,17 +30,35 @@ import cn.edu.zstu.sunshine.tools.user.UserActivity;
  * Created by CooLoongWu on 2017-8-30 16:35.
  */
 
-public class MainActivityViewModel {
-    private Context context;
-    private ActivityMainBinding binding;
+public class MainActivityViewModel extends BaseViewModel<Tool> {
+
+    private static final String toolsName[] = {
+            "课表",
+            "饭卡",
+            "考试",
+            "成绩",
+            "网费",
+            "锻炼",
+            "图书馆",
+            "测试"
+    };
+    private static final int toolsIcon[] = {
+            R.mipmap.ic_main_1,
+            R.mipmap.ic_main_2,
+            R.mipmap.ic_main_3,
+            R.mipmap.ic_main_4,
+            R.mipmap.ic_main_5,
+            R.mipmap.ic_main_6,
+            R.mipmap.ic_main_7,
+            R.mipmap.ic_main_8
+    };
 
     public ObservableBoolean haveUnRead = new ObservableBoolean();
 
-    MainActivityViewModel(Context context, ActivityMainBinding binding) {
-        this.context = context;
-        this.binding = binding;
+    MainActivityViewModel(Context context, ViewDataBinding binding) {
+        super(context, binding);
 
-        //进入主页面在注册美洽客服服务，这里也是为了不占用app的启动速度
+        //进入主页面再注册美洽客服服务，这里也是为了不占用app的启动速度
         MQConfig.init(context, AppConfig.KEY_MEIQIA, new OnInitCallback() {
             @Override
             public void onSuccess(String clientId) {
@@ -45,6 +70,34 @@ public class MainActivityViewModel {
                 Logger.e("美洽客服初始化失败，code：" + code + "；错误信息：" + message);
             }
         });
+    }
+
+    @Override
+    protected String loadUrl() {
+        return null;
+    }
+
+    @Override
+    protected JsonParse<List<Tool>> parseStrToJson(String data) {
+        return null;
+    }
+
+    @Override
+    protected List<Tool> loadDataFromLocal() {
+        //加载首页工具资源
+        List<Tool> tools = new ArrayList<>();
+        for (int i = 0; i < toolsName.length; i++) {
+            tools.add(new Tool(toolsName[i], toolsIcon[i]));
+        }
+        return tools;
+    }
+
+    @Override
+    protected void loadDataIntoView() {
+        ActivityMainBinding mainBinding = (ActivityMainBinding) binding;
+        if (mainBinding.recyclerView.getAdapter() != null) {
+            mainBinding.recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     public void onTimeTableClick(View view) {

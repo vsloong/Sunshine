@@ -2,6 +2,11 @@ package cn.edu.zstu.sunshine.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+
+import java.io.File;
 
 /**
  * App的配置类
@@ -16,6 +21,8 @@ public class AppConfig {
     private static final String MODE_NIGHT = "MODE_NIGHT";//SharedPreferences中日间夜间模式键
 
     public static final String KEY_MEIQIA = "d7a224565c67228db92576ec3897d980";
+
+    public static final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine" + File.separator;
 
     public static String getDBName() {
         return DB_NAME;
@@ -39,5 +46,28 @@ public class AppConfig {
 
     private static SharedPreferences getSP() {
         return BaseApplication.getAppContext().getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+    }
+
+    public static int getVersionCode() {
+        return getPackageInfo().versionCode;
+    }
+
+    public static String getVersionName() {
+        return getPackageInfo().versionName;
+    }
+
+    private static PackageInfo getPackageInfo() {
+        PackageManager pm = BaseApplication.getAppContext().getPackageManager();
+        try {
+            return pm.getPackageInfo(BaseApplication.getAppContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean isFileExists(String fileName) {
+        File file = new File(AppConfig.FILE_PATH, fileName);
+        return file.exists();
     }
 }

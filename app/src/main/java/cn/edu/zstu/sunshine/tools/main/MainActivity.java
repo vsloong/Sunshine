@@ -12,8 +12,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.meiqia.core.MQManager;
 import com.meiqia.core.MQMessageManager;
 import com.meiqia.core.bean.MQMessage;
@@ -24,15 +25,20 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
+import cn.edu.zstu.sunshine.base.Api;
+import cn.edu.zstu.sunshine.base.AppConfig;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.base.BaseAdapter;
 import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
-import cn.edu.zstu.sunshine.entity.Tool;
+import cn.edu.zstu.sunshine.entity.JsonParse;
+import cn.edu.zstu.sunshine.entity.Update;
 import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.skin.ISkinChangingCallback;
@@ -45,32 +51,15 @@ import cn.edu.zstu.sunshine.tools.library.LibraryActivity;
 import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
 import cn.edu.zstu.sunshine.tools.score.ScoreActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
     public MainActivityViewModel viewModel;
+    public ActivityMainBinding binding;
     private MQMessageReceiver messageReceiver = new MQMessageReceiver();
-
-    private static final String toolsName[] = {
-            "课表",
-            "饭卡",
-            "考试",
-            "成绩",
-            "网费",
-            "锻炼",
-            "图书馆",
-            "测试"
-    };
-    private static final int toolsIcon[] = {
-            R.mipmap.ic_main_1,
-            R.mipmap.ic_main_2,
-            R.mipmap.ic_main_3,
-            R.mipmap.ic_main_4,
-            R.mipmap.ic_main_5,
-            R.mipmap.ic_main_6,
-            R.mipmap.ic_main_7,
-            R.mipmap.ic_main_8
-    };
 
     private static final Class cla[] = {
             TimetableActivity.class,
@@ -83,11 +72,11 @@ public class MainActivity extends BaseActivity {
             TestActivity.class
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SkinManager.getInstance().register(this);
         super.onCreate(savedInstanceState);
-
         //设置透明状态栏
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
@@ -97,20 +86,20 @@ public class MainActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
 
         EventBus.getDefault().register(this);
         registerMQMessageReceiver();
 
-        //加载首页工具资源
-        List<Tool> tools = new ArrayList<>();
-        for (int i = 0; i < toolsName.length; i++) {
-            tools.add(new Tool(toolsName[i], toolsIcon[i]));
-        }
+        initViews();
+        checkUpdateAndSkin();
+    }
+
+    private void initViews() {
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_main_tool, BR.tool, tools)
+        binding.recyclerView.setAdapter(new BaseAdapter<>(R.layout.item_main_tool, BR.tool, viewModel.getData())
                 .setOnItemHandler(new BaseAdapter.OnItemHandler() {
                     @Override
                     public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
@@ -122,30 +111,6 @@ public class MainActivity extends BaseActivity {
                         });
                     }
                 }));
-
-        //new DialogUtil(this, R.layout.dialog_base).show();
-
-        String mSkinPkgPath = Environment.getExternalStorageDirectory() + File.separator + "sunshine_skin.apk";
-
-
-        SkinManager.getInstance().changeSkin(
-                mSkinPkgPath,
-                "cn.edu.zstu.sunshineskin",
-                new ISkinChangingCallback() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Toast.makeText(MainActivity.this, "换肤失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Toast.makeText(MainActivity.this, "换肤成功", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     @Subscribe
@@ -197,5 +162,99 @@ public class MainActivity extends BaseActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
         EventBus.getDefault().unregister(this);
         SkinManager.getInstance().unregister(this);
+    }
+
+    private void checkUpdateAndSkin() {
+        Api.getUpdateInfo(this, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.e("检查更新失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Logger.e("检查更新成功");
+                //JsonParse<List<Update>> s = parseStrToJson(response.toString());
+                Update update = JSON.parseObject(
+                        response.body().string(),
+                        new TypeReference<JsonParse<Update>>() {
+                        })
+                        .getData();
+
+                Logger.e("更新信息" + update.isSkinChange());
+                if (update.isSkinChange()) {
+                    downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl());
+                }
+            }
+        });
+    }
+
+    private void downloadSkin(final String fileName, final long fileCode, String url) {
+        Api.download(this, fileName, url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.e(fileName + "检查更新成功");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                File file = new File(AppConfig.FILE_PATH, fileName + "_" + fileCode + ".skin");
+                InputStream is = null;
+                byte[] buf = new byte[2048];
+                int len;
+                FileOutputStream fos = null;
+                try {
+                    long total = response.body().contentLength();
+                    long current = 0;
+                    is = response.body().byteStream();
+                    fos = new FileOutputStream(file);
+                    while ((len = is.read(buf)) != -1) {
+                        current += len;
+                        fos.write(buf, 0, len);
+                        //Log.e(TAG, "current------>" + current);
+                    }
+                    fos.flush();
+                    //successCallBack((T) file, callBack);
+                    Logger.e("下载成功");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    //Log.e(TAG, e.toString());
+                    //failedCallBack("下载失败", callBack);
+                } finally {
+                    try {
+                        if (is != null) {
+                            is.close();
+                        }
+                        if (fos != null) {
+                            fos.close();
+                        }
+                    } catch (IOException e) {
+                        //Log.e(TAG, e.toString());
+                    }
+                }
+            }
+        });
+    }
+
+    private void changeSkin() {
+        String mSkinPkgPath = Environment.getExternalStorageDirectory() + File.separator + "sunshine_skin.apk";
+        SkinManager.getInstance().changeSkin(
+                mSkinPkgPath,
+                "cn.edu.zstu.sunshineskin",
+                new ISkinChangingCallback() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        //Toast.makeText(MainActivity.this, "换肤失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Toast.makeText(MainActivity.this, "换肤成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

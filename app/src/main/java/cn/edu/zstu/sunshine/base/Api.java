@@ -20,6 +20,7 @@ public class Api {
     public static final String URL_SCORE = "score";
     public static final String URL_TIMETABLE = "timetable";
     public static final String URL_LIBRARY = "library";
+    public static final String URL_UPDATE = "update";
 
 
     public static final int ERR_CODE_400 = 400;
@@ -75,6 +76,17 @@ public class Api {
         post(context, URL_SCORE, callback);
     }
 
+
+    /**
+     * 获取升级和换肤信息
+     *
+     * @param context  上下文，作为TAG
+     * @param callback 回调
+     */
+    public static void getUpdateInfo(Context context, Callback callback) {
+        post(context, URL_UPDATE, callback);
+    }
+
     /**
      * 获取图书馆借书信息
      *
@@ -85,7 +97,16 @@ public class Api {
         post(context, URL_LIBRARY, callback);
     }
 
-    public static void post(Context context, String url, Callback callback) {
+    static void post(Context context, String url, Callback callback) {
+        OkHttpUtil.getInstance()
+                .tag(context)
+                .post(URL_BASE + url)
+                .addParam("userId", AppConfig.getDefaultUserId())
+                .build()
+                .enqueue(callback);
+    }
+
+    public static void download(Context context, String fileName, String url, Callback callback) {
         OkHttpUtil.getInstance()
                 .tag(context)
                 .post(URL_BASE + url)

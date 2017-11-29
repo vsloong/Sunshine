@@ -8,8 +8,9 @@ android {
         applicationId "cn.edu.zstu.sunshine"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 171129001
+        //17年10月29日，后面三个数字为打包号吧，一天能打999版个包？
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true

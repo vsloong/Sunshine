@@ -53,6 +53,7 @@ public abstract class BaseViewModel<T> {
     }
 
     public void loadDataFromNetWork() {
+        if (null == loadUrl() || loadUrl().isEmpty()) return;
         Api.post(context, loadUrl(), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
