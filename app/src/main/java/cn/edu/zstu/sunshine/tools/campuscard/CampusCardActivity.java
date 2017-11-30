@@ -27,7 +27,7 @@ import cn.edu.zstu.sunshine.databinding.ActivityCampusCardBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
-import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -103,7 +103,7 @@ public class CampusCardActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        viewModel.month.set(DataUtil.getCurrentMonth());
+        viewModel.month.set(DateUtil.getCurrentMonth());
         loadDataFromNetWork();
         return super.onOptionsItemSelected(item);
     }

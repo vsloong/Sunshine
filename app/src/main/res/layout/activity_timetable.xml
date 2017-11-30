@@ -9,7 +9,7 @@
 
         <import type="android.view.View" />
 
-        <import type="cn.edu.zstu.sunshine.utils.DataUtil" />
+        <import type="cn.edu.zstu.sunshine.utils.DateUtil" />
 
         <variable
             name="viewModel"
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@{DataUtil.monthString}"
+                    android:text="@{DateUtil.monthString}"
                     android:textColor="@color/text_gray_light"
                     android:textSize="18sp"
                     tools:text="8月" />
@@ -59,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/text_month"
-                    android:text="@{DataUtil.weekString}"
+                    android:text="@{DateUtil.weekString}"
                     android:textColor="@color/text_gray_light"
                     android:textSize="18sp"
                     tools:text="（第二周）" />

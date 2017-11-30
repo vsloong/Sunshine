@@ -13,7 +13,7 @@ import cn.edu.zstu.sunshine.databinding.ActivityTimetableBinding;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.greendao.CourseDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
-import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 
 /**
  * 课表的ViewModel类
@@ -30,7 +30,7 @@ public class TimetableViewModel {
 
     private CourseDao dao;
 
-    private int day = DataUtil.getDayOfWeek();//星期几，周一就是1
+    private int day = DateUtil.getDayOfWeek();//星期几，周一就是1
 
     TimetableViewModel(Context context, ActivityTimetableBinding binding) {
         this.context = context;
@@ -86,12 +86,12 @@ public class TimetableViewModel {
     }
 
     void backToToday() {
-        TabLayout.Tab tab = binding.tabLayout.getTabAt(DataUtil.getDayOfWeek() - 1);
+        TabLayout.Tab tab = binding.tabLayout.getTabAt(DateUtil.getDayOfWeek() - 1);
         if (tab != null) {
             tab.select();
         }
 
-        setDay(DataUtil.getDayOfWeek());
+        setDay(DateUtil.getDayOfWeek());
         init();
     }
 

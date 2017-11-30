@@ -21,9 +21,22 @@ import cn.edu.zstu.sunshine.base.BaseApplication;
  * Created by CooLoongWu on 2017-8-15 16:23.
  */
 
-public class DataUtil {
+public class DateUtil {
 
     public static String week[] = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+
+    public static long getMillis(String dataStr) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        try {
+            Date date = df.parse(dataStr);
+            calendar.setTime(date);
+            return calendar.getTimeInMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     /**
      * @return 当前月份【1月就是1】
@@ -81,7 +94,7 @@ public class DataUtil {
      * @return 彩色的月份信息
      */
     public static SpannableString getMonthString() {
-        String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), DataUtil.getCurrentMonth());
+        String month = String.format(BaseApplication.getAppContext().getResources().getString(R.string.month), getCurrentMonth());
         return getColorText(month, R.color.text_yellow, 0, month.length() - 1);
     }
 

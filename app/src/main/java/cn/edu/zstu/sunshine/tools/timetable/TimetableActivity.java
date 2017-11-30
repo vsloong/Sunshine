@@ -33,7 +33,7 @@ import cn.edu.zstu.sunshine.databinding.ItemTabBinding;
 import cn.edu.zstu.sunshine.entity.Course;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
-import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 import cn.edu.zstu.sunshine.utils.IntentUtil;
 import cn.edu.zstu.sunshine.utils.ToastUtil;
 import okhttp3.Call;
@@ -93,12 +93,12 @@ public class TimetableActivity extends BaseActivity implements TabLayout.OnTabSe
     }
 
     private void initTabLayout() {
-        int dayOfWeek = DataUtil.getDayOfWeek() - 1;
-        int datesOfWeek[] = DataUtil.getDatesOfWeek();
+        int dayOfWeek = DateUtil.getDayOfWeek() - 1;
+        int datesOfWeek[] = DateUtil.getDatesOfWeek();
 
         for (int i = 0; i < 7; i++) {
             ItemTabBinding itemTabBinding = ItemTabBinding.inflate(LayoutInflater.from(this), binding.tabLayout, false);
-            itemTabBinding.setItemWeek(DataUtil.week[i]);
+            itemTabBinding.setItemWeek(DateUtil.week[i]);
             itemTabBinding.setItemDate(String.valueOf(datesOfWeek[i]));
 
             //暂不清楚为什么布局宽度会出现问题，这里需要重新设置下布局参数（100只是随便写的一个值，后需修改）

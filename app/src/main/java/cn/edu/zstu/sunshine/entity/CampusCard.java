@@ -5,7 +5,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
 import cn.edu.zstu.sunshine.base.AppConfig;
-import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 
 /**
  * 校园卡消费记录的实体类
@@ -32,8 +32,8 @@ public class CampusCard {
      */
     public void complete() {
         setUserId(AppConfig.getDefaultUserId());
-        setYear(DataUtil.getYearFromString(time));
-        setMonth(DataUtil.getMonthFromString(time));
+        setYear(DateUtil.getYearFromString(time));
+        setMonth(DateUtil.getMonthFromString(time));
     }
 
     @Generated(hash = 1119695301)

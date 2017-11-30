@@ -50,6 +50,7 @@ import cn.edu.zstu.sunshine.tools.library.LibraryActivity;
 import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
 import cn.edu.zstu.sunshine.tools.score.ScoreActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -180,20 +181,43 @@ public class MainActivity extends BaseActivity {
                         })
                         .getData();
 
-                Logger.e("更新信息" + update.isSkinChange());
+
+                long currentTime = System.currentTimeMillis();
+                long effectiveTime = DateUtil.getMillis(update.getSkinEffectiveTime());
+                long expiryTime = DateUtil.getMillis(update.getSkinExpiryTime());
+                Logger.e("更新信息：" + update.isSkinChange()
+                        + "；有效时间：" + effectiveTime + "-" + currentTime + "-" + expiryTime);
+
                 if (update.isSkinChange()) {
-                    String fileName = update.getSkinName() + "_" + update.getSkinCode() + ".skin";
-                    if (AppConfig.isFileExists(fileName)) {
-                        changeSkin(fileName);
-                    } else {
-                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl());
+                    //如果当前时间还未到皮肤生效的时间，那么去下载皮肤
+                    if (currentTime < effectiveTime) {
+                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
                     }
+                    //如果当前时间超过了皮肤失效时间，那么去还原默认皮肤
+                    else if (currentTime > expiryTime) {
+                        resumeDefaultSkin();
+                    }
+                    //当前时间在皮肤生效时间内，那么去下载皮肤并改变皮肤
+                    else {
+                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), true);
+                    }
+                } else {
+                    resumeDefaultSkin();
                 }
             }
         });
     }
 
-    private void downloadSkin(final String fileName, final long fileCode, String url) {
+    private void downloadSkin(final String fileName, final long fileCode, String url, final boolean isApply) {
+
+        final String name = fileName + "_" + fileCode + ".skin";
+        if (AppConfig.isFileExists(name)) {
+            if (isApply) {
+                changeSkin(name);
+            }
+            return;
+        }
+
         Api.download(this, url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -216,8 +240,7 @@ public class MainActivity extends BaseActivity {
 
                     long sum = 0;
 
-                    String tempName = fileName + "_" + fileCode + ".skin";
-                    File file = new File(fileDir, tempName);
+                    File file = new File(fileDir, name);
                     fos = new FileOutputStream(file);
                     while ((len = is.read(buf)) != -1) {
                         sum += len;
@@ -229,7 +252,9 @@ public class MainActivity extends BaseActivity {
                     fos.flush();
 
                     Logger.e("下载完成");
-                    changeSkin(tempName);
+                    if (isApply) {
+                        changeSkin(name);
+                    }
 
                 } finally {
                     try {
@@ -266,5 +291,15 @@ public class MainActivity extends BaseActivity {
                         //Toast.makeText(MainActivity.this, "换肤成功", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void resumeDefaultSkin() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SkinManager.getInstance().removeAnySkin();
+            }
+        });
+
     }
 }

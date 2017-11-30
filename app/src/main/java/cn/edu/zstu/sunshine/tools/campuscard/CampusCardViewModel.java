@@ -24,7 +24,7 @@ import cn.edu.zstu.sunshine.databinding.ItemMonthBinding;
 import cn.edu.zstu.sunshine.entity.CampusCard;
 import cn.edu.zstu.sunshine.greendao.CampusCardDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
-import cn.edu.zstu.sunshine.utils.DataUtil;
+import cn.edu.zstu.sunshine.utils.DateUtil;
 import cn.edu.zstu.sunshine.utils.DialogUtil;
 
 /**
@@ -50,7 +50,7 @@ public class CampusCardViewModel {
         this.context = context;
         this.binding = binding;
 
-        month.set(DataUtil.getCurrentMonth());
+        month.set(DateUtil.getCurrentMonth());
         campusCardDao = DaoUtil.getInstance().getSession().getCampusCardDao();
 
         init();
@@ -77,7 +77,7 @@ public class CampusCardViewModel {
         List<CampusCard> cards = campusCardDao.queryBuilder()
                 .where(
                         CampusCardDao.Properties.UserId.eq(AppConfig.getDefaultUserId()),
-                        CampusCardDao.Properties.Year.eq(DataUtil.getCurrentYear()),
+                        CampusCardDao.Properties.Year.eq(DateUtil.getCurrentYear()),
                         CampusCardDao.Properties.Month.eq(month.get())
                 )
                 .orderDesc(CampusCardDao.Properties.Time)
