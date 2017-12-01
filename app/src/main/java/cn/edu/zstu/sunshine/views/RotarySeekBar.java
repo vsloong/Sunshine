@@ -47,16 +47,19 @@ public class RotarySeekBar extends View {
     private Paint progressDefaultPaint;
     private Paint progressAccentPaint;
 
-    private Paint textUnfocusedPaint;
-    private Paint textDefaultPaint;
-    private Paint textAccentPaint;
+    private Paint textPaint;
 
     RectF rectF = new RectF();
+
+    private final int TYPE_DAY = 1;
+    private final int TYPE_ORDINAL = 2;
+    private final int TYPE_WEEK = 3;
+    private int TYPE_CURRENT = 1;
 
     private float dayRadius = 140;      //星期的半径
     private float ordinalRadius = 220;  //上课节数的半径
     private float weekRadius = 300;     //周数的半径
-    private float supplyRadius = 50;    //补充的半径，主要为了添加触摸区域大小
+    private float supplyRadius = 40;    //补充的半径，主要为了添加触摸区域大小
     float downAngle = 0;
     float currentAngle = 0;
 
@@ -112,24 +115,13 @@ public class RotarySeekBar extends View {
         progressAccentPaint.setStyle(Paint.Style.STROKE);
         progressAccentPaint.setColor(progressAccentColor);
 
-        textUnfocusedPaint = new Paint();
-        textUnfocusedPaint.setAntiAlias(true);
-        textUnfocusedPaint.setStyle(Paint.Style.FILL);
-        textUnfocusedPaint.setColor(textUnfocusedColor);
-
-        textDefaultPaint = new Paint();
-        textDefaultPaint.setAntiAlias(true);
-        textDefaultPaint.setStyle(Paint.Style.FILL);
-        textDefaultPaint.setColor(textDefaultColor);
-
-        textAccentPaint = new Paint();
-        textAccentPaint.setAntiAlias(true);
-        textAccentPaint.setStyle(Paint.Style.FILL);
-        textAccentPaint.setColor(textAccentColor);
+        textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setColor(textUnfocusedColor);
 
         float textSize = UnitUtil.dp2px(14, getContext());
-        textDefaultPaint.setTextSize(textSize);
-        textAccentPaint.setTextSize(textSize);
+        textPaint.setTextSize(textSize);
     }
 
     @Override
@@ -203,13 +195,22 @@ public class RotarySeekBar extends View {
                 dayString = "一";
             } else dayString = "一";
 
-            float textWidth = textAccentPaint.measureText(dayString);
+            if (TYPE_CURRENT == TYPE_DAY) {
+                indicatorPaint.setColor(progressAccentColor);
+            } else {
+                indicatorPaint.setColor(progressUnfocusedColor);
+            }
+
+            float textWidth = textPaint.measureText(dayString);
             if (i == (6 - day)) {
+                indicatorPaint.setColor(progressAccentColor);
                 canvas.drawCircle(x, y, 25, indicatorPaint);
-                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, textAccentPaint);
+                textPaint.setColor(textAccentColor);
+                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, textPaint);
             } else {
                 //canvas.drawCircle(x, y, 25, progressDefaultPaint);
-                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, textDefaultPaint);
+                textPaint.setColor(textDefaultColor);
+                canvas.drawText(dayString, x - textWidth / 2, y + textWidth / 2, textPaint);
             }
 
 //            canvas.drawCircle(x, y, 20, i == 6 - day ? progressAccentPaint : progressDefaultPaint);
@@ -240,6 +241,12 @@ public class RotarySeekBar extends View {
         endX = centerX + (float) (length * Math.sin(2 * Math.PI / 360 * angle));
         endY = centerY + (float) (length * Math.cos(2 * Math.PI / 360 * angle));
 
+        if (TYPE_CURRENT == TYPE_DAY) {
+            indicatorPaint.setColor(progressAccentColor);
+        } else {
+            indicatorPaint.setColor(progressUnfocusedColor);
+        }
+
         canvas.drawLine(centerX, centerY, endX, endY, indicatorPaint);
     }
 
@@ -251,7 +258,12 @@ public class RotarySeekBar extends View {
      * @param canvas     画布
      */
     private void drawOrdinal(int sweepAngle, int dialCount, Canvas canvas) {
-        drawDial(ordinalRadius, sweepAngle, dialCount, canvas);
+        if (TYPE_CURRENT == TYPE_ORDINAL) {
+            drawDial(ordinalRadius, sweepAngle, dialCount, canvas, progressDefaultPaint);
+        } else {
+            drawDial(ordinalRadius, sweepAngle, dialCount, canvas, progressUnfocusedPaint);
+        }
+
     }
 
     /**
@@ -262,7 +274,12 @@ public class RotarySeekBar extends View {
      * @param canvas     画布
      */
     private void drawWeekOfTerm(int sweepAngle, int dialCount, Canvas canvas) {
-        drawDial(weekRadius, sweepAngle, dialCount, canvas);
+        if (TYPE_CURRENT == TYPE_WEEK) {
+            drawDial(weekRadius, sweepAngle, dialCount, canvas, progressDefaultPaint);
+        } else {
+            drawDial(weekRadius, sweepAngle, dialCount, canvas, progressUnfocusedPaint);
+        }
+
     }
 
     /**
@@ -273,7 +290,7 @@ public class RotarySeekBar extends View {
      * @param dialCount  刻度数量
      * @param canvas     画布
      */
-    private void drawDial(float radius, int sweepAngle, int dialCount, Canvas canvas) {
+    private void drawDial(float radius, int sweepAngle, int dialCount, Canvas canvas, Paint paint) {
         //课程节数刻度盘的半径
         rectF.left = centerX - radius;
         rectF.top = centerY - radius;
@@ -281,7 +298,7 @@ public class RotarySeekBar extends View {
         rectF.bottom = centerY + radius;
         //startAngle：从横向最右侧起始点顺时针方向度量的角度
         //sweepAngle：顺时针方向度量的角度
-        canvas.drawArc(rectF, 90 + (360 - sweepAngle) / 2, sweepAngle, false, progressUnfocusedPaint);
+        canvas.drawArc(rectF, 90 + (360 - sweepAngle) / 2, sweepAngle, false, paint);
 
         //绘制刻度线
         float length = 8;//刻度线的长度
@@ -303,60 +320,90 @@ public class RotarySeekBar extends View {
             endX = centerX + (float) ((radius - length) * Math.sin(2 * Math.PI / 360 * angle));
             endY = centerY + (float) ((radius - length) * Math.cos(2 * Math.PI / 360 * angle));
 
-            canvas.drawLine(startX, startY, endX, endY, progressUnfocusedPaint);
+            canvas.drawLine(startX, startY, endX, endY, paint);
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+        float downX = event.getX() - centerX;
+        float downY = event.getY() - centerY;
 
-                float downX = event.getX() - centerX;
-                float downY = event.getY() - centerY;
+        if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(dayRadius + supplyRadius, 2)) {
+            Logger.e("在日期选择范围内");
+            TYPE_CURRENT = TYPE_DAY;
+            //这个角度是从最右侧开始，逆时针到-180度，顺时针到180度
+            currentAngle = (float) ((Math.atan2(downY, downX) * 180) / Math.PI);
 
-                if (Math.pow(dayRadius + supplyRadius, 2) < Math.pow(downX, 2) + Math.pow(downY, 2)) {
-                    Logger.e("超出了可触摸的半径");
-                    break;
-                }
-                //这个角度是从最右侧开始，逆时针到-180度，顺时针到180度
-                downAngle = (float) ((Math.atan2(downY, downX) * 180) / Math.PI);
-
-                //转换为从最底部开始，顺时针方向
-                downAngle -= 90;
-                if (downAngle < 0) {
-                    downAngle += 360;
-                }
-                //downAngle = 360 - downAngle;
-
-                //Logger.e("按下时的角度：" + downAngle);
-                //invalidate();
-
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float moveX = event.getX() - centerX;
-                float moveY = event.getY() - centerY;
-
-                if (Math.pow(dayRadius + supplyRadius, 2) < Math.pow(moveX, 2) + Math.pow(moveY, 2)) {
-                    Logger.e("超出了可触摸的半径");
-                    break;
-                }
-                currentAngle = (float) ((Math.atan2(moveY, moveX) * 180) / Math.PI);
-                currentAngle -= 90;
-                if (currentAngle < 0) {
-                    currentAngle += 360;
-                }
-                //currentAngle = 360 - currentAngle;
-                downAngle = currentAngle;
-
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            default:
-                break;
+            //转换为从最底部开始，顺时针方向
+            currentAngle -= 90;
+            if (currentAngle < 0) {
+                currentAngle += 360;
+            }
+            downAngle = currentAngle;
+        } else if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(ordinalRadius + supplyRadius, 2)) {
+            Logger.e("在上课节数选择范围内");
+            TYPE_CURRENT = TYPE_ORDINAL;
+        } else if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(weekRadius + supplyRadius, 2)) {
+            Logger.e("在周数选择范围内");
+            TYPE_CURRENT = TYPE_WEEK;
         }
+        invalidate();
+
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//
+//                float downX = event.getX() - centerX;
+//                float downY = event.getY() - centerY;
+//
+//                if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(dayRadius + supplyRadius, 2)) {
+//                    Logger.e("在日期选择范围内");
+//
+//                    //这个角度是从最右侧开始，逆时针到-180度，顺时针到180度
+//                    currentAngle = (float) ((Math.atan2(downY, downX) * 180) / Math.PI);
+//
+//                    //转换为从最底部开始，顺时针方向
+//                    currentAngle -= 90;
+//                    if (currentAngle < 0) {
+//                        currentAngle += 360;
+//                    }
+//                    downAngle = currentAngle;
+//                } else if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(ordinalRadius + supplyRadius, 2)) {
+//                    Logger.e("在上课节数选择范围内");
+//                } else if (Math.pow(downX, 2) + Math.pow(downY, 2) < Math.pow(weekRadius + supplyRadius, 2)) {
+//                    Logger.e("在周数选择范围内");
+//                }
+//                invalidate();
+//
+//                //downAngle = 360 - downAngle;
+//
+//                //Logger.e("按下时的角度：" + downAngle);
+//                //invalidate();
+//
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                float moveX = event.getX() - centerX;
+//                float moveY = event.getY() - centerY;
+//
+//                if (Math.pow(moveX, 2) + Math.pow(moveY, 2) < Math.pow(dayRadius + supplyRadius, 2)) {
+//                    currentAngle = (float) ((Math.atan2(moveY, moveX) * 180) / Math.PI);
+//                    currentAngle -= 90;
+//                    if (currentAngle < 0) {
+//                        currentAngle += 360;
+//                    }
+//                    //currentAngle = 360 - currentAngle;
+//                    downAngle = currentAngle;
+//                }
+//
+//
+//                invalidate();
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                break;
+//            default:
+//                break;
+//        }
         return true;
     }
 }

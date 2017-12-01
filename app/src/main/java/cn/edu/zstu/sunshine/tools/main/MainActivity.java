@@ -294,6 +294,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void resumeDefaultSkin() {
+        //这里必须要在UI线程中去执行
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
