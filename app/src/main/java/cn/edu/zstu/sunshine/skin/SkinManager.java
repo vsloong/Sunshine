@@ -77,6 +77,7 @@ public class SkinManager {
 
     private void loadPlugin(String skinPath, String skinPkgName, String suffix) throws Exception {
         AssetManager assetManager = AssetManager.class.newInstance();
+        //高版本的没有addAssetPath方法怎么回事
         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
         addAssetPath.invoke(assetManager, skinPath);
 
