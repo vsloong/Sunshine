@@ -3,6 +3,7 @@ package cn.edu.zstu.skin;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.util.Log;
 
 import java.lang.reflect.Method;
 
@@ -20,10 +21,11 @@ import java.lang.reflect.Method;
 public class SkinManager {
 
     private static SkinManager skinManager;
+    private final String TAG = "SkinManager";
 
     private Context context;
     private Resources resources;
-    private SkinConfig skinConfig;
+    private ResourcesManager resourcesManager;
 
     public static SkinManager getInstance() {
         if (skinManager == null) {
@@ -45,29 +47,42 @@ public class SkinManager {
      *
      * @param context 上下文
      */
-    private void declare(Context context) {
+    public void declare(Context context) {
         this.context = context;
-        this.skinConfig = new SkinConfig();
+        SkinConfig.getInstance().init(context);
     }
 
-    public SkinConfig getSkinConfig() {
-        return skinConfig;
+    public void setSkinConfig(String skinPath, String skinPkgName, String skinEffectiveTime, String skinExpiryTime) {
+        SkinConfig.getInstance().setSkinConfig(
+                skinPath, skinPkgName, skinEffectiveTime, skinExpiryTime
+        );
     }
 
     private void loadSkin() throws Exception {
         //如果皮肤配置中没有这些选项那么就不去加载皮肤
-        if (skinConfig.isConfigInvalid(context)) {
+        if (SkinConfig.getInstance().isConfigInvalid()) {
             return;
         }
         AssetManager assetManager = AssetManager.class.newInstance();
         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
 
-        addAssetPath.invoke(assetManager, skinConfig.getSkinPath(context));
+        addAssetPath.invoke(assetManager, SkinConfig.getInstance().getSkinPath());
         Resources defaultResources = context.getResources();
         resources = new Resources(
                 assetManager,
                 defaultResources.getDisplayMetrics(),
                 defaultResources.getConfiguration());
+
+        resourcesManager = new ResourcesManager(resources);
     }
 
+    public ResourcesManager getResources() {
+        try {
+            loadSkin();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "加载皮肤失败");
+        }
+        return resourcesManager;
+    }
 }

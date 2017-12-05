@@ -70,6 +70,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.alibaba:fastjson:1.1.64.android'
-//    compile 'com.android.support:multidex:1.0.2'
+    //    compile 'com.android.support:multidex:1.0.2'
     testCompile 'junit:junit:4.12'
+    implementation project(':skin')
 }

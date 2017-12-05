@@ -27,7 +27,6 @@ public class ResourceManager {
             suffix = "";
         }
         mSuffix = suffix;
-
     }
 
     public Drawable getDrawableByName(String name) {
