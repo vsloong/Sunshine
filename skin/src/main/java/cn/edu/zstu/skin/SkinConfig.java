@@ -2,6 +2,16 @@ package cn.edu.zstu.skin;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 皮肤的配置类
@@ -18,6 +28,8 @@ class SkinConfig {
     private static final String SKIN_SUFFIX = "skin_suffix";
 
     public static final String SKIN_PREFIX = "skin:";
+
+    private final String TAG = "SkinConfig";
 
     private static SkinConfig skinConfig;
     private SharedPreferences sp;
@@ -38,12 +50,13 @@ class SkinConfig {
     }
 
     void init(Context context) {
-        this.sp = getSP(context);
+        if (this.sp == null) {
+            this.sp = getSP(context);
+        }
     }
 
-    void setSkinConfig(String skinPath, String skinPkgName, String skinEffectiveTime, String skinExpiryTime) {
+    void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
         setSkinPath(skinPath);
-        setSkinPkgName(skinPkgName);
         setSkinEffectiveTime(skinEffectiveTime);
         setSkinExpiryTime(skinExpiryTime);
     }
@@ -57,7 +70,15 @@ class SkinConfig {
     }
 
     private void setSkinPath(String skinPath) {
-        sp.edit().putString(SkinConfig.SKIN_PATH, skinPath).apply();
+        if (new File(skinPath).exists()) {
+            sp.edit().putString(SkinConfig.SKIN_PATH, skinPath).apply();
+            PackageManager pkgManager = SkinManager.getInstance().getContext().getPackageManager();
+            PackageInfo pkgInfo = pkgManager.getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES);
+            Log.e(TAG, "该位置（" + skinPath + "）存在皮肤包，且包名为：" + pkgInfo.packageName);
+            setSkinPkgName(pkgInfo.packageName);
+        } else {
+            Log.e(TAG, "该位置（" + skinPath + ")没有皮肤");
+        }
     }
 
     String getSkinPkgName() {
@@ -68,20 +89,20 @@ class SkinConfig {
         sp.edit().putString(SkinConfig.SKIN_PKG, skinPkgName).apply();
     }
 
-    private String getSkinEffectiveTime() {
-        return sp.getString(SkinConfig.SKIN_TIME_EFFECTIVE, "");
+    long getSkinEffectiveTime() {
+        return sp.getLong(SkinConfig.SKIN_TIME_EFFECTIVE, 0);
     }
 
     private void setSkinEffectiveTime(String skinEffectiveTime) {
-        sp.edit().putString(SkinConfig.SKIN_TIME_EFFECTIVE, skinEffectiveTime).apply();
+        sp.edit().putLong(SkinConfig.SKIN_TIME_EFFECTIVE, getMillis(skinEffectiveTime)).apply();
     }
 
-    private String getSkinExpiryTime() {
-        return sp.getString(SkinConfig.SKIN_TIME_EXPIRY, "");
+    long getSkinExpiryTime() {
+        return sp.getLong(SkinConfig.SKIN_TIME_EXPIRY, 0);
     }
 
     private void setSkinExpiryTime(String skinExpiryTime) {
-        sp.edit().putString(SkinConfig.SKIN_TIME_EXPIRY, skinExpiryTime).apply();
+        sp.edit().putLong(SkinConfig.SKIN_TIME_EXPIRY, getMillis(skinExpiryTime)).apply();
     }
 
     void clear() {
@@ -91,7 +112,20 @@ class SkinConfig {
     boolean isConfigInvalid() {
         return getSkinPkgName().isEmpty() ||
                 getSkinPath().isEmpty() ||
-                getSkinEffectiveTime().isEmpty() ||
-                getSkinExpiryTime().isEmpty();
+                getSkinEffectiveTime() == 0 ||
+                getSkinExpiryTime() == 0;
+    }
+
+    private long getMillis(String dataStr) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        try {
+            Date date = df.parse(dataStr);
+            calendar.setTime(date);
+            return calendar.getTimeInMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -24,7 +24,6 @@ public class SkinManager {
     private final String TAG = "SkinManager";
 
     private Context context;
-    private Resources resources;
     private ResourcesManager resourcesManager;
 
     public static SkinManager getInstance() {
@@ -48,27 +47,37 @@ public class SkinManager {
      * @param context 上下文
      */
     public void declare(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         SkinConfig.getInstance().init(context);
     }
 
-    public void setSkinConfig(String skinPath, String skinPkgName, String skinEffectiveTime, String skinExpiryTime) {
+    public void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
         SkinConfig.getInstance().setSkinConfig(
-                skinPath, skinPkgName, skinEffectiveTime, skinExpiryTime
+                skinPath, skinEffectiveTime, skinExpiryTime
         );
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     private void loadSkin() throws Exception {
         //如果皮肤配置中没有这些选项那么就不去加载皮肤
-        if (SkinConfig.getInstance().isConfigInvalid()) {
+        if (SkinConfig.getInstance().isConfigInvalid())
             return;
-        }
+
+        //如果皮肤配置中时间已过期那么也不去加载皮肤
+        long currentTime = System.currentTimeMillis();
+        if (currentTime < SkinConfig.getInstance().getSkinEffectiveTime() ||
+                currentTime > SkinConfig.getInstance().getSkinExpiryTime())
+            return;
+        
         AssetManager assetManager = AssetManager.class.newInstance();
         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
 
         addAssetPath.invoke(assetManager, SkinConfig.getInstance().getSkinPath());
         Resources defaultResources = context.getResources();
-        resources = new Resources(
+        Resources resources = new Resources(
                 assetManager,
                 defaultResources.getDisplayMetrics(),
                 defaultResources.getConfiguration());

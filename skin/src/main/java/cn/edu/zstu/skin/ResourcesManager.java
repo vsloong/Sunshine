@@ -34,6 +34,7 @@ public class ResourcesManager {
                             SkinConfig.getInstance().getSkinPkgName()));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
+            Log.e(TAG, "获取drawable资源失败");
             return null;
         }
     }
@@ -49,7 +50,7 @@ public class ResourcesManager {
 
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
-            Log.e(TAG, "获取mipmap资源错误");
+            Log.e(TAG, "获取mipmap资源失败");
             return null;
         }
     }
