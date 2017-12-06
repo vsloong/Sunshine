@@ -87,7 +87,7 @@ public class SkinManager {
         );
     }
 
-    public Context getContext() {
+    Context getContext() {
         return context;
     }
 
@@ -124,7 +124,7 @@ public class SkinManager {
                 test2((ViewGroup) view);
             } else {
                 Log.e(TAG, "视图的TAG：" + view.getTag() + "；ID：" + view.getId());
-                //根据TAG获取该控件类型，然后更换相应的皮肤
+                //根据TAG获取该控件类型，然后更换相应的皮肤【tag中需要有：src,图片名】
                 for (SkinAttrType attrType : SkinAttrType.values()) {
                     if (attrType.getAttrType().equals("src")) {
 

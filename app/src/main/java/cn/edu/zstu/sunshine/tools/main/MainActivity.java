@@ -40,8 +40,6 @@ import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.entity.Update;
 import cn.edu.zstu.sunshine.event.UnRead;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
-import cn.edu.zstu.sunshine.skin.ISkinChangingCallback;
-import cn.edu.zstu.sunshine.skin.SkinManager;
 import cn.edu.zstu.sunshine.tools.TestActivity;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
 import cn.edu.zstu.sunshine.tools.exam.ExamActivity;
@@ -75,7 +73,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SkinManager.getInstance().register(this);
         super.onCreate(savedInstanceState);
         //设置透明状态栏
         if (Build.VERSION.SDK_INT >= 21) {
@@ -161,7 +158,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
         EventBus.getDefault().unregister(this);
-        SkinManager.getInstance().unregister(this);
     }
 
     private void checkUpdateAndSkin() {
@@ -188,22 +184,6 @@ public class MainActivity extends BaseActivity {
                 Logger.e("更新信息：" + update.isSkinChange()
                         + "；有效时间：" + effectiveTime + "-" + currentTime + "-" + expiryTime);
 
-                if (update.isSkinChange()) {
-                    //如果当前时间还未到皮肤生效的时间，那么去下载皮肤
-                    if (currentTime < effectiveTime) {
-                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
-                    }
-                    //如果当前时间超过了皮肤失效时间，那么去还原默认皮肤
-                    else if (currentTime > expiryTime) {
-                        resumeDefaultSkin();
-                    }
-                    //当前时间在皮肤生效时间内，那么去下载皮肤并改变皮肤
-                    else {
-                        downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), true);
-                    }
-                } else {
-                    resumeDefaultSkin();
-                }
             }
         });
     }
@@ -212,9 +192,7 @@ public class MainActivity extends BaseActivity {
 
         final String name = fileName + "_" + fileCode + ".skin";
         if (AppConfig.isFileExists(name)) {
-            if (isApply) {
-                changeSkin(name);
-            }
+
             return;
         }
 
@@ -252,9 +230,6 @@ public class MainActivity extends BaseActivity {
                     fos.flush();
 
                     Logger.e("下载完成");
-                    if (isApply) {
-                        changeSkin(name);
-                    }
 
                 } finally {
                     try {
@@ -270,37 +245,5 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-    }
-
-    private void changeSkin(String fileName) {
-        SkinManager.getInstance().changeSkin(
-                AppConfig.FILE_PATH + File.separator + fileName,
-                "cn.edu.zstu.sunshineskin",
-                new ISkinChangingCallback() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        //Toast.makeText(MainActivity.this, "换肤失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        //Toast.makeText(MainActivity.this, "换肤成功", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void resumeDefaultSkin() {
-        //这里必须要在UI线程中去执行
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                SkinManager.getInstance().removeAnySkin();
-            }
-        });
-
     }
 }
