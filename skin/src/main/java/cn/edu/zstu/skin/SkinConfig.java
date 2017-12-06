@@ -31,38 +31,20 @@ class SkinConfig {
 
     private final String TAG = "SkinConfig";
 
-    private static SkinConfig skinConfig;
     private SharedPreferences sp;
 
-    static SkinConfig getInstance() {
-        if (skinConfig == null) {
-            synchronized (SkinConfig.class) {
-                if (skinConfig == null) {
-                    skinConfig = new SkinConfig();
-                }
-            }
-        }
-        return skinConfig;
+    SkinConfig(Context context) {
+        this.sp = getSP(context);
     }
 
-    private SkinConfig() {
-
-    }
-
-    void init(Context context) {
-        if (this.sp == null) {
-            this.sp = getSP(context);
-        }
+    private SharedPreferences getSP(Context context) {
+        return context.getSharedPreferences(SKIN_SP_NAME, Context.MODE_PRIVATE);
     }
 
     void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
         setSkinPath(skinPath);
         setSkinEffectiveTime(skinEffectiveTime);
         setSkinExpiryTime(skinExpiryTime);
-    }
-
-    private SharedPreferences getSP(Context context) {
-        return context.getSharedPreferences(SKIN_SP_NAME, Context.MODE_PRIVATE);
     }
 
     String getSkinPath() {

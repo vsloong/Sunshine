@@ -31,7 +31,7 @@ public class ResourcesManager {
                     resources.getIdentifier(
                             name,
                             RES_TYPE_DRAWABLE,
-                            SkinConfig.getInstance().getSkinPkgName()));
+                            SkinManager.getInstance().getSkinConfig().getSkinPkgName()));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
             Log.e(TAG, "获取drawable资源失败");
@@ -46,7 +46,7 @@ public class ResourcesManager {
                     resources.getIdentifier(
                             name,
                             RES_TYPE_MIPMAP,
-                            SkinConfig.getInstance().getSkinPkgName()));
+                            SkinManager.getInstance().getSkinConfig().getSkinPkgName()));
 
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
