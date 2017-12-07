@@ -47,7 +47,7 @@ public class MainActivityViewModel extends BaseViewModel<Tool> {
             R.mipmap.ic_main_card,
             R.mipmap.ic_main_exam,
             R.mipmap.ic_main_score,
-            R.mipmap.ic_main_networke,
+            R.mipmap.ic_main_network,
             R.mipmap.ic_main_exercise,
             R.mipmap.ic_main_library,
             R.mipmap.ic_main_test

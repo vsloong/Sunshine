@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
     private static final String toolsResName[] = {
             "ic_main_timetable",
             "ic_main_card",
-            "c_main_exam",
+            "ic_main_exam",
             "ic_main_score",
             "ic_main_network",
             "ic_main_exercise",
@@ -99,13 +99,12 @@ public class MainActivity extends BaseActivity {
         viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
 
-        //一行代码实现换肤功能
-        SkinManager.getInstance().declare(this);
-
         EventBus.getDefault().register(this);
         registerMQMessageReceiver();
 
         initViews();
+
+
         checkUpdateAndSkin();
     }
 
@@ -115,7 +114,7 @@ public class MainActivity extends BaseActivity {
                 .setOnItemHandler(new BaseAdapter.OnItemHandler() {
                     @Override
                     public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
-                        String tag = "skin@mipmap/" + toolsResName[position];
+                        String tag = "skin:src:" + toolsResName[position];
                         Logger.e("设置首页图标" + position + "的tag：" + tag);
                         viewDataBinding.getRoot().findViewById(R.id.img_tool_icon).setTag(tag);
                         viewDataBinding.getRoot().findViewById(R.id.layout_item).setOnClickListener(new View.OnClickListener() {
@@ -124,6 +123,11 @@ public class MainActivity extends BaseActivity {
                                 startActivity(cla[position]);
                             }
                         });
+
+                        if (position == 7) {
+                            //一行代码实现换肤功能
+                            SkinManager.getInstance().declare(MainActivity.this);
+                        }
                     }
                 }));
     }
@@ -200,7 +204,7 @@ public class MainActivity extends BaseActivity {
 
                 final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
                 SkinManager.getInstance().setSkinConfig(
-                        FILE_PATH + File.separator + update.getSkinName() + "_" + update.getSkinCode() + ".skin",
+                        FILE_PATH + File.separator + "sunshine_christmas_1712071658.skin",
                         update.getSkinEffectiveTime(),
                         update.getSkinExpiryTime()
                 );
@@ -224,7 +228,7 @@ public class MainActivity extends BaseActivity {
         Api.download(this, url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Logger.e(fileName + "下载失败");
+                Logger.e(name + "下载失败");
             }
 
             @Override

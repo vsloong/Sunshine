@@ -17,17 +17,6 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        //一行代码实现换肤
-//        SkinManager.getInstance().declare(this);
-
-        //配置换肤资源信息
-//        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
-//        SkinManager.getInstance().setSkinConfig(
-//                FILE_PATH + File.separator + "sunshine_christmas_1711291037.skin",
-//                "2017-12-05 00:00:00",
-//                "2017-12-12 23:59:59"
-//        );
-
         UserDao userDao = DaoUtil.getInstance().getSession().getUserDao();
         if (userDao.queryBuilder().build().list().isEmpty()) {
             goNext(UserAddActivity.class);

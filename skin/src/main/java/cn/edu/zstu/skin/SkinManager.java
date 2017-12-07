@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,31 +128,25 @@ public class SkinManager {
             if (view instanceof ViewGroup) {
                 getViewWithTag((ViewGroup) view);
             } else {
+
+                if (null == view.getTag())
+                    continue;
                 Log.e(TAG, "视图的TAG：" + view.getTag() + "；ID：" + view.getId());
                 //根据TAG获取该控件类型，然后更换相应的皮肤【tag中需要有：src,图片名】
                 String tagStr = (String) view.getTag();
-                if (!TextUtils.isEmpty(tagStr)) {
-                    String[] tagItems = tagStr.split("[|]");
-                    for (String tagItem : tagItems) {
+                String[] tagItems = tagStr.split("[|]");
+                for (String tagItem : tagItems) {
 
-                        //如果tag中有skin的前缀，那么说明这就是要换肤的控件了
-                        if (tagItem.startsWith(SkinConfig.SKIN_PREFIX) && tagItem.contains("@") && tagItem.contains("/")) {
-                            int index = tagItem.indexOf("/");
-                            String attrType = tagItem.substring(tagItem.indexOf("@") + 1, index);
-                            Log.e(TAG, "attrType：" + attrType);
-                            if (TextUtils.isEmpty(attrType))
-                                continue;
-
-                            String resName = tagItem.substring(index + 1, tagItem.length());
-                            Log.e(TAG, "resName：" + resName);
-                            if (TextUtils.isEmpty(resName))
-                                continue;
-
-                            changeSkin(view, attrType, resName);
-                        }
+                    //如果tag中有skin的前缀，那么说明这就是要换肤的控件了
+                    if (tagItem.startsWith(SkinConfig.SKIN_PREFIX) && tagItem.contains(":")) {
+                        String[] temp = tagItem.split("[:]");
+                        if (null == temp || temp.length != 3)
+                            continue;
+                        Log.e(TAG, "attrType：" + temp[1]);
+                        Log.e(TAG, "resName：" + temp[2]);
+                        changeSkin(view, temp[1], temp[2]);
                     }
                 }
-
             }
         }
     }
@@ -169,7 +162,7 @@ public class SkinManager {
     private void changeSkin(View view, String attrType, String resName) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
             if (skinAttrType.getAttrType().equals(attrType)) {
-
+                Log.e(TAG, "换肤开始");
                 skinAttrType.applyNewAttr(view, resName);
             }
         }

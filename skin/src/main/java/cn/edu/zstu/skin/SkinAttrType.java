@@ -1,6 +1,7 @@
 package cn.edu.zstu.skin;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,11 +23,16 @@ public enum SkinAttrType {
             if (view instanceof ImageView) {
                 Drawable drawable = SkinManager.getInstance().getResourcesManager().getDrawableByName(resName);
                 if (drawable != null) {
+                    Log.e("SkinAttrType", "更换drawable资源");
                     ((ImageView) view).setImageDrawable(drawable);
                 } else {
+                    Log.e("SkinAttrType", "没有drawable资源");
                     Drawable mipmap = SkinManager.getInstance().getResourcesManager().getMipmapByName(resName);
                     if (mipmap != null) {
                         ((ImageView) view).setImageDrawable(mipmap);
+                        Log.e("SkinAttrType", "更换mipmap资源");
+                    } else {
+                        Log.e("SkinAttrType", "没有mipmap资源");
                     }
                 }
             }
