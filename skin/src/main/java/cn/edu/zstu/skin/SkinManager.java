@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,25 +113,64 @@ public class SkinManager {
     private void loadSkin() {
         if (canLoadSkin()) {
             ViewGroup viewGroup = activity.findViewById(android.R.id.content);
-            test2(viewGroup);
+            getViewWithTag(viewGroup);
         }
     }
 
-    private void test2(ViewGroup viewGroup) {
+    /**
+     * 循环遍历视图中的所有控件，并拿到带有标志性tag的空间
+     *
+     * @param viewGroup viewGroup
+     */
+    private void getViewWithTag(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
 
             if (view instanceof ViewGroup) {
-                test2((ViewGroup) view);
+                getViewWithTag((ViewGroup) view);
             } else {
                 Log.e(TAG, "视图的TAG：" + view.getTag() + "；ID：" + view.getId());
                 //根据TAG获取该控件类型，然后更换相应的皮肤【tag中需要有：src,图片名】
-                for (SkinAttrType attrType : SkinAttrType.values()) {
-                    if (attrType.getAttrType().equals("src")) {
+                String tagStr = (String) view.getTag();
+                if (!TextUtils.isEmpty(tagStr)) {
+                    String[] tagItems = tagStr.split("[|]");
+                    for (String tagItem : tagItems) {
 
-                        attrType.applyNewAttr(view, "banner");
+                        //如果tag中有skin的前缀，那么说明这就是要换肤的控件了
+                        if (tagItem.startsWith(SkinConfig.SKIN_PREFIX) && tagItem.contains("@") && tagItem.contains("/")) {
+                            int index = tagItem.indexOf("/");
+                            String attrType = tagItem.substring(tagItem.indexOf("@") + 1, index);
+                            Log.e(TAG, "attrType：" + attrType);
+                            if (TextUtils.isEmpty(attrType))
+                                continue;
+
+                            String resName = tagItem.substring(index + 1, tagItem.length());
+                            Log.e(TAG, "resName：" + resName);
+                            if (TextUtils.isEmpty(resName))
+                                continue;
+
+                            changeSkin(view, attrType, resName);
+                        }
                     }
                 }
+
+            }
+        }
+    }
+
+
+    /**
+     * 根据设置tag中的attrType和resName来更换皮肤
+     *
+     * @param view     要更换皮肤的视图
+     * @param attrType 控件属性
+     * @param resName  资源名称
+     */
+    private void changeSkin(View view, String attrType, String resName) {
+        for (SkinAttrType skinAttrType : SkinAttrType.values()) {
+            if (skinAttrType.getAttrType().equals(attrType)) {
+
+                skinAttrType.applyNewAttr(view, resName);
             }
         }
     }

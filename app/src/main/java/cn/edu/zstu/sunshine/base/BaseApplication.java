@@ -7,7 +7,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 import cn.edu.zstu.sunshine.BuildConfig;
-import cn.edu.zstu.sunshine.skin.SkinManager;
 
 /**
  * Application的基类
@@ -31,7 +30,6 @@ public class BaseApplication extends MultiDexApplication {
             }
         });
 
-        SkinManager.getInstance().init(this);
     }
 
     public static Context getAppContext() {

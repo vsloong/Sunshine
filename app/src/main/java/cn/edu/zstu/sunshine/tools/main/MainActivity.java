@@ -7,6 +7,7 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import cn.edu.zstu.skin.SkinManager;
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.Api;
@@ -48,7 +50,6 @@ import cn.edu.zstu.sunshine.tools.library.LibraryActivity;
 import cn.edu.zstu.sunshine.tools.network.NetworkActivity;
 import cn.edu.zstu.sunshine.tools.score.ScoreActivity;
 import cn.edu.zstu.sunshine.tools.timetable.TimetableActivity;
-import cn.edu.zstu.sunshine.utils.DateUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -70,6 +71,17 @@ public class MainActivity extends BaseActivity {
             TestActivity.class
     };
 
+    private static final String toolsResName[] = {
+            "ic_main_timetable",
+            "ic_main_card",
+            "c_main_exam",
+            "ic_main_score",
+            "ic_main_network",
+            "ic_main_exercise",
+            "ic_main_library",
+            "ic_main_test"
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +99,9 @@ public class MainActivity extends BaseActivity {
         viewModel = new MainActivityViewModel(this, binding);
         binding.setViewModel(viewModel);
 
+        //一行代码实现换肤功能
+        SkinManager.getInstance().declare(this);
+
         EventBus.getDefault().register(this);
         registerMQMessageReceiver();
 
@@ -100,6 +115,9 @@ public class MainActivity extends BaseActivity {
                 .setOnItemHandler(new BaseAdapter.OnItemHandler() {
                     @Override
                     public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
+                        String tag = "skin@mipmap/" + toolsResName[position];
+                        Logger.e("设置首页图标" + position + "的tag：" + tag);
+                        viewDataBinding.getRoot().findViewById(R.id.img_tool_icon).setTag(tag);
                         viewDataBinding.getRoot().findViewById(R.id.layout_item).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -177,12 +195,20 @@ public class MainActivity extends BaseActivity {
                         })
                         .getData();
 
+                downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
 
-                long currentTime = System.currentTimeMillis();
-                long effectiveTime = DateUtil.getMillis(update.getSkinEffectiveTime());
-                long expiryTime = DateUtil.getMillis(update.getSkinExpiryTime());
-                Logger.e("更新信息：" + update.isSkinChange()
-                        + "；有效时间：" + effectiveTime + "-" + currentTime + "-" + expiryTime);
+
+                final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
+                SkinManager.getInstance().setSkinConfig(
+                        FILE_PATH + File.separator + update.getSkinName() + "_" + update.getSkinCode() + ".skin",
+                        update.getSkinEffectiveTime(),
+                        update.getSkinExpiryTime()
+                );
+//                long currentTime = System.currentTimeMillis();
+//                long effectiveTime = DateUtil.getMillis(update.getSkinEffectiveTime());
+//                long expiryTime = DateUtil.getMillis(update.getSkinExpiryTime());
+//                Logger.e("更新信息：" + update.isSkinChange()
+//                        + "；有效时间：" + effectiveTime + "-" + currentTime + "-" + expiryTime);
 
             }
         });
@@ -192,7 +218,6 @@ public class MainActivity extends BaseActivity {
 
         final String name = fileName + "_" + fileCode + ".skin";
         if (AppConfig.isFileExists(name)) {
-
             return;
         }
 

@@ -3,7 +3,6 @@ package cn.edu.zstu.sunshine.tools.launcher;
 import android.os.Bundle;
 import android.os.Handler;
 
-import cn.edu.zstu.skin.SkinManager;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.BaseActivity;
 import cn.edu.zstu.sunshine.greendao.UserDao;
@@ -19,7 +18,7 @@ public class LauncherActivity extends BaseActivity {
         setContentView(R.layout.activity_launcher);
 
         //一行代码实现换肤
-        SkinManager.getInstance().declare(this);
+//        SkinManager.getInstance().declare(this);
 
         //配置换肤资源信息
 //        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";

@@ -25,9 +25,9 @@ class SkinConfig {
     private static final String SKIN_PKG = "skin_pkg";
     private static final String SKIN_TIME_EFFECTIVE = "skin_time_effective";
     private static final String SKIN_TIME_EXPIRY = "skin_time_expiry";
-    private static final String SKIN_SUFFIX = "skin_suffix";
 
-    public static final String SKIN_PREFIX = "skin:";
+    private static final String SKIN_SUFFIX = "skin_suffix";
+    public static final String SKIN_PREFIX = "skin";
 
     private final String TAG = "SkinConfig";
 

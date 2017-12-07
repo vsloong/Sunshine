@@ -7,7 +7,6 @@
     tools:context=".tools.launcher.LauncherActivity">
 
     <ImageView
-        android:tag="skin"
         android:id="@+id/img_launcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
