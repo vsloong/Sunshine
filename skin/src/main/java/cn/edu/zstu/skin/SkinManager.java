@@ -26,10 +26,8 @@ public class SkinManager {
     private static SkinManager skinManager;
     private final String TAG = "SkinManager";
 
-    private Context context;
     private ResourcesManager resourcesManager;
     private SkinConfig skinConfig;
-    private Activity activity;
 
     public static SkinManager getInstance() {
         if (skinManager == null) {
@@ -43,17 +41,21 @@ public class SkinManager {
     }
 
     private SkinManager() {
-
     }
 
-    private void init() {
-        //只做一次初始化动作
+    /**
+     * 必须是首先要做的
+     *
+     * @param context 上下文
+     */
+    private void init(Context context) {
+        //只做一次初始化动作，必须先初始化SkinConfig，因为ResourcesManager中需要用到皮肤的包名等
         if (null == skinConfig) {
             skinConfig = new SkinConfig(context);
         }
         if (null == resourcesManager) {
             try {
-                setResourcesManager();
+                setResourcesManager(context, skinConfig);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG, "外部皮肤资源管理对象创建失败");
@@ -62,37 +64,73 @@ public class SkinManager {
     }
 
     /**
-     * 声明，原本打算方法名为register，但是联想到后面可能不需要unregister所以更换方法名
-     *
-     * @param context 上下文
+     * 【！！对外开放！！】
+     * 得到外部皮肤资源管理对象，比如外部是ListView，RecyclerView的话
+     * 可以将ResourcesManager开放出去供开发者自行进行资源的替换。
+     * <p>
+     * 可能需要搭配 isSkinEffective 方法使用
+     * <p>
+     * if(isSkinEffective(context)){ getResourcesManager(context).xxx() }
      */
-    public void declare(Context context) {
-        this.context = context.getApplicationContext();
-        this.activity = (Activity) context;
-        init();
-
-        loadSkin();
+    public ResourcesManager getResourcesManager(Context context) {
+        init(context);
+        return resourcesManager;
     }
 
     /**
+     * 【！！对外开放！！】
+     *
+     * @param context 上下文
+     * @return 皮肤是否存在及是否在有效换肤时间内
+     */
+    public boolean isSkinEffective(Context context) {
+        init(context);
+        return canChangeSkin();
+    }
+
+    /**
+     * 【！！对外开放！！】
      * 设置换肤资源的路径以及皮肤生效时间及过期时间
      *
      * @param skinPath          皮肤包路径
      * @param skinEffectiveTime 生效时间
      * @param skinExpiryTime    过期时间
      */
-    public void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
+    public void setSkinConfig(Context context, String skinPath, String skinEffectiveTime, String skinExpiryTime) {
+        init(context);
         skinConfig.setSkinConfig(
                 skinPath, skinEffectiveTime, skinExpiryTime
         );
     }
 
-    Context getContext() {
-        return context;
+    /**
+     * 【！！对外开放！！】
+     * 换肤（如果有皮肤的配置并且皮肤在有效期内，那么就去更换皮肤）
+     *
+     * @param activity Activity
+     */
+    public void apply(Activity activity) {
+        init(activity);
+        findTargetView(activity);
     }
 
-    private boolean canLoadSkin() {
-        //如果皮肤配置中没有这些选项那么就不去加载皮肤
+    /**
+     * 得到Activity的根布局，然后需要循环遍历布局中的所有控件
+     *
+     * @param activity Activity
+     */
+    private void findTargetView(Activity activity) {
+        if (canChangeSkin()) {
+            ViewGroup viewGroup = activity.findViewById(android.R.id.content);
+            getViewWithTag(viewGroup);
+        }
+    }
+
+    /**
+     * @return 是否可以更换皮肤
+     */
+    private boolean canChangeSkin() {
+        //如果皮肤配置中没有这些配置选项那么就不去加载皮肤
         if (skinConfig.isConfigInvalid()) {
             Log.e(TAG, "换肤包配置信息不完善");
             return false;
@@ -105,19 +143,11 @@ public class SkinManager {
             Log.e(TAG, "皮肤不在有效期内或已过期");
             return false;
         }
-
         return true;
     }
 
-    private void loadSkin() {
-        if (canLoadSkin()) {
-            ViewGroup viewGroup = activity.findViewById(android.R.id.content);
-            getViewWithTag(viewGroup);
-        }
-    }
-
     /**
-     * 循环遍历视图中的所有控件，并拿到带有标志性tag的空间
+     * 循环遍历视图中的所有控件，把带有标志性tag的控件属性进行替换
      *
      * @param viewGroup viewGroup
      */
@@ -128,10 +158,9 @@ public class SkinManager {
             if (view instanceof ViewGroup) {
                 getViewWithTag((ViewGroup) view);
             } else {
-
                 if (null == view.getTag())
                     continue;
-                Log.e(TAG, "视图的TAG：" + view.getTag() + "；ID：" + view.getId());
+                //Log.e(TAG, "视图的TAG：" + view.getTag() + "；ID：" + view.getId());
                 //根据TAG获取该控件类型，然后更换相应的皮肤【tag中需要有：src,图片名】
                 String tagStr = (String) view.getTag();
                 String[] tagItems = tagStr.split("[|]");
@@ -142,15 +171,13 @@ public class SkinManager {
                         String[] temp = tagItem.split("[:]");
                         if (null == temp || temp.length != 3)
                             continue;
-                        Log.e(TAG, "attrType：" + temp[1]);
-                        Log.e(TAG, "resName：" + temp[2]);
-                        changeSkin(view, temp[1], temp[2]);
+                        Log.e(TAG, "attrType：" + temp[1] + "；resName：" + temp[2]);
+                        change(view, temp[1], temp[2]);
                     }
                 }
             }
         }
     }
-
 
     /**
      * 根据设置tag中的attrType和resName来更换皮肤
@@ -159,22 +186,20 @@ public class SkinManager {
      * @param attrType 控件属性
      * @param resName  资源名称
      */
-    private void changeSkin(View view, String attrType, String resName) {
+    private void change(View view, String attrType, String resName) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
             if (skinAttrType.getAttrType().equals(attrType)) {
-                Log.e(TAG, "换肤开始");
-                skinAttrType.applyNewAttr(view, resName);
+                skinAttrType.applyNewAttr(resourcesManager, view, resName);
             }
         }
     }
-
 
     /**
      * 实例化外部皮肤资源管理的对象
      *
      * @throws Exception 错误信息
      */
-    private void setResourcesManager() throws Exception {
+    private void setResourcesManager(Context context, SkinConfig skinConfig) throws Exception {
         AssetManager assetManager = AssetManager.class.newInstance();
         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
 
@@ -184,27 +209,6 @@ public class SkinManager {
                 assetManager,
                 defaultResources.getDisplayMetrics(),
                 defaultResources.getConfiguration());
-        resourcesManager = new ResourcesManager(resources);
-    }
-
-    /**
-     * 得到外部皮肤资源管理对象
-     */
-    ResourcesManager getResourcesManager() {
-        return resourcesManager;
-    }
-
-    /**
-     * 得到皮肤配置对象
-     */
-    SkinConfig getSkinConfig() {
-        return skinConfig;
-    }
-
-    /**
-     * 清除换肤包配置信息
-     */
-    public void clearSkinConfig() {
-        skinConfig.clear();
+        resourcesManager = new ResourcesManager(resources, skinConfig);
     }
 }

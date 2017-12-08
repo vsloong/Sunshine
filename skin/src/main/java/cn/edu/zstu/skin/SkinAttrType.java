@@ -19,26 +19,22 @@ public enum SkinAttrType {
 
     SRC("src") {
         @Override
-        void applyNewAttr(View view, String resName) {
+        void applyNewAttr(ResourcesManager resourcesManager, View view, String resName) {
             if (view instanceof ImageView) {
-                Drawable drawable = SkinManager.getInstance().getResourcesManager().getDrawableByName(resName);
+                Drawable drawable = resourcesManager.getDrawableByName(resName);
                 if (drawable != null) {
-                    Log.e("SkinAttrType", "更换drawable资源");
                     ((ImageView) view).setImageDrawable(drawable);
                 } else {
-                    Log.e("SkinAttrType", "没有drawable资源");
-                    Drawable mipmap = SkinManager.getInstance().getResourcesManager().getMipmapByName(resName);
-                    if (mipmap != null) {
-                        ((ImageView) view).setImageDrawable(mipmap);
-                        Log.e("SkinAttrType", "更换mipmap资源");
+                    drawable = resourcesManager.getMipmapByName(resName);
+                    if (drawable != null) {
+                        ((ImageView) view).setImageDrawable(drawable);
                     } else {
-                        Log.e("SkinAttrType", "没有mipmap资源");
+                        Log.e("SkinAttrType", "没有" + resName + "资源");
                     }
                 }
             }
         }
     };
-
 
     String attrType;
 
@@ -50,5 +46,5 @@ public enum SkinAttrType {
         return attrType;
     }
 
-    abstract void applyNewAttr(View view, String resName);
+    abstract void applyNewAttr(ResourcesManager resourcesManager, View view, String resName);
 }

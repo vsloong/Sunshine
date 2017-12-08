@@ -7,7 +7,6 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
@@ -104,8 +103,14 @@ public class MainActivity extends BaseActivity {
 
         initViews();
 
-
-        checkUpdateAndSkin();
+//        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
+//        SkinManager.getInstance().setSkinConfig(this,
+//                FILE_PATH + File.separator + "sunshine_christmas_1712081347.skin",
+//                "2017-11-28 00:00:00",
+//                "2017-12-10 23:59:59"
+//        );
+//
+//        checkUpdateAndSkin();
     }
 
     private void initViews() {
@@ -115,8 +120,11 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
                         String tag = "skin:src:" + toolsResName[position];
-                        Logger.e("设置首页图标" + position + "的tag：" + tag);
+//                        Logger.e("设置首页图标" + position + "的tag：" + tag);
                         viewDataBinding.getRoot().findViewById(R.id.img_tool_icon).setTag(tag);
+//                      第二种方法
+//                        ImageView img = viewDataBinding.getRoot().findViewById(R.id.img_tool_icon);
+//                        img.setImageDrawable(SkinManager.getInstance().getResourcesManager().getMipmapByName(toolsResName[position]));
                         viewDataBinding.getRoot().findViewById(R.id.layout_item).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -124,9 +132,9 @@ public class MainActivity extends BaseActivity {
                             }
                         });
 
+                        //第一种方法
                         if (position == 7) {
-                            //一行代码实现换肤功能
-                            SkinManager.getInstance().declare(MainActivity.this);
+                            SkinManager.getInstance().apply(MainActivity.this);
                         }
                     }
                 }));
@@ -154,7 +162,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<MQMessage> list) {
-                Logger.e("未读消息数：" + list.size());
+//                Logger.e("未读消息数：" + list.size());
                 viewModel.haveUnRead.set(!list.isEmpty());
             }
         });
@@ -199,15 +207,9 @@ public class MainActivity extends BaseActivity {
                         })
                         .getData();
 
-                downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
+                //downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
 
 
-                final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
-                SkinManager.getInstance().setSkinConfig(
-                        FILE_PATH + File.separator + "sunshine_christmas_1712071658.skin",
-                        update.getSkinEffectiveTime(),
-                        update.getSkinExpiryTime()
-                );
 //                long currentTime = System.currentTimeMillis();
 //                long effectiveTime = DateUtil.getMillis(update.getSkinEffectiveTime());
 //                long expiryTime = DateUtil.getMillis(update.getSkinExpiryTime());

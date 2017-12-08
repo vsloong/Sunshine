@@ -14,26 +14,26 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 皮肤的配置类
+ * 皮肤的配置类，只需Context，跟其他类无关
  * Created by CooLoongWu on 2017-12-4 16:54.
  */
 
 class SkinConfig {
 
+    private static final String TAG = "SkinConfig";
     private static final String SKIN_SP_NAME = "skin_sp_name";
     private static final String SKIN_PATH = "skin_path";
     private static final String SKIN_PKG = "skin_pkg";
     private static final String SKIN_TIME_EFFECTIVE = "skin_time_effective";
     private static final String SKIN_TIME_EXPIRY = "skin_time_expiry";
 
-    private static final String SKIN_SUFFIX = "skin_suffix";
-    public static final String SKIN_PREFIX = "skin";
-
-    private final String TAG = "SkinConfig";
+    static final String SKIN_PREFIX = "skin"; //换肤资源的前缀
 
     private SharedPreferences sp;
+    private Context context;
 
     SkinConfig(Context context) {
+        this.context = context;
         this.sp = getSP(context);
     }
 
@@ -42,24 +42,32 @@ class SkinConfig {
     }
 
     void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
-        setSkinPath(skinPath);
-        setSkinEffectiveTime(skinEffectiveTime);
-        setSkinExpiryTime(skinExpiryTime);
+        boolean isSuccess = setSkinPath(skinPath) &&
+                setSkinEffectiveTime(skinEffectiveTime) &&
+                setSkinExpiryTime(skinExpiryTime);
+
+        if (isSuccess) {
+            //立即 通知进行换肤操作
+        }
     }
 
     String getSkinPath() {
         return sp.getString(SkinConfig.SKIN_PATH, "");
     }
 
-    private void setSkinPath(String skinPath) {
+    private boolean setSkinPath(String skinPath) {
         if (new File(skinPath).exists()) {
-            sp.edit().putString(SkinConfig.SKIN_PATH, skinPath).apply();
-            PackageManager pkgManager = SkinManager.getInstance().getContext().getPackageManager();
+
+            PackageManager pkgManager = context.getPackageManager();
             PackageInfo pkgInfo = pkgManager.getPackageArchiveInfo(skinPath, PackageManager.GET_ACTIVITIES);
             Log.e(TAG, "该位置（" + skinPath + "）存在皮肤包，且包名为：" + pkgInfo.packageName);
-            setSkinPkgName(pkgInfo.packageName);
+
+            return sp.edit().putString(SkinConfig.SKIN_PATH, skinPath).commit() &&
+                    setSkinPkgName(pkgInfo.packageName);
         } else {
-            Log.e(TAG, "该位置（" + skinPath + ")没有皮肤");
+            Log.e(TAG, "该位置（" + skinPath + ")不存在皮肤包，已清空所有配置");
+            clear();
+            return false;
         }
     }
 
@@ -67,24 +75,24 @@ class SkinConfig {
         return sp.getString(SkinConfig.SKIN_PKG, "");
     }
 
-    private void setSkinPkgName(String skinPkgName) {
-        sp.edit().putString(SkinConfig.SKIN_PKG, skinPkgName).apply();
+    private boolean setSkinPkgName(String skinPkgName) {
+        return sp.edit().putString(SkinConfig.SKIN_PKG, skinPkgName).commit();
     }
 
     long getSkinEffectiveTime() {
         return sp.getLong(SkinConfig.SKIN_TIME_EFFECTIVE, 0);
     }
 
-    private void setSkinEffectiveTime(String skinEffectiveTime) {
-        sp.edit().putLong(SkinConfig.SKIN_TIME_EFFECTIVE, getMillis(skinEffectiveTime)).apply();
+    private boolean setSkinEffectiveTime(String skinEffectiveTime) {
+        return sp.edit().putLong(SkinConfig.SKIN_TIME_EFFECTIVE, getMillis(skinEffectiveTime)).commit();
     }
 
     long getSkinExpiryTime() {
         return sp.getLong(SkinConfig.SKIN_TIME_EXPIRY, 0);
     }
 
-    private void setSkinExpiryTime(String skinExpiryTime) {
-        sp.edit().putLong(SkinConfig.SKIN_TIME_EXPIRY, getMillis(skinExpiryTime)).apply();
+    private boolean setSkinExpiryTime(String skinExpiryTime) {
+        return sp.edit().putLong(SkinConfig.SKIN_TIME_EXPIRY, getMillis(skinExpiryTime)).commit();
     }
 
     void clear() {
@@ -98,6 +106,12 @@ class SkinConfig {
                 getSkinExpiryTime() == 0;
     }
 
+    /**
+     * 把传来的"yyyy-MM-dd HH:mm:ss"转换为毫秒数
+     *
+     * @param dataStr 时间字符串
+     * @return 系统毫秒数
+     */
     private long getMillis(String dataStr) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
