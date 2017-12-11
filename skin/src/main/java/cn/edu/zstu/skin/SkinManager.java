@@ -91,16 +91,24 @@ public class SkinManager {
     /**
      * 【！！对外开放！！】
      * 设置换肤资源的路径以及皮肤生效时间及过期时间
+     * <p>
+     * 并且改变配置后会立即检查是否需要更换皮肤，如果需要则立即更换
      *
      * @param skinPath          皮肤包路径
      * @param skinEffectiveTime 生效时间
      * @param skinExpiryTime    过期时间
      */
-    public void setSkinConfig(Context context, String skinPath, String skinEffectiveTime, String skinExpiryTime) {
+    public void setSkinConfig(Context context, String skinPath,
+                              String skinEffectiveTime,
+                              String skinExpiryTime) {
         init(context);
-        skinConfig.setSkinConfig(
+        boolean isSuccess = skinConfig.setSkinConfig(
                 skinPath, skinEffectiveTime, skinExpiryTime
         );
+
+        if (isSuccess) {
+            apply((Activity) context);
+        }
     }
 
     /**

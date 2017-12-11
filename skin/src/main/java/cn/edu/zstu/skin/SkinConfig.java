@@ -41,14 +41,10 @@ class SkinConfig {
         return context.getSharedPreferences(SKIN_SP_NAME, Context.MODE_PRIVATE);
     }
 
-    void setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
-        boolean isSuccess = setSkinPath(skinPath) &&
+    boolean setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
+        return setSkinPath(skinPath) &&
                 setSkinEffectiveTime(skinEffectiveTime) &&
                 setSkinExpiryTime(skinExpiryTime);
-
-        if (isSuccess) {
-            //立即 通知进行换肤操作
-        }
     }
 
     String getSkinPath() {

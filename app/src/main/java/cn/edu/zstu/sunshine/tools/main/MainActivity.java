@@ -7,10 +7,12 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -103,12 +105,12 @@ public class MainActivity extends BaseActivity {
 
         initViews();
 
-//        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
-//        SkinManager.getInstance().setSkinConfig(this,
-//                FILE_PATH + File.separator + "sunshine_christmas_1712081347.skin",
-//                "2017-11-28 00:00:00",
-//                "2017-12-10 23:59:59"
-//        );
+        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
+        SkinManager.getInstance().setSkinConfig(this,
+                FILE_PATH + File.separator + "sunshine_christmas_1712081347.skin",
+                "2017-11-28 00:00:00",
+                "2017-12-10 23:59:59"
+        );
 //
 //        checkUpdateAndSkin();
     }
@@ -131,13 +133,18 @@ public class MainActivity extends BaseActivity {
                                 startActivity(cla[position]);
                             }
                         });
-
-                        //第一种方法
-                        if (position == 7) {
-                            SkinManager.getInstance().apply(MainActivity.this);
-                        }
                     }
                 }));
+
+        //第一种方法【注册视图树观察者，当recyclerView加载完后会触发改事件，从而可以遍历视图进行换肤】
+        binding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                SkinManager.getInstance().apply(MainActivity.this);
+                //使用完一次后必须撤销监听，否则会不停的不定时测量，消耗性能
+                binding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     @Subscribe
