@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
 
         final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
         SkinManager.getInstance().setSkinConfig(this,
-                FILE_PATH + File.separator + "sunshine_christmas_1712081347.skin",
+                FILE_PATH + File.separator + "sunshine_christmas_1712121455.skin",
                 "2017-11-28 00:00:00",
                 "2017-12-12 23:59:59"
         );
@@ -121,9 +121,10 @@ public class MainActivity extends BaseActivity {
                 .setOnItemHandler(new BaseAdapter.OnItemHandler() {
                     @Override
                     public void onItemHandler(ViewDataBinding viewDataBinding, final int position) {
-                        String tag = "skin:src:" + toolsResName[position];
+                        String tag = "skin:src:mipmap:" + toolsResName[position];
 //                        Logger.e("设置首页图标" + position + "的tag：" + tag);
                         viewDataBinding.getRoot().findViewById(R.id.img_tool_icon).setTag(tag);
+                        viewDataBinding.getRoot().findViewById(R.id.text_tool_name).setTag("skin:textColor:color:text_tool");
 //                      第二种方法
 //                        ImageView img = viewDataBinding.getRoot().findViewById(R.id.img_tool_icon);
 //                        img.setImageDrawable(SkinManager.getInstance().getResourcesManager().getMipmapByName(toolsResName[position]));

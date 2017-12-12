@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * 节日换肤的管理类
  * <p>
  * 预想的使用方法：
- * 1、在需要换肤的Activity的onCreate中注册，onDestroy中取消注册
+ * 1、在视图加载完毕后【在onCreate方法的setContentView后直接使用apply方法即可】
  * 2、设置一次换肤的参数【包括皮肤所在位置，皮肤生效时间，皮肤过期时间】，并立即换肤或恢复默认皮肤
  * 3、暂无，能简单就尽量简单
  * <p>
@@ -173,14 +173,13 @@ public class SkinManager {
                 String tagStr = (String) view.getTag();
                 String[] tagItems = tagStr.split("[|]");
                 for (String tagItem : tagItems) {
-
                     //如果tag中有skin的前缀，那么说明这就是要换肤的控件了
                     if (tagItem.startsWith(SkinConfig.SKIN_PREFIX) && tagItem.contains(":")) {
                         String[] temp = tagItem.split("[:]");
-                        if (null == temp || temp.length != 3)
+                        if (null == temp || temp.length != 4)
                             continue;
-                        Log.e(TAG, "attrType：" + temp[1] + "；resName：" + temp[2]);
-                        change(view, temp[1], temp[2]);
+                        Log.e(TAG, "attrType：" + temp[1] + "；resType：" + temp[2] + "；resName：" + temp[3]);
+                        change(view, temp[1], temp[2], temp[3]);
                     }
                 }
             }
@@ -188,16 +187,17 @@ public class SkinManager {
     }
 
     /**
-     * 根据设置tag中的attrType和resName来更换皮肤
+     * 根据设置tag中的attrType和resType、resName来更换皮肤
      *
      * @param view     要更换皮肤的视图
-     * @param attrType 控件属性
+     * @param attrType 控件属性类型【src、textColor、background】
+     * @param resType  资源所属类型【drawable、mipmap、color、string】
      * @param resName  资源名称
      */
-    private void change(View view, String attrType, String resName) {
+    private void change(View view, String attrType, String resType, String resName) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
             if (skinAttrType.getAttrType().equals(attrType)) {
-                skinAttrType.applyNewAttr(resourcesManager, view, resName);
+                skinAttrType.applyNewAttr(resourcesManager, view, resType, resName);
             }
         }
     }

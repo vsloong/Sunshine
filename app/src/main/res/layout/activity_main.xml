@@ -23,8 +23,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="180dp"
-            android:tag="skin:src:banner"
             android:src="@mipmap/banner"
+            android:tag="skin:src:mipmap:banner"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

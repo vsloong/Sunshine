@@ -1,9 +1,10 @@
 package cn.edu.zstu.skin;
 
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * 要换肤控件属性的类型【background，textColor，src】
@@ -19,18 +20,44 @@ public enum SkinAttrType {
 
     SRC("src") {
         @Override
-        void applyNewAttr(ResourcesManager resourcesManager, View view, String resName) {
+        void applyNewAttr(ResourcesManager resourcesManager, View view, String resType, String resName) {
             if (view instanceof ImageView) {
-                Drawable drawable = resourcesManager.getDrawableByName(resName);
-                if (drawable != null) {
+                Drawable drawable = null;
+                switch (resType) {
+                    case "drawable":
+                        drawable = resourcesManager.getDrawableByName(resName);
+                        break;
+                    case "mipmap":
+                        drawable = resourcesManager.getMipmapByName(resName);
+                        break;
+                    default:
+                        break;
+                }
+                if (null != drawable) {
                     ((ImageView) view).setImageDrawable(drawable);
-                } else {
-                    drawable = resourcesManager.getMipmapByName(resName);
-                    if (drawable != null) {
-                        ((ImageView) view).setImageDrawable(drawable);
-                    } else {
-                        Log.e("SkinAttrType", "没有" + resName + "资源");
-                    }
+                }
+            }
+        }
+    },
+    TEXTCOLOR("textColor") {
+        @Override
+        void applyNewAttr(ResourcesManager resourcesManager, View view, String resType, String resName) {
+            if (view instanceof TextView) {
+                switch (resType) {
+                    case "color":
+                        int color = resourcesManager.getColor(resName);
+                        if (-1 != color) {
+                            ((TextView) view).setTextColor(color);
+                        }
+                        break;
+                    case "drawable":
+                        ColorStateList colorStateList = resourcesManager.getColorStateList(resName);
+                        if (null != colorStateList) {
+                            ((TextView) view).setTextColor(colorStateList);
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -46,5 +73,5 @@ public enum SkinAttrType {
         return attrType;
     }
 
-    abstract void applyNewAttr(ResourcesManager resourcesManager, View view, String resName);
+    abstract void applyNewAttr(ResourcesManager resourcesManager, View view, String resType, String resName);
 }

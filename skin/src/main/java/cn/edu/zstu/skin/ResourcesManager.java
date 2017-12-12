@@ -1,7 +1,9 @@
 package cn.edu.zstu.skin;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * 资源管理类
@@ -30,12 +32,9 @@ public class ResourcesManager {
 
     public Drawable getDrawableByName(String name) {
         try {
-            return resources.getDrawable(
-                    resources.getIdentifier(
-                            name,
-                            RES_TYPE_DRAWABLE,
-                            skinConfig.getSkinPkgName()));
+            return resources.getDrawable(identifier(name, RES_TYPE_DRAWABLE));
         } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "获取drawable资源" + name + "失败");
             e.printStackTrace();
             return null;
         }
@@ -43,14 +42,39 @@ public class ResourcesManager {
 
     public Drawable getMipmapByName(String name) {
         try {
-            return resources.getDrawable(
-                    resources.getIdentifier(
-                            name,
-                            RES_TYPE_MIPMAP,
-                            skinConfig.getSkinPkgName()));
+            return resources.getDrawable(identifier(name, RES_TYPE_MIPMAP));
         } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "获取mipmap资源" + name + "失败");
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getColor(String name) {
+        try {
+            return resources.getColor(identifier(name, RES_TYPE_COLOR));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            Log.e(TAG, "获取color资源" + name + "失败");
+            return -1;
+        }
+    }
+
+
+    public ColorStateList getColorStateList(String name) {
+        try {
+            return resources.getColorStateList(identifier(name, RES_TYPE_COLOR));
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "获取colorStateList资源" + name + "失败");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private int identifier(String name, String type) {
+        return resources.getIdentifier(
+                name,
+                type,
+                skinConfig.getSkinPkgName());
     }
 }

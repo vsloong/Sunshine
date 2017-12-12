@@ -22,6 +22,7 @@
     <color name="text_jacinth">#e85c21</color>
     <color name="text_gray_light">#b9babe</color>
     <color name="text_gray_dark">#6d6f73</color>
+    <color name="text_tool">#25262c</color>
 
     <!--美洽自定义UI，覆盖属性资源ID-->
     <!--公共的 START-->

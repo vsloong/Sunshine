@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@{tool.name}"
-            android:textColor="@color/gray"
+            android:textColor="@color/text_tool"
             android:textSize="14sp"
             tools:text="工具" />
     </LinearLayout>
