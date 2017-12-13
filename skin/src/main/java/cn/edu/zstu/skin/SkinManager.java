@@ -1,14 +1,18 @@
 package cn.edu.zstu.skin;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 节日换肤的管理类
@@ -127,10 +131,25 @@ public class SkinManager {
      *
      * @param activity Activity
      */
+    @SuppressLint("StaticFieldLeak")
     private void findTargetView(Activity activity) {
         if (canChangeSkin()) {
-            ViewGroup viewGroup = activity.findViewById(android.R.id.content);
-            getViewWithTag(viewGroup);
+            final ViewGroup viewGroup = activity.findViewById(android.R.id.content);
+
+            new AsyncTask<Void, Void, List<SkinView>>() {
+
+                @Override
+                protected List<SkinView> doInBackground(Void... voids) {
+                    return getViewWithTag(viewGroup);
+                }
+
+                @Override
+                protected void onPostExecute(List<SkinView> skinViews) {
+                    for (SkinView skinView : skinViews) {
+                        changeViewWithTag(skinView);
+                    }
+                }
+            }.execute();
         }
     }
 
@@ -159,7 +178,8 @@ public class SkinManager {
      *
      * @param viewGroup viewGroup
      */
-    private void getViewWithTag(ViewGroup viewGroup) {
+    private List<SkinView> getViewWithTag(ViewGroup viewGroup) {
+        List<SkinView> skinViews = new ArrayList<>();
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
 
@@ -179,25 +199,27 @@ public class SkinManager {
                         if (null == temp || temp.length != 4)
                             continue;
                         Log.e(TAG, "attrType：" + temp[1] + "；resType：" + temp[2] + "；resName：" + temp[3]);
-                        change(view, temp[1], temp[2], temp[3]);
+                        //changeViewWithTag(view, temp[1], temp[2], temp[3]);
+                        skinViews.add(new SkinView(view, temp[1], temp[2], temp[3]));
                     }
                 }
             }
         }
+        return skinViews;
     }
 
     /**
      * 根据设置tag中的attrType和resType、resName来更换皮肤
      *
-     * @param view     要更换皮肤的视图
-     * @param attrType 控件属性类型【src、textColor、background】
-     * @param resType  资源所属类型【drawable、mipmap、color、string】
-     * @param resName  资源名称
+     * @param skinView 要换肤的View
      */
-    private void change(View view, String attrType, String resType, String resName) {
+    private void changeViewWithTag(SkinView skinView) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
-            if (skinAttrType.getAttrType().equals(attrType)) {
-                skinAttrType.applyNewAttr(resourcesManager, view, resType, resName);
+            if (skinAttrType.getAttrType().equals(skinView.getAttrType())) {
+                skinAttrType.applyNewAttr(resourcesManager,
+                        skinView.getView(),
+                        skinView.getResType(),
+                        skinView.getResName());
             }
         }
     }

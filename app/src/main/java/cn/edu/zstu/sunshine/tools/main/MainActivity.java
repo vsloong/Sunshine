@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity {
         SkinManager.getInstance().setSkinConfig(this,
                 FILE_PATH + File.separator + "sunshine_christmas_1712121455.skin",
                 "2017-11-28 00:00:00",
-                "2017-12-12 23:59:59"
+                "2017-12-25 23:59:59"
         );
 //
 //        checkUpdateAndSkin();
