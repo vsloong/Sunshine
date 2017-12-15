@@ -7,7 +7,6 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.KeyEvent;
@@ -31,7 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import cn.edu.zstu.skin.OnSkinChangedListener;
 import cn.edu.zstu.skin.SkinManager;
+import cn.edu.zstu.skin.SkinView;
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.Api;
@@ -105,13 +106,13 @@ public class MainActivity extends BaseActivity {
 
         initViews();
 
-        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
-        SkinManager.getInstance().setSkinConfig(this,
-                FILE_PATH + File.separator + "sunshine_christmas_1712121455.skin",
-                "2017-11-28 00:00:00",
-                "2017-12-25 23:59:59"
-        );
-//
+//        final String FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "Sunshine";
+//        SkinManager.getInstance().setSkinConfig(this,
+//                FILE_PATH + File.separator + "sunshine_christmas_1712121455.skin",
+//                "2017-11-28 00:00:00",
+//                "2017-12-25 23:59:59"
+//        );
+////
 //        checkUpdateAndSkin();
     }
 
@@ -141,7 +142,28 @@ public class MainActivity extends BaseActivity {
         binding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                SkinManager.getInstance().apply(MainActivity.this);
+                SkinManager.getInstance().apply(MainActivity.this,
+                        new OnSkinChangedListener() {
+                            @Override
+                            public void onStart() {
+                                Logger.e("onStart哈哈哈啊哈哈");
+                            }
+
+                            @Override
+                            public void onChanging(SkinView skinView) {
+                                Logger.e("onChanging哈哈哈啊哈哈");
+                            }
+
+                            @Override
+                            public void onSucceed() {
+                                Logger.e("onSucceed哈哈哈啊哈哈");
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                 //使用完一次后必须撤销监听，否则会不停的不定时测量，消耗性能
                 binding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }

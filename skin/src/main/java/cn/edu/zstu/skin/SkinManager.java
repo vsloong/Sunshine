@@ -32,6 +32,8 @@ public class SkinManager {
 
     private ResourcesManager resourcesManager;
     private SkinConfig skinConfig;
+    private List<SkinView> skinViews = new ArrayList<>();
+    private OnSkinChangedListener listener;
 
     public static SkinManager getInstance() {
         if (skinManager == null) {
@@ -52,18 +54,26 @@ public class SkinManager {
      *
      * @param context 上下文
      */
-    private void init(Context context) {
+    private void init(Context context, OnSkinChangedListener listener) {
         //只做一次初始化动作，必须先初始化SkinConfig，因为ResourcesManager中需要用到皮肤的包名等
-        if (null == skinConfig) {
+        if (null == this.skinConfig) {
             skinConfig = new SkinConfig(context);
         }
-        if (null == resourcesManager) {
+        if (null == this.resourcesManager) {
             try {
                 setResourcesManager(context, skinConfig);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG, "外部皮肤资源管理对象创建失败");
             }
+        }
+
+        if (null == listener) {
+            if (null == this.listener)
+                this.listener = OnSkinChangedListener.DEFAULT_ON_SKIN_CHANGED_LISTENER;
+        } else {
+            if (null == this.listener)
+                this.listener = listener;
         }
     }
 
@@ -77,7 +87,7 @@ public class SkinManager {
      * if(isSkinEffective(context)){ getResourcesManager(context).xxx() }
      */
     public ResourcesManager getResourcesManager(Context context) {
-        init(context);
+        init(context, null);
         return resourcesManager;
     }
 
@@ -88,7 +98,7 @@ public class SkinManager {
      * @return 皮肤是否存在及是否在有效换肤时间内
      */
     public boolean isSkinEffective(Context context) {
-        init(context);
+        init(context, null);
         return canChangeSkin();
     }
 
@@ -105,7 +115,7 @@ public class SkinManager {
     public void setSkinConfig(Context context, String skinPath,
                               String skinEffectiveTime,
                               String skinExpiryTime) {
-        init(context);
+        init(context, null);
         boolean isSuccess = skinConfig.setSkinConfig(
                 skinPath, skinEffectiveTime, skinExpiryTime
         );
@@ -122,8 +132,19 @@ public class SkinManager {
      * @param activity Activity
      */
     public void apply(Activity activity) {
-        init(activity);
-        findTargetView(activity);
+        init(activity, null);
+        findAndChangeTargetView(activity);
+    }
+
+    /**
+     * 【！！对外开放！！】
+     * 换肤（如果有皮肤的配置并且皮肤在有效期内，那么就去更换皮肤）
+     *
+     * @param activity Activity
+     */
+    public void apply(Activity activity, OnSkinChangedListener listener) {
+        init(activity, listener);
+        findAndChangeTargetView(activity);
     }
 
     /**
@@ -132,15 +153,18 @@ public class SkinManager {
      * @param activity Activity
      */
     @SuppressLint("StaticFieldLeak")
-    private void findTargetView(Activity activity) {
+    private void findAndChangeTargetView(Activity activity) {
         if (canChangeSkin()) {
+            listener.onStart();
             final ViewGroup viewGroup = activity.findViewById(android.R.id.content);
 
             new AsyncTask<Void, Void, List<SkinView>>() {
 
                 @Override
                 protected List<SkinView> doInBackground(Void... voids) {
-                    return getViewWithTag(viewGroup);
+                    skinViews.clear();//记得每次查找时先将之前获取的换肤视图数据清空，否则会累计
+                    getViewWithTag(viewGroup);
+                    return skinViews;
                 }
 
                 @Override
@@ -148,6 +172,7 @@ public class SkinManager {
                     for (SkinView skinView : skinViews) {
                         changeViewWithTag(skinView);
                     }
+                    listener.onSucceed();
                 }
             }.execute();
         }
@@ -178,8 +203,7 @@ public class SkinManager {
      *
      * @param viewGroup viewGroup
      */
-    private List<SkinView> getViewWithTag(ViewGroup viewGroup) {
-        List<SkinView> skinViews = new ArrayList<>();
+    private void getViewWithTag(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
 
@@ -198,14 +222,13 @@ public class SkinManager {
                         String[] temp = tagItem.split("[:]");
                         if (null == temp || temp.length != 4)
                             continue;
-                        Log.e(TAG, "attrType：" + temp[1] + "；resType：" + temp[2] + "；resName：" + temp[3]);
+                        //Log.e(TAG, "attrType：" + temp[1] + "；resType：" + temp[2] + "；resName：" + temp[3]);
                         //changeViewWithTag(view, temp[1], temp[2], temp[3]);
                         skinViews.add(new SkinView(view, temp[1], temp[2], temp[3]));
                     }
                 }
             }
         }
-        return skinViews;
     }
 
     /**
@@ -216,6 +239,7 @@ public class SkinManager {
     private void changeViewWithTag(SkinView skinView) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
             if (skinAttrType.getAttrType().equals(skinView.getAttrType())) {
+                listener.onChanging(skinView);
                 skinAttrType.applyNewAttr(resourcesManager,
                         skinView.getView(),
                         skinView.getResType(),
