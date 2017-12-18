@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class SkinManager {
     private ResourcesManager resourcesManager;
     private SkinConfig skinConfig;
     private List<SkinView> skinViews = new ArrayList<>();
-    private OnSkinChangedListener listener;
+    private OnSkinChangedListener skinChangedListener;
 
     public static SkinManager getInstance() {
         if (skinManager == null) {
@@ -54,7 +55,8 @@ public class SkinManager {
      *
      * @param context 上下文
      */
-    private void init(Context context, OnSkinChangedListener listener) {
+    private void init(Context context,
+                      OnSkinChangedListener skinChangedListener) {
         //只做一次初始化动作，必须先初始化SkinConfig，因为ResourcesManager中需要用到皮肤的包名等
         if (null == this.skinConfig) {
             skinConfig = new SkinConfig(context);
@@ -68,12 +70,11 @@ public class SkinManager {
             }
         }
 
-        if (null == listener) {
-            if (null == this.listener)
-                this.listener = OnSkinChangedListener.DEFAULT_ON_SKIN_CHANGED_LISTENER;
+        if (null == skinChangedListener) {
+            if (null == this.skinChangedListener)
+                this.skinChangedListener = OnSkinChangedListener.DEFAULT_ON_SKIN_CHANGED_LISTENER;
         } else {
-            if (null == this.listener)
-                this.listener = listener;
+            this.skinChangedListener = skinChangedListener;
         }
     }
 
@@ -115,13 +116,42 @@ public class SkinManager {
     public void setSkinConfig(Context context, String skinPath,
                               String skinEffectiveTime,
                               String skinExpiryTime) {
+        setSkinConfig(context, skinPath, skinEffectiveTime, skinExpiryTime, OnSkinConfigChangedListener.DEFAULT_SKIN_CONFIG_CHANGED_LISTENER);
+    }
+
+    /**
+     * 【！！对外开放！！】
+     * 设置换肤资源的路径以及皮肤生效时间及过期时间
+     * <p>
+     * 并且改变配置后会立即检查是否需要更换皮肤，如果需要则立即更换
+     *
+     * @param context
+     * @param skinPath                  皮肤包路径
+     * @param skinEffectiveTime         生效时间
+     * @param skinExpiryTime            过期时间
+     * @param skinConfigChangedListener 换肤监听接口
+     */
+    public void setSkinConfig(Context context, String skinPath,
+                              String skinEffectiveTime,
+                              String skinExpiryTime,
+                              @NonNull OnSkinConfigChangedListener skinConfigChangedListener) {
         init(context, null);
-        boolean isSuccess = skinConfig.setSkinConfig(
-                skinPath, skinEffectiveTime, skinExpiryTime
-        );
+
+        boolean isSuccess = false;
+        try {
+            isSuccess = skinConfig.setSkinConfig(
+                    skinPath, skinEffectiveTime, skinExpiryTime
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (isSuccess) {
+            skinConfigChangedListener.onSucceed();
             apply((Activity) context);
+        } else {
+            skinConfigChangedListener.onFail(SkinConfig.SKIN_CONFIG_CHANGED_ERROR);
+            //throw new Exception(SkinConfig.SKIN_CONFIG_CHANGED_ERROR);
         }
     }
 
@@ -131,6 +161,7 @@ public class SkinManager {
      *
      * @param activity Activity
      */
+
     public void apply(Activity activity) {
         init(activity, null);
         findAndChangeTargetView(activity);
@@ -141,6 +172,7 @@ public class SkinManager {
      * 换肤（如果有皮肤的配置并且皮肤在有效期内，那么就去更换皮肤）
      *
      * @param activity Activity
+     * @param listener 换肤成功与失败的回调接口
      */
     public void apply(Activity activity, OnSkinChangedListener listener) {
         init(activity, listener);
@@ -155,7 +187,7 @@ public class SkinManager {
     @SuppressLint("StaticFieldLeak")
     private void findAndChangeTargetView(Activity activity) {
         if (canChangeSkin()) {
-            listener.onStart();
+            skinChangedListener.onStart();
             final ViewGroup viewGroup = activity.findViewById(android.R.id.content);
 
             new AsyncTask<Void, Void, List<SkinView>>() {
@@ -172,7 +204,7 @@ public class SkinManager {
                     for (SkinView skinView : skinViews) {
                         changeViewWithTag(skinView);
                     }
-                    listener.onSucceed();
+                    skinChangedListener.onSucceed();
                 }
             }.execute();
         }
@@ -184,7 +216,7 @@ public class SkinManager {
     private boolean canChangeSkin() {
         //如果皮肤配置中没有这些配置选项那么就不去加载皮肤
         if (skinConfig.isConfigInvalid()) {
-            Log.e(TAG, "换肤包配置信息不完善");
+            Log.e(TAG, "没有查询到换肤包配置信息");
             return false;
         }
 
@@ -239,7 +271,7 @@ public class SkinManager {
     private void changeViewWithTag(SkinView skinView) {
         for (SkinAttrType skinAttrType : SkinAttrType.values()) {
             if (skinAttrType.getAttrType().equals(skinView.getAttrType())) {
-                listener.onChanging(skinView);
+                skinChangedListener.onChanging(skinView);
                 skinAttrType.applyNewAttr(resourcesManager,
                         skinView.getView(),
                         skinView.getResType(),

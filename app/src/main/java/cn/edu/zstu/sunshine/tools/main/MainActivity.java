@@ -32,7 +32,6 @@ import java.util.List;
 
 import cn.edu.zstu.skin.OnSkinChangedListener;
 import cn.edu.zstu.skin.SkinManager;
-import cn.edu.zstu.skin.SkinView;
 import cn.edu.zstu.sunshine.BR;
 import cn.edu.zstu.sunshine.R;
 import cn.edu.zstu.sunshine.base.Api;
@@ -143,27 +142,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onGlobalLayout() {
                 SkinManager.getInstance().apply(MainActivity.this,
-                        new OnSkinChangedListener() {
-                            @Override
-                            public void onStart() {
-                                Logger.e("onStart哈哈哈啊哈哈");
-                            }
-
-                            @Override
-                            public void onChanging(SkinView skinView) {
-                                Logger.e("onChanging哈哈哈啊哈哈");
-                            }
-
-                            @Override
-                            public void onSucceed() {
-                                Logger.e("onSucceed哈哈哈啊哈哈");
-                            }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
+                        OnSkinChangedListener.DEFAULT_ON_SKIN_CHANGED_LISTENER);
                 //使用完一次后必须撤销监听，否则会不停的不定时测量，消耗性能
                 binding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }

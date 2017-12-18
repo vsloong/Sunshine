@@ -27,6 +27,8 @@ class SkinConfig {
     private static final String SKIN_TIME_EFFECTIVE = "skin_time_effective";
     private static final String SKIN_TIME_EXPIRY = "skin_time_expiry";
 
+    static final String SKIN_CONFIG_CHANGED_ERROR = "该位置不存在换肤包";
+
     static final String SKIN_PREFIX = "skin"; //换肤资源的前缀
 
     private SharedPreferences sp;
@@ -41,10 +43,17 @@ class SkinConfig {
         return context.getSharedPreferences(SKIN_SP_NAME, Context.MODE_PRIVATE);
     }
 
-    boolean setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) {
-        return setSkinPath(skinPath) &&
+    boolean setSkinConfig(String skinPath, String skinEffectiveTime, String skinExpiryTime) throws Exception {
+
+        boolean isSucceed = setSkinPath(skinPath) &&
                 setSkinEffectiveTime(skinEffectiveTime) &&
                 setSkinExpiryTime(skinExpiryTime);
+
+        if (isSucceed) {
+            return true;
+        } else {
+            throw new Exception("您指定的位置不存在换肤包，已清空所有换肤配置");
+        }
     }
 
     String getSkinPath() {
