@@ -24,10 +24,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import cn.edu.zstu.skin.OnSkinChangedListener;
@@ -42,6 +39,7 @@ import cn.edu.zstu.sunshine.databinding.ActivityMainBinding;
 import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.entity.Update;
 import cn.edu.zstu.sunshine.event.UnRead;
+import cn.edu.zstu.sunshine.interfaces.OnDownloadCallback;
 import cn.edu.zstu.sunshine.service.MQMessageReceiver;
 import cn.edu.zstu.sunshine.tools.TestActivity;
 import cn.edu.zstu.sunshine.tools.campuscard.CampusCardActivity;
@@ -113,6 +111,8 @@ public class MainActivity extends BaseActivity {
 //        );
 ////
 //        checkUpdateAndSkin();
+        downloadSkin("sunshine_christmas_1712121455.skin",
+                "https://raw.githubusercontent.com/CooLoongWu/Sunshine/master/skin/sunshine_christmas_1712121455.skin");
     }
 
     private void initViews() {
@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }));
 
-        //第一种方法【注册视图树观察者，当recyclerView加载完后会触发改事件，从而可以遍历视图进行换肤】
+        //第一种方法（）【注册视图树观察者，当recyclerView加载完后会触发改事件，从而可以遍历视图进行换肤】
         binding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -229,60 +229,20 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void downloadSkin(final String fileName, final long fileCode, String url, final boolean isApply) {
+    private void downloadSkin(String skinName, String url) {
 
-        final String name = fileName + "_" + fileCode + ".skin";
-        if (AppConfig.isFileExists(name)) {
-            return;
-        }
+//        if (AppConfig.isFileExists(skinName)) {
+//            return;
+//        }
 
-        Api.download(this, url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Logger.e(name + "下载失败");
-            }
+        skinName += "55";
+
+        Api.download(this, url, new OnDownloadCallback(AppConfig.FILE_PATH, skinName) {
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                File fileDir = new File(AppConfig.FILE_PATH);
-                if (!fileDir.exists()) {
-                    fileDir.mkdir();
-                }
-                InputStream is = null;
-                byte[] buf = new byte[2048];
-                int len = 0;
-                FileOutputStream fos = null;
-                try {
-                    is = response.body().byteStream();
-                    final long total = response.body().contentLength();
-
-                    long sum = 0;
-
-                    File file = new File(fileDir, name);
-                    fos = new FileOutputStream(file);
-                    while ((len = is.read(buf)) != -1) {
-                        sum += len;
-                        fos.write(buf, 0, len);
-                        final long finalSum = sum;
-
-                        Logger.e("下载进度：" + (finalSum * 1.0f / total));
-                    }
-                    fos.flush();
-
-                    Logger.e("下载完成");
-
-                } finally {
-                    try {
-                        response.body().close();
-                        if (is != null) is.close();
-                    } catch (IOException e) {
-                    }
-                    try {
-                        if (fos != null) fos.close();
-                    } catch (IOException e) {
-                    }
-
-                }
+            public void onProgress(float progress, long total) {
+                super.onProgress(progress, total);
+                Logger.e("下载进度：" + progress);
             }
         });
     }
