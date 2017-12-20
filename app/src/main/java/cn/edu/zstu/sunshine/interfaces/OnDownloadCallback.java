@@ -43,6 +43,10 @@ public abstract class OnDownloadCallback implements Callback {
 
     }
 
+    public void onCompleted() {
+
+    }
+
     private File saveFile(Response response) throws IOException {
         InputStream is = null;
         byte[] buf = new byte[2048];
@@ -65,6 +69,10 @@ public abstract class OnDownloadCallback implements Callback {
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
                 onProgress(finalSum * 1.0f / total, total);
+
+                if (finalSum == total) {
+                    onCompleted();
+                }
 //                OkHttpUtils.getInstance().getDelivery().execute(new Runnable()
 //                {
 //                    @Override

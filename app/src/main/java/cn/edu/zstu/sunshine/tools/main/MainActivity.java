@@ -109,8 +109,7 @@ public class MainActivity extends BaseActivity {
 //                "2017-11-28 00:00:00",
 //                "2017-12-25 23:59:59"
 //        );
-////
-//        checkUpdateAndSkin();
+
         downloadSkin("sunshine_christmas_1712121455.skin",
                 "https://raw.githubusercontent.com/CooLoongWu/Sunshine/master/skin/sunshine_christmas_1712121455.skin");
     }
@@ -171,7 +170,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<MQMessage> list) {
-//                Logger.e("未读消息数：" + list.size());
                 viewModel.haveUnRead.set(!list.isEmpty());
             }
         });
@@ -208,41 +206,25 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Logger.e("检查更新成功");
-                //JsonParse<List<Update>> s = parseStrToJson(response.toString());
                 Update update = JSON.parseObject(
                         response.body().string(),
                         new TypeReference<JsonParse<Update>>() {
                         })
                         .getData();
-
-                //downloadSkin(update.getSkinName(), update.getSkinCode(), update.getSkinDownloadUrl(), false);
-
-
-//                long currentTime = System.currentTimeMillis();
-//                long effectiveTime = DateUtil.getMillis(update.getSkinEffectiveTime());
-//                long expiryTime = DateUtil.getMillis(update.getSkinExpiryTime());
-//                Logger.e("更新信息：" + update.isSkinChange()
-//                        + "；有效时间：" + effectiveTime + "-" + currentTime + "-" + expiryTime);
+                Logger.e("更新信息：" + update.isSkinChange()
+                        + "；有效时间：" + update.getSkinEffectiveTime() + "-" + update.getSkinExpiryTime());
 
             }
         });
     }
 
     private void downloadSkin(String skinName, String url) {
-
-//        if (AppConfig.isFileExists(skinName)) {
-//            return;
-//        }
-
-        skinName += "55";
+        skinName += "56";
 
         Api.download(this, url, new OnDownloadCallback(AppConfig.FILE_PATH, skinName) {
-
             @Override
-            public void onProgress(float progress, long total) {
-                super.onProgress(progress, total);
-                Logger.e("下载进度：" + progress);
+            public void onCompleted() {
+                Logger.e("下载完成");
             }
         });
     }
