@@ -53,8 +53,9 @@ public abstract class BaseViewModel<T> {
     }
 
     public void loadDataFromNetWork() {
-        if (null == loadUrl() || loadUrl().isEmpty()) return;
-        Api.post(context, loadUrl(), new Callback() {
+        String url = loadUrl();
+        if (null == url || url.isEmpty()) return;
+        Api.post(context, url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 handelFailure(Api.ERR_CODE_400);
@@ -79,6 +80,13 @@ public abstract class BaseViewModel<T> {
         } else {
             DaoUtil.insertOrUpdate(s.getData());
         }
+    }
+
+    public String loadUrl(T t) {
+        String[] pkgName = t.getClass().getName().split("[.]");
+        String className = pkgName[pkgName.length - 1];
+        Logger.e("泛型名称：" + className);
+        return className.toLowerCase();
     }
 
     protected abstract JsonParse<List<T>> parseStrToJson(String data);

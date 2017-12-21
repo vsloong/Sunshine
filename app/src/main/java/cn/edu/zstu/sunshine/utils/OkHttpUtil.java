@@ -19,27 +19,18 @@ import okhttp3.Request;
 public class OkHttpUtil {
 
     private volatile static OkHttpUtil okHttpUtil;
-    private OkHttpClient okHttpClient;
-    private FormBody.Builder requestBody;
-    private Request.Builder requestBuilder;
-    private Request request;
-    private Call call;
-    private boolean isPost = false;
+    private static OkHttpClient okHttpClient;
+    private static FormBody.Builder requestBody;
+    private static Request.Builder requestBuilder;
+
+    private static Request request;
 
     private OkHttpUtil() {
-        this.okHttpClient = new OkHttpClient();
+        okHttpClient = new OkHttpClient();
         requestBody = new FormBody.Builder();
         requestBuilder = new Request.Builder();
     }
 
-    private OkHttpUtil(OkHttpClient okHttpClient) {
-        this.okHttpClient = okHttpClient;
-        requestBuilder = new Request.Builder();
-    }
-
-    /**
-     * @return OkHttp的单例
-     */
     public static OkHttpUtil getInstance() {
         if (okHttpUtil == null) {
             synchronized (OkHttpUtil.class) {
@@ -51,99 +42,16 @@ public class OkHttpUtil {
         return okHttpUtil;
     }
 
-    /**
-     * @param okHttpClient 自定义的OkHttpClient
-     * @return 自定义的OkHttp的单例
-     */
-    public static OkHttpUtil getInstance(OkHttpClient okHttpClient) {
-        synchronized (OkHttpUtil.class) {
-            if (okHttpUtil == null) {
-                okHttpUtil = new OkHttpUtil(okHttpClient);
-            }
-        }
-        return okHttpUtil;
+    public static OkHttpUtil.OkBuilder getBuilder() {
+        getInstance();
+        return new OkBuilder(requestBody, requestBuilder);
     }
-
-    public OkHttpClient getOkHttpClient() {
-        return okHttpClient;
-    }
-
-
-    /**
-     * 添加RequestBuilder请求地址
-     *
-     * @param url 地址
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil url(String url) {
-        requestBuilder.url(url);
-        return okHttpUtil;
-    }
-
-    /**
-     * 请求类型
-     *
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil post() {
-        isPost = true;
-        return okHttpUtil;
-    }
-
-    /**
-     * 请求类型
-     *
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil get() {
-        isPost = false;
-        return okHttpUtil;
-    }
-
-    /**
-     * 给call添加标签，方便后续取消请求
-     *
-     * @param tag 标签
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil tag(Context tag) {
-        requestBuilder.tag(tag);
-        return okHttpUtil;
-    }
-
-    /**
-     * 添加RequestBody的参数
-     *
-     * @param key   参数键
-     * @param value 参数值
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil addParam(String key, String value) {
-        requestBody.add(key, value);
-        return okHttpUtil;
-    }
-
-    /**
-     * 构建RequestBuilder
-     *
-     * @return OkHttpUtil
-     */
-    public OkHttpUtil build() {
-        if (isPost) {
-            request = requestBuilder.post(requestBody.build()).build();
-        } else {
-            request = requestBuilder.get().build();
-        }
-        call = okHttpClient.newCall(request);
-        return okHttpUtil;
-    }
-
 
     /**
      * @param callback 执行结果回调
      */
     public void enqueue(Callback callback) {
-        call.enqueue(callback);
+        okHttpClient.newCall(request).enqueue(callback);
     }
 
     /**
@@ -170,5 +78,51 @@ public class OkHttpUtil {
         }
     }
 
+    /**
+     * 使用Builder模式构造参数
+     */
+    public static class OkBuilder {
+        private FormBody.Builder requestBody;
+        private Request.Builder requestBuilder;
+        private boolean isPost = false;
 
+        OkBuilder(FormBody.Builder requestBody, Request.Builder requestBuilder) {
+            this.requestBody = requestBody;
+            this.requestBuilder = requestBuilder;
+        }
+
+        public OkBuilder post() {
+            isPost = true;
+            return this;
+        }
+
+        public OkBuilder get() {
+            isPost = false;
+            return this;
+        }
+
+        public OkBuilder url(String url) {
+            requestBuilder.url(url);
+            return this;
+        }
+
+        public OkBuilder tag(Context tag) {
+            requestBuilder.tag(tag);
+            return this;
+        }
+
+        public OkBuilder addParam(String key, String value) {
+            requestBody.add(key, value);
+            return this;
+        }
+
+        public OkHttpUtil build() {
+            if (isPost) {
+                request = requestBuilder.post(requestBody.build()).build();
+            } else {
+                request = requestBuilder.get().build();
+            }
+            return okHttpUtil;
+        }
+    }
 }

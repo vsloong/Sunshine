@@ -12,7 +12,7 @@ import okhttp3.Callback;
 
 public class Api {
 
-    private static final String URL_BASE = "https://easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/";
+    public static final String URL_BASE = "https://easy-mock.com/mock/59acaa94e0dc6633419a3afe/sunshine/";
     public static final String URL_NETWORK = "network";
     public static final String URL_CAMPUSCARD = "campuscard";
     public static final String URL_EXAM = "exam";
@@ -22,9 +22,8 @@ public class Api {
     public static final String URL_LIBRARY = "library";
     public static final String URL_UPDATE = "update";
 
-
-    public static final int ERR_CODE_400 = 400;
-    public static final int ERR_CODE_404 = 404;
+    static final int ERR_CODE_400 = 400;
+    static final int ERR_CODE_404 = 404;
 
     /**
      * 获取网费信息
@@ -98,7 +97,7 @@ public class Api {
     }
 
     static void post(Context context, String url, Callback callback) {
-        OkHttpUtil.getInstance()
+        OkHttpUtil.getBuilder()
                 .tag(context)
                 .post()
                 .url(URL_BASE + url)
@@ -108,7 +107,7 @@ public class Api {
     }
 
     public static void download(Context context, String url, Callback callback) {
-        OkHttpUtil.getInstance()
+        OkHttpUtil.getBuilder()
                 .tag(context)
                 .get()
                 .url(url)
