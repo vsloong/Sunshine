@@ -38,9 +38,9 @@ import cn.edu.zstu.sunshine.utils.DialogUtil;
 
 public class CampusCardViewModel extends BaseViewModel<CampusCard> {
 
-    public ObservableField<String> expenses = new ObservableField<>();  //本月累计消费金额
-    public ObservableField<String> balance = new ObservableField<>();   //余额
-    public ObservableField<Integer> month = new ObservableField<>();   //月份
+    public ObservableField<String> expenses;  //本月累计消费金额
+    public ObservableField<String> balance;   //余额
+    public ObservableField<Integer> month;   //月份
 
     protected CampusCardViewModel(Context context, ViewDataBinding binding) {
         super(context, binding);
@@ -56,10 +56,13 @@ public class CampusCardViewModel extends BaseViewModel<CampusCard> {
     }
 
     @Override
-    public void init() {
-        //TODO 为什么一直为空指针异常
+    public void beforeInit() {
+        //不知道为什么不可以在类中初始化
+        month = new ObservableField<>();
+        expenses = new ObservableField<>();
+        balance = new ObservableField<>();
+
         month.set(DateUtil.getCurrentMonth());
-        super.init();
     }
 
     @Override

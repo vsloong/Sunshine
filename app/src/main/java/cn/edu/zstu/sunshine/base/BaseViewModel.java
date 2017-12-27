@@ -34,6 +34,7 @@ public abstract class BaseViewModel<T> {
     protected BaseViewModel(Context context, ViewDataBinding binding) {
         this.context = context;
         this.binding = binding;
+        beforeInit();
         init();
     }
 
@@ -45,6 +46,13 @@ public abstract class BaseViewModel<T> {
         this.data.clear();
         this.data.addAll(data);
         showEmptyView.set(data.size() <= 0);
+    }
+
+    /**
+     * 在init（）前调用，主要为CampusCardViewModel类中的一些ObservableField实例化
+     */
+    public void beforeInit() {
+
     }
 
     public void init() {
