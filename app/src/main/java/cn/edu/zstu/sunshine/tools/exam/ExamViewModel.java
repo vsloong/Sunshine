@@ -1,14 +1,18 @@
 package cn.edu.zstu.sunshine.tools.exam;
 
 import android.content.Context;
-import android.databinding.ObservableBoolean;
 
-import java.util.ArrayList;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+
 import java.util.List;
 
+import cn.edu.zstu.sunshine.base.Api;
 import cn.edu.zstu.sunshine.base.AppConfig;
+import cn.edu.zstu.sunshine.base.BaseViewModel;
 import cn.edu.zstu.sunshine.databinding.ActivityExamBinding;
 import cn.edu.zstu.sunshine.entity.Exam;
+import cn.edu.zstu.sunshine.entity.JsonParse;
 import cn.edu.zstu.sunshine.greendao.ExamDao;
 import cn.edu.zstu.sunshine.utils.DaoUtil;
 
@@ -17,52 +21,37 @@ import cn.edu.zstu.sunshine.utils.DaoUtil;
  * Created by CooLoongWu on 2017-9-20 15:18.
  */
 
-public class ExamViewModel {
-    private Context context;
-    private ActivityExamBinding binding;
-    private List<Exam> data = new ArrayList<>();
+public class ExamViewModel extends BaseViewModel<Exam> {
 
-    private ExamDao examDao;
-    public ObservableBoolean showEmptyView = new ObservableBoolean(true);
-
-    public ExamViewModel(Context context, ActivityExamBinding binding) {
-        this.context = context;
-        this.binding = binding;
-
-        examDao = DaoUtil.getInstance().getSession().getExamDao();
-        init();
+    ExamViewModel(Context context, ActivityExamBinding binding) {
+        super(context, binding);
     }
 
-    public List<Exam> getData() {
-        return data;
+    @Override
+    protected JsonParse<List<Exam>> parseStrToJson(String data) {
+        return JSON.parseObject(data,
+                new TypeReference<JsonParse<List<Exam>>>() {
+                });
     }
 
-    public void setData(List<Exam> exams) {
-        data.clear();
-        data.addAll(exams);
+    @Override
+    protected String loadUrl() {
+        return Api.URL_EXAM;
     }
 
-    void init() {
-        loadDataFromLocal();
-        loadDataIntoView();
-    }
-
-    private void loadDataFromLocal() {
-        List<Exam> exams = examDao
+    protected List<Exam> loadDataFromLocal() {
+        return DaoUtil.getInstance().getSession().getExamDao()
                 .queryBuilder()
                 .where(
                         ExamDao.Properties.UserId.eq(AppConfig.getDefaultUserId())
                 )
                 .list();
-
-        setData(exams);
     }
 
-    private void loadDataIntoView() {
-        showEmptyView.set(data.size() <= 0);
-
-        if (binding.include.recyclerView.getAdapter() != null) {
-            binding.include.recyclerView.getAdapter().notifyDataSetChanged();
+    protected void loadDataIntoView() {
+        ActivityExamBinding examBinding = (ActivityExamBinding) binding;
+        if (examBinding.include.recyclerView.getAdapter() != null) {
+            examBinding.include.recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 }

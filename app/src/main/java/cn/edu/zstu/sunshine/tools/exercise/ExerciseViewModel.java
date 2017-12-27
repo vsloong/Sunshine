@@ -24,7 +24,7 @@ import cn.edu.zstu.sunshine.utils.DaoUtil;
 
 public class ExerciseViewModel extends BaseViewModel<Exercise> {
 
-    protected ExerciseViewModel(Context context, ViewDataBinding binding) {
+    ExerciseViewModel(Context context, ViewDataBinding binding) {
         super(context, binding);
     }
 
