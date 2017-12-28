@@ -10,7 +10,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * 文件下载类的接口
+ * 文件下载的抽象类
  * Created by CooLoongWu on 2017-12-19 15:15.
  */
 

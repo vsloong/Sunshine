@@ -110,8 +110,8 @@ public class MainActivity extends BaseActivity {
 //                "2017-12-25 23:59:59"
 //        );
 
-        downloadSkin("sunshine_christmas_1712121455.skin",
-                "https://raw.githubusercontent.com/CooLoongWu/Sunshine/master/skin/sunshine_christmas_1712121455.skin");
+//        downloadSkin("sunshine_christmas_1712121455.skin",
+//                "https://raw.githubusercontent.com/CooLoongWu/Sunshine/master/skin/sunshine_christmas_1712121455.skin");
     }
 
     private void initViews() {
