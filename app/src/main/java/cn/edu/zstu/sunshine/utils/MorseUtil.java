@@ -56,7 +56,6 @@ public class MorseUtil {
         encodeMap.put("8", "---..");
         encodeMap.put("9", "----.");
         encodeMap.put("0", "-----");
-        encodeMap.put(" ", " ");
 
         Log.e("encodeMap长度", "" + encodeMap.size());
 
