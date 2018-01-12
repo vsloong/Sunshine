@@ -1,8 +1,6 @@
 package cn.edu.zstu.sunshine.tools;
 
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 
 import java.io.OutputStream;
 
@@ -18,11 +16,6 @@ public class TestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        String defaultStr = "Hello You !";
-        String str = new String(Base64.encode(defaultStr.getBytes(), Base64.DEFAULT));
 
-        Log.e("编码：", str);
-        str = new String(Base64.decode(str, Base64.DEFAULT));
-        Log.e("解码：", str);
     }
 }
